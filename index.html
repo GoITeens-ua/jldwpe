@@ -115,6 +115,8 @@
   .img-frame { border: 2.5px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: #fff; display: flex; justify-content: center; align-items: center; }
   .img-frame img { width: 100%; height: auto; max-height: 64vh; object-fit: contain; display: block; }
 
+  .decoder-card { margin-bottom: 16px; }
+
   .navbar { position: fixed; left: 0; right: 0; bottom: 0; height: 76px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 7vw; background: linear-gradient(0deg, var(--paper) 65%, rgba(255, 253, 249, 0) 100%); }
   .nav-arrow { width: 48px; height: 48px; border-radius: 14px; border: 2.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0 var(--line); transition: 0.15s; }
   .nav-arrow:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); background: var(--yellow); }
@@ -147,7 +149,7 @@
           <div>
             <span class="tag tag-yellow">Модуль «Конфлікти» · Урок 2</span>
             <h1 class="big">Що я відчуваю в конфлікті: що під водою? 🧊</h1>
-            <p class="lede" style="margin-bottom:28px;">Чому крик, сарказм чи холодне «та мені пофіг» — це лише захисна броня, і як вчасно помітити свій внутрішній вибух.</p>
+            <p class="lede" style="margin-bottom:28px;">Чому крик, сарказм чи холодне «та мені пофіг» — це лише захисна броня, і як вчасно помітити власне закипання.</p>
             <button class="btn btn-yellow" onclick="goToSlide(1)">До плану заняття →</button>
           </div>
           <div>
@@ -272,7 +274,7 @@
           <div class="baro-item" onclick="selectBaro(this)">
             <div class="baro-lvl">5</div>
             <div class="baro-name">Замикання</div>
-            <div class="baro-sub">Вибух люті або глухий ступор без слів.</div>
+            <div class="baro-sub">Шквал емоцій або глухий ступор без слів.</div>
           </div>
         </div>
       </div>
@@ -282,7 +284,7 @@
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-accent">Швидка практика в парах · 3 хвилини</span>
-        <h2 class="slide-title">Стрінг-тест: заміряй чутливість напарника</h2>
+        <h2 class="slide-title">Краш-тест реакцій: заміряй чутливість напарника</h2>
         <p class="lede" style="margin-bottom:20px;">Працюємо прямо в загальному просторі по двоє. Один учасник зачитує фразу, інший миттєво називає свій бал (1–5) і першу реакцію:</p>
 
         <div class="grid-2">
@@ -321,8 +323,8 @@
             </div>
             <div class="car-item">
               <div class="card card-pop" style="border-left: 8px solid var(--coral);">
-                <span class="tag tag-coral">Ситуація 2 · Вдома (POV підлітка)</span>
-                <p style="font-size:1.25rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Ти прийшов(-ла) втомлений(-а) зі школи, щойно впав(-ла) на ліжко з телефоном видихнути — і в кімнату без стуку залітають із криком: «Знову в екрані? А посуд хто помиє? Ти взагалі нічого не робиш!»</p>
+                <span class="tag tag-coral">Ситуація 2 · Вдома</span>
+                <p style="font-size:1.25rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Ти прийшов(-ла) втомлений(-а) зі школи, щойно впав(-ла) на ліжко з телефоном видихнути — і в кімнату без стуку залітають із претензією: «Знову в екрані? А посуд хто помиє? Ти взагалі нічого не робиш!»</p>
                 <p style="color:var(--muted); font-weight:700;">Рівень підпалу за шкалою від 1 до 5?</p>
               </div>
             </div>
@@ -379,7 +381,7 @@
           <div class="card card-pop" style="border-top:8px solid var(--coral);">
             <div style="font-size:2.4rem; margin-bottom:8px;">🚨</div>
             <h3 style="font-size:1.3rem; font-weight:700; color:var(--coral); margin-bottom:10px;">Амигдала (Тривожна кнопка)</h3>
-            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Древня частина мозку. Вона не відрізняє образу в чаті чи вдома від нападу тигра. Для неї шейм = смертельна загроза. Вона миттєво вирубає логіку й вимагає негайного удару або втечі.</p>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Древня частина мозку. Вона не відрізняє образу в чаті чи вдома від нападу тигра. Для неї шейм = смертельна загроза. Вона миттєво блокує логіку й вимагає різкої відсічі або втечі.</p>
           </div>
           <div class="card card-pop" style="border-top:8px solid var(--teal);">
             <div style="font-size:2.4rem; margin-bottom:8px;">🧠</div>
@@ -400,7 +402,7 @@
         <div class="grid-3" style="margin-top:20px;">
           <div class="card card-pop" onclick="this.classList.toggle('card-pop')" style="cursor:pointer; border-top:8px solid var(--coral);">
             <div style="font-size:2rem; margin-bottom:8px;">🥊 Бий (Fight)</div>
-            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Атака: капслок, сарказм, токсичні підколки, бажання знищити співрозмовника словами.</p>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Натиск: капслок, сарказм, токсичні підколки, бажання різко осадити співрозмовника.</p>
           </div>
           <div class="card card-pop" onclick="this.classList.toggle('card-pop')" style="cursor:pointer; border-top:8px solid var(--yellow);">
             <div style="font-size:2rem; margin-bottom:8px;">🏃 Біжи (Flight)</div>
@@ -462,11 +464,11 @@
       </div>
     </section>
 
-    <!-- 12: X-RAY QUIZ 2 (FAMILY CASE) -->
+    <!-- 12: X-RAY QUIZ 2 -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-teal">Тренажер 1 · Рентген айсберга</span>
-        <h2 class="slide-title">Вибух удома (POV підлітка)</h2>
+        <h2 class="slide-title">Буря на кухні</h2>
         <div class="card card-pop" style="margin-top:16px;">
           <p style="font-size:1.2rem; font-weight:600; margin-bottom:6px;">Ситуація:</p>
           <p style="font-size:1.05rem; color:var(--muted); margin-bottom:16px;">У відповідь на претензію «Ти знову в екрані, посуд не помитий!» підліток кричить: <i>«Та відчепіться від мене всі!»</i> і грюкає дверима кімнати.</p>
@@ -483,24 +485,49 @@
       </div>
     </section>
 
-    <!-- 13: DECODER OF MASKS -->
+    <!-- 13: DECODER OF MASKS (3 CARDS) -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-yellow">Тренажер 2 · Декодер</span>
         <h2 class="slide-title">Як зняти маску й не втратити статус</h2>
-        <p class="lede" style="margin-bottom:20px;">Спробуй спочатку сформулювати відповідь вголос, а потім тисни кнопку й перевір дорослий переклад:</p>
+        <p class="lede" style="margin-bottom:18px;">Спробуй спочатку сформулювати дорослу відповідь вголос, а потім тисни кнопку й перевір переклад:</p>
 
-        <div class="card card-pop" style="margin-bottom:18px; background:var(--coral-soft);">
-          <div style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска токсичності:</div>
-          <div style="font-size:1.2rem; font-weight:700; margin-top:4px;">«Та роби як знаєш, мені абсолютно начхати на твою думку!»</div>
+        <!-- Card 1 -->
+        <div class="card card-pop decoder-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска 1 · Друзі / Чат</span>
+            <button class="btn btn-yellow" style="padding:6px 14px; font-size:0.82rem;" onclick="toggleDecoder(this, 'dec1')">🔓 Зняти броню</button>
+          </div>
+          <div style="font-size:1.05rem; font-weight:700; margin-bottom:8px;">«Та роби як знаєш, мені абсолютно начхати на твою думку!»</div>
+          <div id="dec1" style="display:none; padding-top:10px; border-top:2px dashed var(--line); color:#065F46; font-weight:600; font-size:0.95rem;">
+            <b>💡 Переклад дорослої сили:</b> «Я бачу це інакше. Не хочу сперечатися на емоціях, тож візьмемо паузу і повернемось до розмови згодом.»
+          </div>
         </div>
 
-        <button class="btn btn-yellow" onclick="revealDecoder(this)" style="margin-bottom:18px;">🔓 Зняти броню / Відкрити переклад сили</button>
-
-        <div id="decoderResult" class="card card-pop" style="display:none; background:var(--teal-soft); border-color:var(--teal);">
-          <div style="font-size:0.8rem; font-weight:700; color:var(--teal); text-transform:uppercase;">Переклад дорослої сили:</div>
-          <div style="font-size:1.15rem; font-weight:700; margin-top:4px;">«Я бачу цю ситуацію інакше. Мені неприємно сперечатися на емоціях, тому давай візьмемо паузу й повернемось пізніше.»</div>
+        <!-- Card 2 -->
+        <div class="card card-pop decoder-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска 2 · Вдома / Батьки</span>
+            <button class="btn btn-yellow" style="padding:6px 14px; font-size:0.82rem;" onclick="toggleDecoder(this, 'dec2')">🔓 Зняти броню</button>
+          </div>
+          <div style="font-size:1.05rem; font-weight:700; margin-bottom:8px;">«Ви взагалі нічого не розумієте і вічно все псуєте! Залиште мене в спокої!»</div>
+          <div id="dec2" style="display:none; padding-top:10px; border-top:2px dashed var(--line); color:#065F46; font-weight:600; font-size:0.95rem;">
+            <b>💡 Переклад дорослої сили:</b> «Я зараз сильно роздратований(-а) і втомлений(-а). Мені потрібно побути наодинці 20 хвилин, а потім я спокійно все розкажу.»
+          </div>
         </div>
+
+        <!-- Card 3 -->
+        <div class="card card-pop decoder-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска 3 · Компанія / Підколки</span>
+            <button class="btn btn-yellow" style="padding:6px 14px; font-size:0.82rem;" onclick="toggleDecoder(this, 'dec3')">🔓 Зняти броню</button>
+          </div>
+          <div style="font-size:1.05rem; font-weight:700; margin-bottom:8px;">«Ой, дивись на нього, який "розумний" знайшовся, на себе краще подивись!»</div>
+          <div id="dec3" style="display:none; padding-top:10px; border-top:2px dashed var(--line); color:#065F46; font-weight:600; font-size:0.95rem;">
+            <b>💡 Переклад дорослої сили:</b> «Мені не подобається такий тон жартів у мій бік. Якщо є претензія — скажи прямо, без сарказму.»
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -561,7 +588,7 @@
       </div>
     </section>
 
-    <!-- 16: PAIR CASES (FAMILY INCLUDED) -->
+    <!-- 16: PAIR CASES -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-coral">Кейси для кімнат</span>
@@ -591,7 +618,7 @@
         <div class="grid-2" style="margin-top:20px;">
           <div class="card card-pop" style="background:var(--yellow-soft);">
             <h3 style="font-weight:700; font-size:1.15rem; margin-bottom:10px;">1. Чому сказати про вразливість страшніше, ніж напасти?</h3>
-            <p style="color:var(--muted); font-size:0.95rem; line-height:1.6;">Агресія — це зброя, вона створює ілюзію захисту. А сказати «мені було боляче» — це свідомо опустити щит перед іншою людиною.</p>
+            <p style="color:var(--muted); font-size:0.95rem; line-height:1.6;">Агресія — це колюча маска, вона створює ілюзію захисту. А сказати «мені було боляче» — це свідомо скинути броню перед іншою людиною.</p>
           </div>
           <div class="card card-pop" style="background:var(--teal-soft);">
             <h3 style="font-weight:700; font-size:1.15rem; margin-bottom:10px;">2. Що стається з конфліктом, коли лунає правда?</h3>
@@ -619,7 +646,7 @@
           </div>
           <div class="card card-pop">
             <div style="font-size:1.8rem; margin-bottom:6px;">🎯 3. Моя мета</div>
-            <p style="font-size:0.95rem; color:var(--muted); line-height:1.5;">Я хочу знищити людину в чаті чи зберегти стосунки й вирішити проблему?</p>
+            <p style="font-size:0.95rem; color:var(--muted); line-height:1.5;">Я хочу довести свою правоту будь-якою ціною чи зберегти стосунки й вирішити проблему?</p>
           </div>
         </div>
       </div>
@@ -769,9 +796,15 @@
     fb.innerHTML = `<b>${isGood ? '💡 Влучно:' : '⚠️ Не зовсім:'}</b> ${text}`;
   }
 
-  function revealDecoder(btn) {
-    document.getElementById('decoderResult').style.display = 'block';
-    btn.style.display = 'none';
+  function toggleDecoder(btn, targetId) {
+    const target = document.getElementById(targetId);
+    if (target.style.display === 'none' || !target.style.display) {
+      target.style.display = 'block';
+      btn.textContent = '🔒 Приховати';
+    } else {
+      target.style.display = 'none';
+      btn.textContent = '🔓 Зняти броню';
+    }
   }
 
   function fireConfetti() {
