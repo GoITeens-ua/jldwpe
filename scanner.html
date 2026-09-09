@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Бібліотека для збереження блоку в зображення -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
     --paper: #FFFDF9;
@@ -138,6 +140,10 @@
     cursor: pointer;
     box-shadow: var(--shadow);
     transition: 0.15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
   .btn:hover:not(:disabled) {
     transform: translate(-2px, -2px);
@@ -151,7 +157,12 @@
   .btn-yellow { background: var(--yellow); color: var(--ink); }
   .btn-ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--muted); }
 
-  /* Результат */
+  /* Зона картки результату */
+  #captureArea {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 12px;
+  }
   .profile-card {
     background: var(--yellow-soft);
     border: 2.5px solid var(--line);
@@ -293,31 +304,39 @@
 
   <!-- РЕЗУЛЬТАТ -->
   <div class="step-screen" id="stepResult">
-    <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Аналіз завершено</span>
-    <h1>Твій профіль у момент тиску</h1>
-    <p class="sub">Це не оцінка, а знімок твоєї захисної броні, яку вмикає мозок:</p>
+    
+    <!-- Зона для фото-картки -->
+    <div id="captureArea">
+      <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Аналіз завершено</span>
+      <h1>Твій профіль у момент тиску</h1>
+      <p class="sub" style="margin-bottom:12px;">Це не оцінка, а знімок твоєї захисної броні, яку вмикає мозок:</p>
 
-    <div class="profile-card">
-      <div class="archetype-title" id="archTitle">Завантаження...</div>
-      <div class="profile-row">
-        <b>Що бачать інші назовні:</b>
-        <span id="archOuter">-</span>
+      <div class="profile-card">
+        <div class="archetype-title" id="archTitle">Завантаження...</div>
+        <div class="profile-row">
+          <b>Що бачать інші назовні:</b>
+          <span id="archOuter">-</span>
+        </div>
+        <div class="profile-row">
+          <b>Твій прихований датчик чутливості:</b>
+          <span id="archTrigger">-</span>
+        </div>
+        <div class="profile-row" style="margin-bottom:0;">
+          <b>Що насправді ховається під водою:</b>
+          <span id="archIceberg">-</span>
+        </div>
       </div>
-      <div class="profile-row">
-        <b>Твій прихований датчик чутливості:</b>
-        <span id="archTrigger">-</span>
-      </div>
-      <div class="profile-row" style="margin-bottom:0;">
-        <b>Що насправді ховається під водою:</b>
-        <span id="archIceberg">-</span>
+
+      <div class="advice-card" id="archAdvice"></div>
+      
+      <div style="text-align:right; font-size:0.75rem; color:var(--muted); font-weight:700; margin-top:8px;">
+        Happy Kids 11–13 · Що я відчуваю в конфлікті
       </div>
     </div>
 
-    <div class="advice-card" id="archAdvice"></div>
-
-    <div class="action-bar" style="margin-top:20px;">
+    <div class="action-bar" style="margin-top:16px;">
       <button class="btn btn-ghost" onclick="resetAll()">Пройти знову</button>
-      <button class="btn btn-yellow" onclick="copyResultText()">📋 Скопіювати для чату</button>
+      <button class="btn btn-yellow" id="downloadBtn" onclick="downloadProfileCard()">📸 Зберегти картку собі</button>
     </div>
   </div>
 
@@ -325,7 +344,6 @@
 
 <script>
   const answers = { 1: null, 2: null, 3: null, 4: null };
-  let finalArchetype = '';
 
   function selectChoice(step, variant) {
     answers[step] = variant;
@@ -355,21 +373,18 @@
     const advEl = document.getElementById('archAdvice');
 
     if (maxKey === 'A') {
-      finalArchetype = '🛡️ Блискавичний щит (Режим Натиску)';
       titleEl.innerHTML = '🛡️ Архетип: Блискавичний щит';
       outerEl.textContent = 'Швидка, смілива, але часом різка й колюча відповідь капслоком або сарказмом.';
       trigEl.textContent = 'Гостра нестерпність несправедливості та звинувачень.';
       iceEl.textContent = 'Страх здатися слабким або беззахисним. Атака — це спроба перехопити контроль.';
       advEl.innerHTML = '<b>💡 Твоя зона росту:</b> у тебе величезна сміливість. Дай собі паузу в 10 секунд перед відповіддю — і ти зможеш роззброювати опонентів спокоєм, а не війною.';
     } else if (maxKey === 'B') {
-      finalArchetype = '🏰 Автономний бункер (Режим Дистанції)';
       titleEl.innerHTML = '🏰 Архетип: Автономний бункер';
       outerEl.textContent = 'Холодне мовчання, зникнення з радарів, вихід із чату, маска «та мені байдуже».';
       trigEl.textContent = 'Миттєве сенсорне та емоційне перевантаження від чужого тиску чи драми.';
       iceEl.textContent = 'Відчайдушна потреба захистити свою енергію та безпеку, коли немає сил сперечатися.';
       advEl.innerHTML = '<b>💡 Твоя зона росту:</b> ти чудово бережеш свої ресурси. Спробуй не просто зникати, а вголос ставити межу: «Мені треба видихнути 20 хвилин, потім поговоримо».';
     } else {
-      finalArchetype = '🧊 Невидимий лід (Режим Камуфляжу)';
       titleEl.innerHTML = '🧊 Архетип: Невидимий лід';
       outerEl.textContent = 'Зовнішній спокій, чергова посмішка, мовчазна згода або «зависання».';
       trigEl.textContent = 'Страх зробити гірше, спровокувати скандал або відчути токсичний сором.';
@@ -380,10 +395,31 @@
     goToStep('Result');
   }
 
-  function copyResultText() {
-    const text = `Мій результат тесту-сканера:\n${finalArchetype}\n(Happy Kids 11–13: Що я відчуваю в конфлікті)`;
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Скопійовано! Встав свій архетип у чат Zoom ✨');
+  function downloadProfileCard() {
+    const btn = document.getElementById('downloadBtn');
+    const area = document.getElementById('captureArea');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ Зберігаємо...';
+    btn.disabled = true;
+
+    html2canvas(area, {
+      scale: 2,
+      backgroundColor: '#FFFFFF',
+      useCORS: true
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'Мій_профіль_захисту.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      btn.innerHTML = '✅ Збережено!';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }, 2500);
+    }).catch(err => {
+      alert('Не вдалося створити фото. Можна просто зробити звичайний скриншот екрана!');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
     });
   }
 
