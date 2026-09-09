@@ -34,6 +34,9 @@
   .brand-badge { position: fixed; top: 18px; left: 24px; z-index: 60; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; }
   .brand-pill { background: var(--yellow); border: 2px solid var(--line); color: var(--ink); padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; box-shadow: 2px 2px 0 var(--line); }
 
+  .plan-shortcut-btn { position: fixed; top: 18px; right: 24px; z-index: 60; background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; box-shadow: 2px 2px 0 var(--line); transition: 0.15s; }
+  .plan-shortcut-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--line); background: var(--yellow-soft); }
+
   .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
   .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 70px 7vw 90px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; transform: translateY(10px); overflow-y: auto; }
   .slide.is-active { opacity: 1; pointer-events: auto; transform: translateY(0); }
@@ -109,8 +112,8 @@
   .quiz-choice.ans-bad { background: var(--coral-soft); border-color: var(--coral); color: #991B1B; }
   .quiz-feedback { margin-top: 18px; padding: 16px 20px; border-radius: 16px; border: 2.5px solid var(--line); font-size: 1rem; font-weight: 600; display: none; box-shadow: var(--shadow); }
 
-  .img-frame { border: 2.5px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: #fff; line-height: 0; }
-  .img-frame img { width: 100%; height: auto; max-height: 64vh; object-fit: contain; display: block; margin: 0 auto; }
+  .img-frame { border: 2.5px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: #fff; display: flex; justify-content: center; align-items: center; }
+  .img-frame img { width: 100%; height: auto; max-height: 64vh; object-fit: contain; display: block; }
 
   .navbar { position: fixed; left: 0; right: 0; bottom: 0; height: 76px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 7vw; background: linear-gradient(0deg, var(--paper) 65%, rgba(255, 253, 249, 0) 100%); }
   .nav-arrow { width: 48px; height: 48px; border-radius: 14px; border: 2.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0 var(--line); transition: 0.15s; }
@@ -132,6 +135,8 @@
     <span>Happy Kids</span>
     <span class="brand-pill">11–13 років</span>
   </div>
+
+  <button class="plan-shortcut-btn" onclick="goToSlide(1)">📋 План уроку</button>
 
   <div class="stage" id="stage">
 
@@ -431,7 +436,7 @@
     <section class="slide">
       <div class="slide-inner">
         <div class="img-frame">
-          <img src="https://mvelgan-cmyk.github.io/ertty/iceberg.png" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 900 500\'><rect width=\'900\' height=\'500\' fill=\'%23E6FFFA\'/><text x=\'50%27 y=\'45%27 text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'28\' font-weight=\'bold\' fill=\'%230D9488\'>🧊 Айсберг емоцій: що насправді під водою?</text><text x=\'50%27 y=\'55%27 text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'18\' fill=\'%2352525B\'>Покладіть файл ілюстрації в корінь сайту як iceberg.png</text></svg>';" alt="Айсберг емоцій">
+          <img src="iceberg.png" onerror="this.onerror=null; this.src='https://mvelgan-cmyk.github.io/ertty/iceberg.png';" alt="Айсберг емоцій">
         </div>
       </div>
     </section>
@@ -692,13 +697,23 @@
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
   const navStatus = document.getElementById('navStatus');
-  let current = 0;
+
+  const getSavedSlide = () => {
+    const hashMatch = window.location.hash.match(/#slide=(\d+)/);
+    if (hashMatch) return parseInt(hashMatch[1], 10) - 1;
+    const local = localStorage.getItem('hk_active_slide');
+    return local !== null ? parseInt(local, 10) : 0;
+  };
+
+  let current = Math.min(Math.max(getSavedSlide(), 0), slides.length - 1);
 
   function goToSlide(i) {
     if (i < 0 || i >= slides.length) return;
     slides[current].classList.remove('is-active');
     current = i;
     slides[current].classList.add('is-active');
+    localStorage.setItem('hk_active_slide', current);
+    history.replaceState(null, '', `#slide=${current + 1}`);
     updateNav();
   }
 
@@ -714,6 +729,8 @@
     if (e.key === 'ArrowRight') goToSlide(current + 1);
     if (e.key === 'ArrowLeft') goToSlide(current - 1);
   };
+
+  slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
   updateNav();
 
   function selectBaro(el) {
