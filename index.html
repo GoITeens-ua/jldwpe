@@ -109,7 +109,7 @@
   .quiz-choice { background: #fff; border: 2.5px solid var(--line); border-radius: 16px; padding: 18px 20px; font-weight: 600; font-size: 1rem; cursor: pointer; text-align: left; transition: 0.15s; box-shadow: 3px 3px 0 var(--line); }
   .quiz-choice:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); }
   .quiz-choice.ans-good { background: var(--teal-soft); border-color: var(--teal); color: #065F46; }
-  .quiz-choice.ans-bad { background: var(--coral-soft); border-color: var(--coral); color: #991B1B; }
+  .quiz-choice.ans-bad { background: var(--yellow-soft); border-color: var(--line); color: var(--ink); }
   .quiz-feedback { margin-top: 18px; padding: 16px 20px; border-radius: 16px; border: 2.5px solid var(--line); font-size: 1rem; font-weight: 600; display: none; box-shadow: var(--shadow); }
 
   .img-frame { border: 2.5px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: #fff; display: flex; justify-content: center; align-items: center; }
@@ -454,10 +454,10 @@
           <p style="font-weight:700; font-size:1rem; color:var(--accent);">Яка справжня емоція під водою в Дена?</p>
 
           <div class="quiz-list">
-            <button class="quiz-choice" onclick="runQuiz(this, false, 'Це лише зовнішній напад, а не справжня емоція.')">Він просто агресивний від природи</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Це лише зовнішня маска нападу, а не глибинна емоція.')">Він просто агресивний від природи</button>
             <button class="quiz-choice" onclick="runQuiz(this, true, 'Саме так! Страх поразки та сором здатися слабким він скидає на іншого, рятуючи свій авторитет.')">Страх поразки та сором здатися слабким</button>
-            <button class="quiz-choice" onclick="runQuiz(this, false, 'Ні, це лише виправдання для наїзду.')">Бажання навчити друга грати краще</button>
-            <button class="quiz-choice" onclick="runQuiz(this, false, 'Якби йому було байдуже, він би просто промовчав.')">Йому все одно на гру</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Ні, це скоріше захисне виправдання для наїзду.')">Бажання навчити друга грати краще</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Якби йому було справді байдуже, він би просто промовчав.')">Йому все одно на гру</button>
           </div>
           <div class="quiz-feedback" id="qfb1"></div>
         </div>
@@ -475,10 +475,10 @@
           <p style="font-weight:700; font-size:1rem; color:var(--accent);">Що насправді під водою в підлітка в цей момент?</p>
 
           <div class="quiz-list">
-            <button class="quiz-choice" onclick="runQuiz(this, false, 'Це погляд зовні. Зсередини підліток відчуває геть інше.')">Бажання спеціально розізлити батьків</button>
-            <button class="quiz-choice" onclick="runQuiz(this, true, 'Точно в ціль! Біль від того, що втому знецінюють, безсилля перед правилом «ми дорослі» та відчайдушна спроба захистити свій особистий простір.')">Втома, безсилля та знецінення зусиль</button>
-            <button class="quiz-choice" onclick="runQuiz(this, false, 'Посуд — це лише побутовий привід, справа не в ньому.')">Просто ненависть до миття посуду</button>
-            <button class="quiz-choice" onclick="runQuiz(this, false, 'Якби було байдуже, людина б спокійно проігнорувала.')">Повна байдужість до сім'ї</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Це погляд дорослих збоку. Зсередини підліток відчуває геть інше.')">Бажання спеціально розізлити батьків</button>
+            <button class="quiz-choice" onclick="runQuiz(this, true, 'Точно в ціль! Біль від того, що втому знецінюють, безсилля перед правилом «ми дорослі» та відчайдушна спроба відстояти свій особистий простір.')">Втома, безсилля та знецінення зусиль</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Посуд — це лише побутовий привід, корінь конфлікту глибший.')">Просто ненависть до миття посуду</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Якби було справді все одно, не було б такого вибуху.')">Повна байдужість до сім'ї</button>
           </div>
           <div class="quiz-feedback" id="qfb2"></div>
         </div>
@@ -492,7 +492,6 @@
         <h2 class="slide-title">Як зняти маску й не втратити статус</h2>
         <p class="lede" style="margin-bottom:18px;">Спробуй спочатку сформулювати дорослу відповідь вголос, а потім тисни кнопку й перевір переклад:</p>
 
-        <!-- Card 1 -->
         <div class="card card-pop decoder-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска 1 · Друзі / Чат</span>
@@ -504,7 +503,6 @@
           </div>
         </div>
 
-        <!-- Card 2 -->
         <div class="card card-pop decoder-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска 2 · Вдома / Батьки</span>
@@ -516,7 +514,6 @@
           </div>
         </div>
 
-        <!-- Card 3 -->
         <div class="card card-pop decoder-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска 3 · Компанія / Підколки</span>
@@ -527,7 +524,6 @@
             <b>💡 Переклад дорослої сили:</b> «Мені не подобається такий тон жартів у мій бік. Якщо є претензія — скажи прямо, без сарказму.»
           </div>
         </div>
-
       </div>
     </section>
 
@@ -674,29 +670,61 @@
       </div>
     </section>
 
-    <!-- 20: BONUS MEDIA CASE -->
+    <!-- 20: REAL CASE (ZINCHENKO) -->
     <section class="slide">
       <div class="slide-inner">
-        <div class="hero-grid">
+        <div class="hero-grid" style="align-items:center;">
           <div>
-            <span class="tag tag-yellow">⭐ Бонусний бліц</span>
-            <h2 class="slide-title">Мемний розбір публічних сварок</h2>
-            <p class="lede" style="margin-bottom:18px;">Згадай будь-який гучний скандал блогерів чи героїв серіалів:</p>
-            <div class="card">
-              <p style="font-weight:600; margin-bottom:8px;">Що було на верхівці (хейт, діси, викриття)?</p>
-              <p style="color:var(--muted); font-size:0.95rem;">І який страх лежав на дні (страх втратити підписників, заздрість чи біль від зради)?</p>
+            <span class="tag tag-yellow">⭐ Реальний кейс</span>
+            <h2 class="slide-title">По той бік екрана</h2>
+            <p class="lede" style="margin-bottom:16px;">Матч за чемпіонство Англії. Олександр Зінченко помиляється, суперник забиває гол. Тренер замінює його — він сідає на лаву і ховає обличчя в долонях від сліз.</p>
+            
+            <div class="card card-pop" style="background:var(--yellow-soft); margin-bottom:12px;">
+              <p style="font-weight:700; margin-bottom:4px;">🎭 Верхівка (що бачили трибуни й камера):</p>
+              <p style="color:var(--muted); font-size:0.95rem;">Дорослий топ-гравець плаче, закривається від партнерів, не реагує на спроби його заспокоїти.</p>
+            </div>
+
+            <div class="card card-pop" style="background:var(--teal-soft); border-color:var(--teal);">
+              <p style="font-weight:700; margin-bottom:4px; color:#065F46;">🧊 Що насправді під водою:</p>
+              <p style="color:var(--muted); font-size:0.95rem;">Колосальний тягар провини перед командою, страх підвести мільйони вболівальників і безсилля повернути ту фатальну секунду назад.</p>
             </div>
           </div>
-          <div>
-            <div class="gif-frame">
-              <iframe src="https://giphy.com/embed/3o72F8t9TDi2xVnxOE" title="popcorn gif"></iframe>
-            </div>
+
+          <div style="display:flex; justify-content:center; align-items:center;">
+            <img src="zinchenko.png" onerror="this.onerror=null; this.src='https://mvelgan-cmyk.github.io/ertty/zinchenko.png';" alt="Олександр Зінченко" style="width:100%; max-width:440px; max-height:68vh; object-fit:contain; filter:drop-shadow(0 14px 24px rgba(0,0,0,0.08));">
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 21: FINAL -->
+    <!-- 21: FEED CONFLICTS LAB -->
+    <section class="slide">
+      <div class="slide-inner">
+        <span class="tag tag-coral">Практикум спостереження</span>
+        <h2 class="slide-title">Що ховає публічний хейт?</h2>
+        <p class="lede" style="margin-bottom:20px;">Згадайте недавній конфлікт блогерів, тіктокерів чи стрімерів, за якими ви стежите:</p>
+
+        <div class="grid-2">
+          <div class="card card-pop" style="border-top:8px solid var(--coral);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">📱 Що було видно назовні</div>
+            <p style="font-size:1.05rem; line-height:1.6; margin-bottom:12px;">Публічні викриття, взаємні звинувачення в сторіз, демонстративні відписки або токсичні стріми.</p>
+            <p style="color:var(--muted); font-size:0.95rem;">Який страх насправді лежав на дні: страх втратити охоплення, заздрість чи образа на колишнього друга?</p>
+          </div>
+
+          <div class="card card-pop" style="border-top:8px solid var(--teal); background:var(--teal-soft);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">💪 Як вчинити по-дорослому</div>
+            <p style="font-size:1.05rem; line-height:1.6; margin-bottom:12px;">Уявіть, що ви їхній радник. Як вони могли розрулити цю ситуацію без публічного шейму?</p>
+            <ul style="margin-left:20px; line-height:1.6; font-size:0.95rem; color:var(--muted);">
+              <li>Взяти паузу від соцмереж на добу;</li>
+              <li>Вирішити розбіжності в особистих повідомленнях;</li>
+              <li>Відкрито визнати розбіжність інтересів без поливання брудом.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 22: FINAL -->
     <section class="slide">
       <div class="slide-inner" style="text-align:center; max-width:800px;">
         <span class="tag tag-teal">Фінал заняття</span>
@@ -715,7 +743,7 @@
 
   <div class="navbar">
     <button class="nav-arrow" id="prevBtn">←</button>
-    <span class="nav-status" id="navStatus">Слайд 1 з 22</span>
+    <span class="nav-status" id="navStatus">Слайд 1 з 23</span>
     <button class="nav-arrow" id="nextBtn">→</button>
   </div>
 
@@ -786,14 +814,14 @@
     const card = btn.closest('.card');
     const fb = card.querySelector('.quiz-feedback');
     card.querySelectorAll('.quiz-choice').forEach(b => {
-      b.style.pointerEvents = 'none';
       b.classList.remove('ans-good', 'ans-bad');
     });
     btn.classList.add(isGood ? 'ans-good' : 'ans-bad');
     fb.style.display = 'block';
-    fb.style.background = isGood ? 'var(--teal-soft)' : 'var(--coral-soft)';
-    fb.style.color = isGood ? '#065F46' : '#991B1B';
-    fb.innerHTML = `<b>${isGood ? '💡 Влучно:' : '⚠️ Не зовсім:'}</b> ${text}`;
+    fb.style.background = isGood ? 'var(--teal-soft)' : 'var(--yellow-soft)';
+    fb.style.borderColor = isGood ? 'var(--teal)' : 'var(--line)';
+    fb.style.color = isGood ? '#065F46' : 'var(--ink)';
+    fb.innerHTML = `<b>${isGood ? '✨ Точно в ціль:' : '💭 Подумаймо:'}</b> ${text}`;
   }
 
   function toggleDecoder(btn, targetId) {
