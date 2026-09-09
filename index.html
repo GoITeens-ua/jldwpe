@@ -9,181 +9,235 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #F8F9FD;
+    --paper: #FFFDF9;
     --card: #FFFFFF;
-    --ink: #0F172A;
-    --muted: #64748B;
-    --line: #E2E8F0;
+    --ink: #18181B;
+    --muted: #52525B;
+    --line: #18181B;
     --accent: #6366F1;
-    --accent-light: #EEF2FF;
-    --coral: #F43F5E;
-    --coral-light: #FFF1F2;
-    --amber: #F59E0B;
-    --amber-light: #FEF3C7;
+    --accent-soft: #EEF2FF;
+    --coral: #FF5A5F;
+    --coral-soft: #FFEBEB;
+    --yellow: #FEC830;
+    --yellow-soft: #FFF5D6;
     --teal: #0D9488;
-    --teal-light: #F0FDFA;
-    --cyan: #06B6D4;
-    --shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08);
+    --teal-soft: #E6FFFA;
+    --shadow: 5px 5px 0px var(--line);
+    --shadow-lg: 7px 7px 0px var(--line);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--ink); overflow: hidden; }
+  html, body { height: 100%; font-family: 'IBM Plex Sans', sans-serif; background: var(--paper); color: var(--ink); overflow: hidden; }
 
-  /* BRAND & NAV TOP */
-  .brand-badge { position: fixed; top: 16px; left: 20px; z-index: 60; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; }
-  .brand-pill { background: var(--accent); color: #fff; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  .agenda-jump { position: fixed; top: 16px; right: 20px; z-index: 60; background: var(--card); border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 18px; font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--ink); transition: 0.2s; }
-  .agenda-jump:hover { border-color: var(--accent); color: var(--accent); }
+  /* BACKGROUND SHAPES */
+  .bg-shape { position: absolute; z-index: 1; pointer-events: none; opacity: 0.45; }
 
-  /* SLIDES ENGINE */
+  /* BRAND BADGE */
+  .brand-badge { position: fixed; top: 18px; left: 24px; z-index: 60; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; }
+  .brand-pill { background: var(--yellow); border: 2px solid var(--line); color: var(--ink); padding: 4px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; box-shadow: 2px 2px 0 var(--line); }
+
+  /* STAGE ENGINE */
   .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-  .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 80px 8vw 100px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateY(8px); overflow-y: auto; }
+  .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 70px 7vw 90px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; transform: translateY(10px); overflow-y: auto; }
   .slide.is-active { opacity: 1; pointer-events: auto; transform: translateY(0); }
-  .slide-inner { max-width: 960px; margin: 0 auto; width: 100%; }
+  .slide-inner { max-width: 1140px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+  /* HERO DUAL-COLUMN */
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 42px; align-items: center; }
+  @media(max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 24px; } }
 
   /* TYPOGRAPHY */
-  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
-  .tag-accent { background: var(--accent-light); color: var(--accent); }
-  .tag-coral { background: var(--coral-light); color: var(--coral); }
-  .tag-amber { background: var(--amber-light); color: var(--amber); }
-  .tag-teal { background: var(--teal-light); color: var(--teal); }
+  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; border: 2px solid var(--line); box-shadow: 2px 2px 0 var(--line); margin-bottom: 14px; }
+  .tag-yellow { background: var(--yellow); color: var(--ink); }
+  .tag-coral { background: var(--coral-soft); color: var(--coral); border-color: var(--line); }
+  .tag-teal { background: var(--teal-soft); color: var(--teal); border-color: var(--line); }
+  .tag-accent { background: var(--accent-soft); color: var(--accent); border-color: var(--line); }
 
-  h1.big { font-size: clamp(2.2rem, 4.5vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
-  h2.slide-title { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
-  p.lede { font-size: clamp(1.05rem, 1.6vw, 1.2rem); font-weight: 400; color: var(--muted); line-height: 1.55; max-width: 720px; }
+  h1.big { font-size: clamp(2.3rem, 4.4vw, 3.4rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 16px; }
+  h2.slide-title { font-size: clamp(1.65rem, 3.2vw, 2.3rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
+  p.lede { font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--muted); line-height: 1.55; }
 
-  /* COMPONENTS */
-  .card { background: var(--card); border: 1.5px solid var(--line); border-radius: 20px; padding: 26px 28px; box-shadow: var(--shadow); }
-  .btn { font-family: inherit; font-weight: 600; font-size: 0.95rem; border: none; border-radius: 12px; padding: 13px 22px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.15s; text-decoration: none; }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #4F46E5; transform: translateY(-1px); }
-  .btn-outline { background: #fff; border: 1.5px solid var(--line); color: var(--ink); }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  /* CARDS & CONTAINERS */
+  .card { background: var(--card); border: 2.5px solid var(--line); border-radius: 20px; padding: 24px 28px; box-shadow: var(--shadow); }
+  .card-pop { box-shadow: var(--shadow-lg); }
+
+  /* BUTTONS */
+  .btn { font-family: inherit; font-weight: 700; font-size: 1rem; border: 2.5px solid var(--line); border-radius: 14px; padding: 13px 26px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.15s; text-decoration: none; box-shadow: var(--shadow); }
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--line); }
+  .btn:active { transform: translate(1px, 1px); box-shadow: 3px 3px 0 var(--line); }
+  .btn-yellow { background: var(--yellow); color: var(--ink); }
+  .btn-accent { background: var(--accent); color: #fff; }
   .btn-coral { background: var(--coral); color: #fff; }
-  .btn-coral:hover { background: #E11D48; }
 
-  /* MEME / CHAT BUBBLE */
-  .chat-box { background: #0F172A; border-radius: 16px; padding: 20px; color: #F8FAFC; font-size: 0.95rem; max-width: 580px; margin: 20px 0; }
-  .chat-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 14px; font-size: 0.8rem; color: #94A3B8; font-weight: 600; }
-  .chat-msg { margin-bottom: 12px; line-height: 1.5; }
-  .chat-msg b { color: #38BDF8; }
-  .chat-reactions { display: inline-flex; gap: 6px; background: #1E293B; border-radius: 20px; padding: 4px 10px; font-size: 0.85rem; margin-top: 6px; border: 1px solid #334155; }
+  /* GIF / MEDIA WRAPPER */
+  .gif-frame { border: 2.5px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: #000; position: relative; width: 100%; padding-bottom: 78%; }
+  .gif-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+
+  /* MESSENGER MOCKUP */
+  .messenger-card { background: #18181B; border: 2.5px solid var(--line); border-radius: 20px; padding: 20px; color: #FAFAFA; box-shadow: var(--shadow); }
+  .msg-bar { display: flex; justify-content: space-between; font-size: 0.8rem; color: #A1A1AA; border-bottom: 1px solid #3F3F46; padding-bottom: 10px; margin-bottom: 14px; font-weight: 600; }
+  .msg-body { font-size: 1.05rem; line-height: 1.5; margin-bottom: 12px; }
+  .msg-body b { color: #38BDF8; }
+  .msg-reactions { display: flex; gap: 8px; }
+  .msg-react-btn { background: #27272A; border: 1.5px solid #3F3F46; border-radius: 999px; padding: 5px 12px; font-size: 0.85rem; cursor: pointer; color: #fff; transition: 0.15s; }
+  .msg-react-btn.reacted { background: #3B82F6; border-color: #60A5FA; }
+
+  /* INTERACTIVE CHIPS & TILES */
+  .chip-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .pick-chip { background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 14px 18px; font-weight: 600; font-size: 0.98rem; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 10px; text-align: left; }
+  .pick-chip:hover { transform: translateX(4px); border-color: var(--accent); background: var(--accent-soft); }
+  .pick-chip.is-picked { background: var(--yellow-soft); border-color: var(--line); box-shadow: 3px 3px 0 var(--line); }
 
   /* BAROMETER CARDS */
-  .barometer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 24px; }
-  @media(max-width: 768px) { .barometer-grid { grid-template-columns: 1fr; } }
-  .baro-card { background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 16px 14px; text-align: center; cursor: pointer; transition: 0.2s; }
-  .baro-card:hover, .baro-card.is-active { border-color: var(--accent); background: var(--accent-light); transform: translateY(-3px); }
-  .baro-num { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--accent); }
-  .baro-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
-  .baro-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+  .baro-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; }
+  @media(max-width: 820px) { .baro-grid { grid-template-columns: 1fr; } }
+  .baro-item { background: #fff; border: 2.5px solid var(--line); border-radius: 18px; padding: 18px 14px; text-align: center; cursor: pointer; transition: 0.18s; box-shadow: var(--shadow); }
+  .baro-item:hover, .baro-item.is-selected { transform: translateY(-4px); box-shadow: 7px 7px 0 var(--line); background: var(--yellow-soft); }
+  .baro-lvl { font-size: 2.2rem; font-weight: 700; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+  .baro-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; }
+  .baro-sub { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
 
   /* CAROUSEL */
-  .carousel { margin-top: 24px; }
-  .carousel-track { position: relative; min-height: 220px; }
-  .carousel-card { display: none; animation: slideFade 0.25s ease forwards; }
-  .carousel-card.is-active { display: block; }
-  @keyframes slideFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .carousel-controls { display: flex; align-items: center; gap: 14px; margin-top: 20px; }
-  .car-btn { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--card); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; transition: 0.15s; }
-  .car-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-  .car-btn:disabled { opacity: 0.3; cursor: default; }
-  .carousel-counter { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+  .car-box { margin-top: 20px; }
+  .car-item { display: none; animation: carFade 0.2s ease forwards; }
+  .car-item.is-active { display: block; }
+  @keyframes carFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .car-nav { display: flex; align-items: center; gap: 16px; margin-top: 22px; }
+  .car-arrow { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0 var(--line); transition: 0.15s; }
+  .car-arrow:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); background: var(--yellow); }
+  .car-arrow:disabled { opacity: 0.3; cursor: default; }
 
-  /* ICEBERG VISUAL */
-  .iceberg-container { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
-  @media(max-width: 768px) { .iceberg-container { grid-template-columns: 1fr; } }
-  .iceberg-box { border-radius: 18px; padding: 22px; border: 2px solid; }
-  .iceberg-top { background: #FFF1F2; border-color: var(--coral); }
-  .iceberg-bottom { background: #F0FDFA; border-color: var(--teal); }
-  .iceberg-h { font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-
-  /* SENSORY 5-4-3-2-1 */
-  .grounding-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 24px; }
-  @media(max-width: 768px) { .grounding-row { grid-template-columns: 1fr; } }
-  .ground-chip { background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 12px; text-align: center; }
-  .ground-n { font-size: 1.6rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
-  .ground-txt { font-size: 0.85rem; font-weight: 600; }
-
-  /* AGENDA LIST */
-  .agenda-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
-  @media(max-width: 768px) { .agenda-list { grid-template-columns: 1fr; } }
-  .agenda-item { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 18px; cursor: pointer; text-align: left; font-weight: 600; font-size: 0.95rem; color: var(--ink); transition: 0.15s; }
-  .agenda-item:hover { border-color: var(--accent); background: var(--accent-light); }
-  .agenda-n { width: 28px; height: 28px; border-radius: 8px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
-
-  /* INTERACTIVE QUIZ CARDS */
-  .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-  @media(max-width: 600px) { .quiz-grid { grid-template-columns: 1fr; } }
-  .quiz-btn { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 16px; text-align: left; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: 0.15s; line-height: 1.4; }
-  .quiz-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .quiz-btn.correct { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
-  .quiz-btn.wrong { background: var(--coral-light); border-color: var(--coral); color: var(--coral); }
-  .feedback-box { margin-top: 14px; padding: 14px 18px; border-radius: 12px; font-size: 0.95rem; font-weight: 500; display: none; }
+  /* QUIZ SYSTEM */
+  .quiz-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+  @media(max-width: 650px) { .quiz-list { grid-template-columns: 1fr; } }
+  .quiz-choice { background: #fff; border: 2.5px solid var(--line); border-radius: 16px; padding: 18px 20px; font-weight: 600; font-size: 1rem; cursor: pointer; text-align: left; transition: 0.15s; box-shadow: 3px 3px 0 var(--line); }
+  .quiz-choice:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); }
+  .quiz-choice.ans-good { background: var(--teal-soft); border-color: var(--teal); color: #065F46; }
+  .quiz-choice.ans-bad { background: var(--coral-soft); border-color: var(--coral); color: #991B1B; }
+  .quiz-feedback { margin-top: 18px; padding: 16px 20px; border-radius: 16px; border: 2.5px solid var(--line); font-size: 1rem; font-weight: 600; display: none; box-shadow: var(--shadow); }
 
   /* BOTTOM NAVBAR */
-  .navbar { position: fixed; left: 0; right: 0; bottom: 0; height: 74px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 8vw; background: linear-gradient(0deg, var(--bg) 60%, rgba(248, 249, 253, 0) 100%); }
-  .nav-btn { width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; transition: 0.15s; }
-  .nav-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .nav-status { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+  .navbar { position: fixed; left: 0; right: 0; bottom: 0; height: 76px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 7vw; background: linear-gradient(0deg, var(--paper) 65%, rgba(255, 253, 249, 0) 100%); }
+  .nav-arrow { width: 48px; height: 48px; border-radius: 14px; border: 2.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0 var(--line); transition: 0.15s; }
+  .nav-arrow:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); background: var(--yellow); }
+  .nav-arrow:disabled { opacity: 0.25; cursor: default; }
+  .nav-status { font-weight: 700; font-size: 0.9rem; color: var(--muted); }
 </style>
 </head>
 <body>
+
+  <!-- DECORATIVE BG SHAPES -->
+  <svg class="bg-shape" style="width:360px; top:-80px; right:-80px;" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="90" fill="var(--yellow-soft)" stroke="var(--line)" stroke-width="4"/>
+  </svg>
+  <svg class="bg-shape" style="width:240px; bottom:-60px; left:-60px;" viewBox="0 0 200 200">
+    <rect x="20" y="20" width="160" height="160" rx="30" fill="var(--coral-soft)" stroke="var(--line)" stroke-width="4"/>
+  </svg>
 
   <div class="brand-badge">
     <span>Happy Kids</span>
     <span class="brand-pill">11–13 років</span>
   </div>
-  <button class="agenda-jump" onclick="goToSlide(1)">План воркшопу</button>
 
   <div class="stage" id="stage">
 
     <!-- 0: TITLE -->
     <section class="slide is-active">
-      <div class="slide-inner" style="text-align:center; max-width:760px;">
-        <span class="tag tag-accent">Модуль «Конфлікти» · Урок 2</span>
-        <h1 class="big">Що я відчуваю в конфлікті: що під водою? 🧊</h1>
-        <p class="lede" style="margin: 0 auto 30px;">Розбираємось, чому сарказм, крик чи «та мені пофіг» — це лише захисна броня, і що насправді відбувається з мозком, коли всередині все палає.</p>
-        <button class="btn btn-primary" onclick="goToSlide(1)">Розпочати розбір →</button>
-      </div>
-    </section>
-
-    <!-- 1: AGENDA -->
-    <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Маршрут зустрічі</span>
-        <h2 class="slide-title">План сьогоднішнього воркшопу</h2>
-        <p class="lede">Обирай будь-який блок або рухайся послідовно стрілками внизу.</p>
-        <div class="agenda-list" id="agendaList"></div>
-      </div>
-    </section>
-
-    <!-- 2: HOOK: MEME & CHAT TRIGGER -->
-    <section class="slide">
-      <div class="slide-inner">
-        <span class="tag tag-coral">POV: тебе тригернуло</span>
-        <h2 class="slide-title">Коли серце пропускає удар за 0.5 секунди</h2>
-        <p class="lede">Ти заходиш у класну бесіду, а там свіже повідомлення:</p>
-        
-        <div class="chat-box">
-          <div class="chat-header">
-            <span>💬 Класний чат (28 учасників)</span>
-            <span>Сьогодні, 16:42</span>
+        <div class="hero-grid">
+          <div>
+            <span class="tag tag-yellow">Модуль «Конфлікти» · Урок 2</span>
+            <h1 class="big">Що я відчуваю в конфлікті: що під водою? 🧊</h1>
+            <p class="lede" style="margin-bottom:28px;">Чому крик, сарказм чи холодне «та мені пофіг» — це лише захисна броня, і як вчасно помітити свій внутрішній вибух.</p>
+            <button class="btn btn-yellow" onclick="goToSlide(1)">До плану заняття →</button>
           </div>
-          <div class="chat-msg">
-            <b>@Влад:</b> Народ, гляньте шо воно відповіло біля дошки 😂😂😂 чисто крінж року
-          </div>
-          <div class="chat-reactions">
-            <span>🤡 8</span>
-            <span>💀 12</span>
-            <span>🔥 4</span>
+          <div>
+            <div class="gif-frame">
+              <iframe src="https://giphy.com/embed/HUkOv6BNWc1HO" title="reaction gif"></iframe>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="card" style="max-width:580px;">
-          <p style="font-weight:600; margin-bottom:8px;">Який перший біологічний імпульс виникає в тілі?</p>
-          <p style="color:var(--muted); font-size:0.95rem;">Написати наїзд капслоком? Видалити телеграм? Удати, що «мені взагалі начхати»?</p>
+    <!-- 1: AGENDA (CLEAN 5 BLOCKS) -->
+    <section class="slide">
+      <div class="slide-inner">
+        <span class="tag tag-yellow">Маршрут зустрічі</span>
+        <h2 class="slide-title">Що на нас чекає сьогодні</h2>
+        <p class="lede" style="margin-bottom:24px;">П'ять ключових зупинок 60-хвилинного воркшопу:</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+          <div class="card" onclick="goToSlide(2)" style="cursor:pointer; background:var(--yellow-soft);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🔥</div>
+            <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">1. Точки кипіння</div>
+            <p style="font-size:0.85rem; color:var(--muted);">Розбір підліткових тригерів у чатах та іграх.</p>
+          </div>
+          <div class="card" onclick="goToSlide(6)" style="cursor:pointer; background:var(--coral-soft);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🚨</div>
+            <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">2. Аварія мозку</div>
+            <p style="font-size:0.85rem; color:var(--muted);">Амигдала, викид адреналіну й тріада захисту.</p>
+          </div>
+          <div class="card" onclick="goToSlide(9)" style="cursor:pointer; background:var(--teal-soft);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🧊</div>
+            <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">3. Айсберг емоцій</div>
+            <p style="font-size:0.85rem; color:var(--muted);">Які вразливі почуття ховаються під водою.</p>
+          </div>
+          <div class="card" onclick="goToSlide(13)" style="cursor:pointer; background:var(--accent-soft);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">👥</div>
+            <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">4. Робота в парах</div>
+            <p style="font-size:0.85rem; color:var(--muted);">Практика діалогу без броні в Breakout Rooms.</p>
+          </div>
+          <div class="card" onclick="goToSlide(17)" style="cursor:pointer;">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🛑</div>
+            <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">5. Цифровий стоп</div>
+            <p style="font-size:0.85rem; color:var(--muted);">Правило 10 секунд і власний протокол.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2: POV CHAT TRIGGER -->
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="hero-grid">
+          <div>
+            <span class="tag tag-coral">POV: тебе тригернуло</span>
+            <h2 class="slide-title">Коли пульс підскакує за пів секунди</h2>
+            <p class="lede">Ти заходиш у класну бесіду, а там свіже закріплене повідомлення. Що першим спалахує всередині?</p>
+
+            <div class="chip-grid">
+              <div class="pick-chip" onclick="this.classList.toggle('is-picked')">
+                <span>🤬</span> Написати наїзд капслоком у відповідь
+              </div>
+              <div class="pick-chip" onclick="this.classList.toggle('is-picked')">
+                <span>🚪</span> Видалити телеграм або заблокувати автора
+              </div>
+              <div class="pick-chip" onclick="this.classList.toggle('is-picked')">
+                <span>🧊</span> Вдати, що мені абсолютно пофіг
+              </div>
+              <div class="pick-chip" onclick="this.classList.toggle('is-picked')">
+                <span>💀</span> Ступор: читаєш і не знаєш, що сказати
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="messenger-card">
+              <div class="msg-bar">
+                <span>💬 7-Б клас (26 учасників)</span>
+                <span>Сьогодні, 15:38</span>
+              </div>
+              <div class="msg-body">
+                <b>@Макс:</b> Народ, чекніть скрин, що воно тільки-но висрало в коментах 😂 чисто крінж
+              </div>
+              <div class="msg-reactions">
+                <button class="msg-react-btn" onclick="this.classList.toggle('reacted')">🤡 14</button>
+                <button class="msg-react-btn" onclick="this.classList.toggle('reacted')">💀 19</button>
+                <button class="msg-react-btn" onclick="this.classList.toggle('reacted')">🔥 3</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -191,35 +245,35 @@
     <!-- 3: BAROMETER OF PRESSURE -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-amber">Шкала тиску</span>
-        <h2 class="slide-title">Барометр соціального напруження</h2>
-        <p class="lede">Це не дитячий градусник образи. Це рівень аварійного перегріву твоєї нервової системи.</p>
-        
-        <div class="barometer-grid">
-          <div class="baro-card">
-            <div class="baro-num">1</div>
-            <div class="baro-title">Повний Дзен</div>
-            <div class="baro-desc">Нуль реакції. Ситуація тебе не чіпляє взагалі.</div>
+        <span class="tag tag-yellow">Шкала тиску</span>
+        <h2 class="slide-title">Барометр соціального закипання</h2>
+        <p class="lede">Це не дитяча шкала образи, а датчик аварійного перегріву нервової системи:</p>
+
+        <div class="baro-grid">
+          <div class="baro-item" onclick="selectBaro(this)">
+            <div class="baro-lvl">1</div>
+            <div class="baro-name">Дзен</div>
+            <div class="baro-sub">Нуль реакції. Ситуація взагалі не чіпляє.</div>
           </div>
-          <div class="baro-card">
-            <div class="baro-num">2</div>
-            <div class="baro-title">Укол крінжу</div>
-            <div class="baro-desc">Неприємно, трохи зачепило, але контроль повний.</div>
+          <div class="baro-item" onclick="selectBaro(this)">
+            <div class="baro-lvl">2</div>
+            <div class="baro-name">Укол</div>
+            <div class="baro-sub">Неприємно, але контроль думок повний.</div>
           </div>
-          <div class="baro-card">
-            <div class="baro-num">3</div>
-            <div class="baro-title">Підпал</div>
-            <div class="baro-desc">Пульс 110, щоки гарячі, хочеться різко відрізати.</div>
+          <div class="baro-item" onclick="selectBaro(this)">
+            <div class="baro-lvl">3</div>
+            <div class="baro-name">Підпал</div>
+            <div class="baro-sub">Пульс 120, щоки горять, хочеться різко відрізати.</div>
           </div>
-          <div class="baro-card">
-            <div class="baro-num">4</div>
-            <div class="baro-title">Режим войсів</div>
-            <div class="baro-desc">Пальці самі пишуть капслоком. Важко стриматись.</div>
+          <div class="baro-item" onclick="selectBaro(this)">
+            <div class="baro-lvl">4</div>
+            <div class="baro-name">Войси</div>
+            <div class="baro-sub">Пальці самі пишуть капслоком. Важко стриматись.</div>
           </div>
-          <div class="baro-card">
-            <div class="baro-num">5</div>
-            <div class="baro-title">Замикання</div>
-            <div class="baro-desc">Глухий ступор або вибух, коли не пам'ятаєш слів.</div>
+          <div class="baro-item" onclick="selectBaro(this)">
+            <div class="baro-lvl">5</div>
+            <div class="baro-name">Замикання</div>
+            <div class="baro-sub">Вибух люті або глухий ступор без слів.</div>
           </div>
         </div>
       </div>
@@ -230,43 +284,43 @@
       <div class="slide-inner">
         <span class="tag tag-coral">Калібрування</span>
         <h2 class="slide-title">На скільки злетить твій барометр?</h2>
-        <p class="lede">Оцінюй подумки або показуй на пальцях рівень підпалу (1–5) для кожної ситуації.</p>
+        <p class="lede">Клікай стрілки та покажи на пальцях свій рівень (1–5):</p>
 
-        <div class="carousel" data-carousel>
-          <div class="carousel-track">
-            <div class="carousel-card is-active">
-              <div class="card" style="border-left: 6px solid var(--coral);">
-                <span class="tag tag-coral">Ситуація 1 · Discord / Катка</span>
-                <p style="font-size:1.1rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Тебе без пояснень зам'ютили або кікнули з войсу посеред важливого раунду. Усі інші сміються, що це «просто рофл».</p>
-                <p style="color:var(--muted); font-size:0.95rem;">Рівень підпалу від 1 до 5?</p>
+        <div class="car-box" data-carousel>
+          <div class="car-track">
+            <div class="car-item is-active">
+              <div class="card card-pop" style="border-left: 8px solid var(--coral);">
+                <span class="tag tag-coral">Ситуація 1 · Discord</span>
+                <p style="font-size:1.25rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Тебе без попередження зам'ютили або кікнули з войсу під час важливого раунду, а потім сміються: «Та це рофл, чого ти ниєш!»</p>
+                <p style="color:var(--muted); font-weight:700;">Рівень підпалу за шкалою від 1 до 5?</p>
               </div>
             </div>
-            <div class="carousel-card">
-              <div class="card" style="border-left: 6px solid var(--accent);">
+            <div class="car-item">
+              <div class="card card-pop" style="border-left: 8px solid var(--accent);">
                 <span class="tag tag-accent">Ситуація 2 · Приватність</span>
-                <p style="font-size:1.1rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Хтось зробив скриншот твого особистого повідомлення з таємницею і перекинув у спільну бесіду.</p>
-                <p style="color:var(--muted); font-size:0.95rem;">Рівень підпалу від 1 до 5?</p>
+                <p style="font-size:1.25rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Хтось зробив скриншот твого особистого листування з таємницею і переслав у загальну бесіду без дозволу.</p>
+                <p style="color:var(--muted); font-weight:700;">Рівень підпалу за шкалою від 1 до 5?</p>
               </div>
             </div>
-            <div class="carousel-card">
-              <div class="card" style="border-left: 6px solid var(--amber);">
-                <span class="tag tag-amber">Ситуація 3 · Публічний шейм</span>
-                <p style="font-size:1.1rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Вчитель перед усім класом коментує твою роботу: «Ну від тебе я більшого й не чекав(-ла)». Усі повертаються на тебе.</p>
-                <p style="color:var(--muted); font-size:0.95rem;">Рівень підпалу від 1 до 5?</p>
+            <div class="car-item">
+              <div class="card card-pop" style="border-left: 8px solid var(--yellow);">
+                <span class="tag tag-yellow">Ситуація 3 · Публічний шейм</span>
+                <p style="font-size:1.25rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Вчитель перед усім класом коментує твою роботу: «Ну від тебе я більшого й не чекав(-ла)». Усі однокласники повертаються на тебе.</p>
+                <p style="color:var(--muted); font-weight:700;">Рівень підпалу за шкалою від 1 до 5?</p>
               </div>
             </div>
-            <div class="carousel-card">
-              <div class="card" style="border-left: 6px solid var(--teal);">
+            <div class="car-item">
+              <div class="card card-pop" style="border-left: 8px solid var(--teal);">
                 <span class="tag tag-teal">Ситуація 4 · Газлайтинг</span>
-                <p style="font-size:1.1rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Тобі зробили образливе зауваження, а коли ти обурюєшся, відповідають: «Ой, та ти шо, образився(-лась)? Жартів взагалі не шариш?»</p>
-                <p style="color:var(--muted); font-size:0.95rem;">Рівень підпалу від 1 до 5?</p>
+                <p style="font-size:1.25rem; font-weight:600; line-height:1.6; margin-bottom:12px;">Тобі привселюдно зробили образливе зауваження, а коли ти обурюєшся, відповідають: «Ой, ти шо, образився(-лась)? Жартів взагалі не розумієш?»</p>
+                <p style="color:var(--muted); font-weight:700;">Рівень підпалу за шкалою від 1 до 5?</p>
               </div>
             </div>
           </div>
-          <div class="carousel-controls">
-            <button class="car-btn" data-car-prev>←</button>
-            <span class="carousel-counter" data-car-counter>1 / 4</span>
-            <button class="car-btn" data-car-next>→</button>
+          <div class="car-nav">
+            <button class="car-arrow" data-car-prev>←</button>
+            <span class="nav-status" data-car-counter>1 / 4</span>
+            <button class="car-arrow" data-car-next>→</button>
           </div>
         </div>
       </div>
@@ -275,30 +329,39 @@
     <!-- 5: INSIGHT: BEHAVIOR != FEELING -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Головна пастка</span>
-        <h2 class="slide-title">Поведінка ≠ Те, що реально відчуваєш</h2>
-        <div class="card" style="margin-top:20px; line-height:1.7;">
-          <p style="font-size:1.15rem; font-weight:600; margin-bottom:14px;">Коли підліток пише у відповідь холодне: <i>«Та роби шо хочеш. Мені пофіг.»</i> — чи справді йому байдуже?</p>
-          <p style="color:var(--muted); font-size:1rem;">Майже ніколи. Показне «пофіг» — це найміцніший шолом, який ми надягаємо, коли удар прийшовся точно в серце. Ми маскуємо біль агресією або сарказмом, аби ніхто не побачив, що нас насправді зачепило.</p>
+        <div class="hero-grid">
+          <div>
+            <span class="tag tag-yellow">Головна пастка</span>
+            <h2 class="slide-title">Поведінка ≠ Те, що насправді болить</h2>
+            <p class="lede" style="margin-bottom:16px;">Коли підліток гарчить у чаті або кидає: <i>«Та роби шо хочеш. Мені пофіг»</i> — чи справді йому байдуже?</p>
+            <p style="font-size:1.05rem; line-height:1.6;">Чим гучніше людина демонструє байдужість або сарказм, тим міцнішу броню вона будує навколо власної вразливості.</p>
+          </div>
+          <div>
+            <div class="card card-pop" style="background:var(--yellow-soft); border-color:var(--line);">
+              <div style="font-size:2rem; margin-bottom:8px;">🎭</div>
+              <h3 style="font-weight:700; font-size:1.2rem; margin-bottom:8px;">Маска захисту</h3>
+              <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Агресія та токсичність — це не бажання зробити комусь боляче. Це спроба не показати, що тобі щойно зробили дуже боляче.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 6: BIOLOGY: AMYGDALA VS CORTEX -->
+    <!-- 6: AMYGDALA VS CORTEX -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-coral">Нейробіологія</span>
-        <h2 class="slide-title">Хто перехоплює кермо в мозку?</h2>
-        <div class="iceberg-container">
-          <div class="card" style="border-color:var(--coral);">
-            <div style="font-size:2rem; margin-bottom:8px;">🚨</div>
-            <h3 style="font-size:1.2rem; font-weight:700; color:var(--coral); margin-bottom:8px;">Амигдала (Тривожна кнопка)</h3>
-            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Древня частина мозку. Вона не відрізняє образу в чаті від шаблезубого тигра. Для неї соціальне приниження = загроза життю. Вона миттєво впорскує адреналін і вимагає атаки або втечі.</p>
+        <h2 class="slide-title">Хто перехоплює керування в голові?</h2>
+        <div class="hero-grid" style="align-items:stretch; margin-top:20px;">
+          <div class="card" style="border-top:8px solid var(--coral);">
+            <div style="font-size:2.4rem; margin-bottom:8px;">🚨</div>
+            <h3 style="font-size:1.3rem; font-weight:700; color:var(--coral); margin-bottom:10px;">Амигдала (Тривожна кнопка)</h3>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Древня частина мозку. Вона не відрізняє образу в чаті від тигра в печері. Для неї публічний шейм = смертельна загроза. Вона миттєво вирубає логіку й вимагає негайного удару або втечі.</p>
           </div>
-          <div class="card" style="border-color:var(--teal);">
-            <div style="font-size:2rem; margin-bottom:8px;">🧠</div>
-            <h3 style="font-size:1.2rem; font-weight:700; color:var(--teal); margin-bottom:8px;">Префронтальна кора (Суперкомп'ютер)</h3>
-            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Відповідає за логіку, дотепні аргументи та далекоглядність. Проблема в тому, що коли амигдала кипить, кора тимчасово <b>знеструмлюється</b>. Логіка вмикається лише тоді, коли спадає хвиля адреналіну.</p>
+          <div class="card" style="border-top:8px solid var(--teal);">
+            <div style="font-size:2.4rem; margin-bottom:8px;">🧠</div>
+            <h3 style="font-size:1.3rem; font-weight:700; color:var(--teal); margin-bottom:10px;">Префронтальна кора (Логіка)</h3>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Відповідає за дотепні аргументи, самоконтроль і наслідки. Проблема: під час спалаху амигдали кора буквально знеструмлюється. Розумні думки повертаються лише тоді, коли адреналін спаде.</p>
           </div>
         </div>
       </div>
@@ -307,20 +370,22 @@
     <!-- 7: TRIAD 2.0 (FIGHT, FLIGHT, FREEZE) -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Твій біологічний автопілот</span>
-        <h2 class="slide-title">Три реакції на загрозу в сучасному світі</h2>
-        <div class="barometer-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:20px;">
-          <div class="card" style="border-top:5px solid var(--coral);">
-            <div style="font-size:1.8rem; margin-bottom:6px;">🥊 Бий (Fight)</div>
-            <p style="font-size:0.9rem; line-height:1.5; color:var(--muted);">Миттєвий контрнаступ: капслок, сарказм, бажання принизити у відповідь, токсичні стікери.</p>
+        <span class="tag tag-yellow">Твій автопілот</span>
+        <h2 class="slide-title">Три реакції на загрозу (Обери свою)</h2>
+        <p class="lede">Клікни на ту, яка вмикається в тебе найчастіше:</p>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:20px;">
+          <div class="card" onclick="this.classList.toggle('card-pop')" style="cursor:pointer; border-top:8px solid var(--coral);">
+            <div style="font-size:2rem; margin-bottom:8px;">🥊 Бий (Fight)</div>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Атака: капслок, сарказм, токсичні підколки, бажання знищити співрозмовника словами.</p>
           </div>
-          <div class="card" style="border-top:5px solid var(--amber);">
-            <div style="font-size:1.8rem; margin-bottom:6px;">🏃 Біжи (Flight)</div>
-            <p style="font-size:0.9rem; line-height:1.5; color:var(--muted);">Ливнути з сервера/чату, кинути в ЧС, гостинг (тижневий ігнор), удавання, що нічого не сталось.</p>
+          <div class="card" onclick="this.classList.toggle('card-pop')" style="cursor:pointer; border-top:8px solid var(--yellow);">
+            <div style="font-size:2rem; margin-bottom:8px;">🏃 Біжи (Flight)</div>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Втеча: ливнути з чату, кинути в ЧС, гостинг на тиждень, удавати, що нічого не було.</p>
           </div>
-          <div class="card" style="border-top:5px solid var(--cyan);">
-            <div style="font-size:1.8rem; margin-bottom:6px;">🧊 Замри (Freeze)</div>
-            <p style="font-size:0.9rem; line-height:1.5; color:var(--muted);">Шок і ступор. Посміхаєшся, коли ображають. А геніальні аргументи приходять у голову о 2-й ночі в ліжку.</p>
+          <div class="card" onclick="this.classList.toggle('card-pop')" style="cursor:pointer; border-top:8px solid var(--teal);">
+            <div style="font-size:2rem; margin-bottom:8px;">🧊 Замри (Freeze)</div>
+            <p style="font-size:0.95rem; line-height:1.6; color:var(--muted);">Ступор: усміхаєшся, коли тебе ображають. А геніальні відповіді приходять о 2-й ночі в душі.</p>
           </div>
         </div>
       </div>
@@ -329,17 +394,17 @@
     <!-- 8: BODY SIGNALS SCANNER -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-amber">Сканер тіла</span>
-        <h2 class="slide-title">Де спалахує твій аварійний датчик?</h2>
-        <p class="lede">Тіло вмикає датчик за 2 секунди до того, як ти встиг зметикувати. Який твій головний маркер?</p>
-        
-        <div class="agenda-list" style="margin-top:20px;">
-          <div class="card" style="padding:14px 18px; font-weight:600;">🔥 Палаючі щоки або вуха</div>
-          <div class="card" style="padding:14px 18px; font-weight:600;">😬 Стиснуті зуби й щелепа</div>
-          <div class="card" style="padding:14px 18px; font-weight:600;">🫨 Тремтіння в пальцях рук</div>
-          <div class="card" style="padding:14px 18px; font-weight:600;">🫀 Шалене серцебиття в скронях</div>
-          <div class="card" style="padding:14px 18px; font-weight:600;">😶 Клубок у горлі (перехоплює голос)</div>
-          <div class="card" style="padding:14px 18px; font-weight:600;">🧊 Холодні долоні та спазм у животі</div>
+        <span class="tag tag-coral">Сканер тіла</span>
+        <h2 class="slide-title">Де живе твій перший сигнал тривоги?</h2>
+        <p class="lede">Тіло вмикає датчик за 2 секунди до реакції. Клікни на свої головні симптоми:</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px; margin-top:20px;">
+          <div class="pick-chip" onclick="this.classList.toggle('is-picked')">🔥 Вогонь у щоках або палаючі вуха</div>
+          <div class="pick-chip" onclick="this.classList.toggle('is-picked')">😬 Стиснуті щелепи й зуби</div>
+          <div class="pick-chip" onclick="this.classList.toggle('is-picked')">🫨 Тремтіння в пальцях рук</div>
+          <div class="pick-chip" onclick="this.classList.toggle('is-picked')">🫀 Пульс, що стукає в скронях</div>
+          <div class="pick-chip" onclick="this.classList.toggle('is-picked')">😶 Клубок у горлі (перехоплює голос)</div>
+          <div class="pick-chip" onclick="this.classList.toggle('is-picked')">🧊 Крижані долоні та спазм у животі</div>
         </div>
       </div>
     </section>
@@ -347,30 +412,26 @@
     <!-- 9: ICEBERG MODEL -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Ключовий концепт</span>
+        <span class="tag tag-teal">Ключовий інструмент</span>
         <h2 class="slide-title">Айсберг емоцій: що насправді під водою?</h2>
-        <div class="iceberg-container">
-          <div class="iceberg-box iceberg-top">
-            <div class="iceberg-h" style="color:var(--coral);">
-              <span>🏔️ Над водою (10%) — Броня</span>
-            </div>
-            <p style="font-weight:600; font-size:1.05rem; margin-bottom:8px;">Те, що бачать усі навколо:</p>
-            <ul style="margin-left:20px; font-size:0.95rem; line-height:1.6; color:var(--ink);">
+        <div class="hero-grid" style="align-items:stretch; margin-top:20px;">
+          <div class="card" style="background:var(--coral-soft); border-color:var(--coral);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🏔️ Верхівка (10% Броні)</div>
+            <p style="font-weight:700; margin-bottom:8px;">Те, що бачать усі навколо:</p>
+            <ul style="margin-left:20px; line-height:1.7; font-size:0.95rem;">
               <li>Злість, агресія, підвищений тон</li>
               <li>Сарказм і токсичні підколки</li>
-              <li>Холодна відстороненість («Мені все одно»)</li>
+              <li>Холодна відстороненість («мені байдуже»)</li>
             </ul>
           </div>
-          <div class="iceberg-box iceberg-bottom">
-            <div class="iceberg-h" style="color:var(--teal);">
-              <span>🌊 Під водою (90%) — Справжнє почуття</span>
-            </div>
-            <p style="font-weight:600; font-size:1.05rem; margin-bottom:8px;">Те, що боляче показати:</p>
-            <ul style="margin-left:20px; font-size:0.95rem; line-height:1.6; color:var(--ink);">
-              <li><b>Сором:</b> «Я виглядаю невдахою перед усіма»</li>
-              <li><b>Страх відторгнення:</b> «Мене виженуть із компанії»</li>
-              <li><b>Безсилля:</b> «Я нічого не можу змінити»</li>
-              <li><b>Образа:</b> «Зі мною вчинили несправедливо»</li>
+          <div class="card" style="background:var(--teal-soft); border-color:var(--teal);">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🌊 Під водою (90% Вразливості)</div>
+            <p style="font-weight:700; margin-bottom:8px;">Те, що боляче показати іншим:</p>
+            <ul style="margin-left:20px; line-height:1.7; font-size:0.95rem;">
+              <li><b>Сором:</b> страх здатися невдахою перед усіма</li>
+              <li><b>Відторгнення:</b> страх бути вигнаним із компанії</li>
+              <li><b>Безсилля:</b> коли не можеш нічого змінити</li>
+              <li><b>Образа:</b> коли відчуваєш глибоку несправедливість</li>
             </ul>
           </div>
         </div>
@@ -381,19 +442,19 @@
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-teal">Тренажер 1 · Рентген айсберга</span>
-        <h2 class="slide-title">Заглянь під чужу броню</h2>
-        <div class="card" style="margin-top:16px;">
-          <p style="font-size:1.15rem; font-weight:600; margin-bottom:6px;">Ситуація:</p>
-          <p style="font-size:1.05rem; color:var(--muted); margin-bottom:16px;">Ден після програного раунду агресивно кричить на тіммейта: <i>«Ти взагалі грати не вмієш, видали гру і не ганьбися!»</i></p>
-          <p style="font-weight:700; font-size:0.95rem; color:var(--accent);">Що насправді ховається під водою в Дена?</p>
-          
-          <div class="quiz-grid">
-            <button class="quiz-btn" onclick="checkQuiz(this, false, 'Ні, це лише зовнішня дія, а не внутрішня причина.')">Він просто злий від природи</button>
-            <button class="quiz-btn" onclick="checkQuiz(this, true, 'Саме так! Страх поразки й сором за програш він скидає на іншого, щоб врятувати власну самооцінку.')">Страх поразки та сором здатися слабким</button>
-            <button class="quiz-btn" onclick="checkQuiz(this, false, 'Ні, це верхівка айсберга, а не його основа.')">Бажання навчити друга грати краще</button>
-            <button class="quiz-btn" onclick="checkQuiz(this, false, 'Якби було все одно, він би промовчав.')">Йому просто байдуже на гру</button>
+        <h2 class="slide-title">Що ховається за агресивним випадом?</h2>
+        <div class="card card-pop" style="margin-top:16px;">
+          <p style="font-size:1.2rem; font-weight:600; margin-bottom:6px;">Ситуація:</p>
+          <p style="font-size:1.05rem; color:var(--muted); margin-bottom:16px;">Ден після програного раунду агресивно кричить на тіммейта: <i>«Ти взагалі грати не вмієш, видали гру й не ганьбися перед нормальними людьми!»</i></p>
+          <p style="font-weight:700; font-size:1rem; color:var(--accent);">Яка справжня емоція під водою в Дена?</p>
+
+          <div class="quiz-list">
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Це лише зовнішній напад, а не справжня емоція.')">Він просто агресивний від природи</button>
+            <button class="quiz-choice" onclick="runQuiz(this, true, 'Саме так! Страх поразки та сором здатися слабким він скидає на іншого, рятуючи свій авторитет.')">Страх поразки та сором здатися слабким</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Ні, це лише виправдання для наїзду.')">Бажання навчити друга грати краще</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Якби йому було байдуже, він би просто промовчав.')">Йому все одно на гру</button>
           </div>
-          <div class="feedback-box" id="fb1"></div>
+          <div class="quiz-feedback" id="qfb1"></div>
         </div>
       </div>
     </section>
@@ -402,19 +463,19 @@
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-teal">Тренажер 1 · Рентген айсберга</span>
-        <h2 class="slide-title">Заглянь під чужу броню</h2>
-        <div class="card" style="margin-top:16px;">
-          <p style="font-size:1.15rem; font-weight:600; margin-bottom:6px;">Ситуація:</p>
-          <p style="font-size:1.05rem; color:var(--muted); margin-bottom:16px;">Катя дізнається, що подруги пішли в кав'ярню без неї. Вона пише в сторіз: <i>«Ясно, деяким людям просто невідомо, що таке вірність 🤮»</i>, а подругам відповідає сухим ігнором.</p>
-          <p style="font-weight:700; font-size:0.95rem; color:var(--accent);">Яка справжня вразливість під водою?</p>
-          
-          <div class="quiz-grid">
-            <button class="quiz-btn" onclick="checkQuiz(this, false, 'Ні, агресія в сторіз кричить про те, як сильно це її зачепило.')">Їй просто не хотілося кави</button>
-            <button class="quiz-btn" onclick="checkQuiz(this, false, 'Це дія броні, а не первинне почуття.')">Вона хоче помститися і зіпсувати їм вечір</button>
-            <button class="quiz-btn" onclick="checkQuiz(this, true, 'Влучно! Страх виявитися зайвою та непотрібною — один із найболючіших страхів у підлітковому віці.')">Біль відкинутості та страх втратити дружбу</button>
-            <button class="quiz-btn" onclick="checkQuiz(this, false, 'Образа є, але головне джерело глибше — страх непотрібності.')">Вона злиться лише через витрачений час</button>
+        <h2 class="slide-title">Що ховається за демонстративним ігнором?</h2>
+        <div class="card card-pop" style="margin-top:16px;">
+          <p style="font-size:1.2rem; font-weight:600; margin-bottom:6px;">Ситуація:</p>
+          <p style="font-size:1.05rem; color:var(--muted); margin-bottom:16px;">Катя дізнається, що подруги пішли гуляти без неї. Вона викладає в сторіз: <i>«Ясно, деяким людям взагалі невідомо, що таке вірність 🤮»</i>, а в особистих повідомленнях не відповідає нікому.</p>
+          <p style="font-weight:700; font-size:1rem; color:var(--accent);">Яка вразливість під водою в Каті?</p>
+
+          <div class="quiz-list">
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Образа в сторіз кричить якраз про те, як сильно її зачепило.')">Їй просто не хотілося йти з ними</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Це дія броні, а не первинне відчуття.')">Вона хоче помститися всім</button>
+            <button class="quiz-choice" onclick="runQuiz(this, true, 'Влучно! Страх виявитися зайвою та непотрібною — один із найболючіших страхів.')">Біль відкинутості та страх втратити дружбу</button>
+            <button class="quiz-choice" onclick="runQuiz(this, false, 'Ні, причина набагато глибша, ніж просто графік.')">Вона злиться лише через втрачений вечір</button>
           </div>
-          <div class="feedback-box" id="fb2"></div>
+          <div class="quiz-feedback" id="qfb2"></div>
         </div>
       </div>
     </section>
@@ -422,20 +483,18 @@
     <!-- 12: DECODER OF MASKS -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Тренажер 2 · Декодер</span>
-        <h2 class="slide-title">Як зняти маску й не втратити обличчя</h2>
-        <div class="card" style="margin-top:20px;">
-          <p style="font-size:1.05rem; line-height:1.6; margin-bottom:16px;"><b>Задача:</b> перекласти токсичну захисну фразу на зрілу позицію, яка ставить межі, але не починає війну.</p>
-          
-          <div style="background:var(--bg); border-radius:12px; padding:14px 18px; margin-bottom:14px; border-left:4px solid var(--coral);">
-            <div style="font-size:0.8rem; font-weight:700; color:var(--coral);">МАСКА:</div>
-            <div style="font-size:1.05rem; font-weight:600;">«Та роби як знаєш, мені абсолютно начхати на твою думку!»</div>
-          </div>
+        <span class="tag tag-yellow">Тренажер 2 · Декодер</span>
+        <h2 class="slide-title">Як зняти маску й не втратити статус</h2>
+        <p class="lede" style="margin-bottom:20px;">Перекладаємо токсичну броню на тверду дорослу позицію:</p>
 
-          <div style="background:var(--bg); border-radius:12px; padding:14px 18px; border-left:4px solid var(--teal);">
-            <div style="font-size:0.8rem; font-weight:700; color:var(--teal);">ПЕРЕКЛАД СИЛИ:</div>
-            <div style="font-size:1.05rem; font-weight:600;">«Я бачу цю ситуацію зовсім інакше. Мені неприємно, що ми не чуємо один одного, тому давай візьмемо паузу.»</div>
-          </div>
+        <div class="card card-pop" style="margin-bottom:14px; background:var(--coral-soft);">
+          <div style="font-size:0.8rem; font-weight:700; color:var(--coral); text-transform:uppercase;">Маска токсичності:</div>
+          <div style="font-size:1.15rem; font-weight:700;">«Та роби як знаєш, мені абсолютно начхати на твою думку!»</div>
+        </div>
+
+        <div class="card card-pop" style="background:var(--teal-soft);">
+          <div style="font-size:0.8rem; font-weight:700; color:var(--teal); text-transform:uppercase;">Переклад дорослої сили:</div>
+          <div style="font-size:1.15rem; font-weight:700;">«Я бачу цю ситуацію інакше. Мені неприємно сперечатися на емоціях, тому давай візьмемо паузу й поговоримо пізніше.»</div>
         </div>
       </div>
     </section>
@@ -445,46 +504,54 @@
       <div class="slide-inner">
         <span class="tag tag-teal">Перезавантаження</span>
         <h2 class="slide-title">Протокол 5-4-3-2-1: збити адреналіновий шторм</h2>
-        <p class="lede">Коли амигдала кипить, марно переконувати себе «заспокойся». Потрібно примусово повернути кров у кору мозку через сенсорні канали прямо зараз:</p>
-        
-        <div class="grounding-row">
-          <div class="ground-chip">
-            <div class="ground-n">5</div>
-            <div class="ground-txt">Знайди очима 5 однакових кольорів</div>
+        <p class="lede" style="margin-bottom:24px;">Коли амигдала кипить, марно казати собі «заспокойся». Повертаємо кров у логічну кору через сенсорні канали:</p>
+
+        <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:12px;">
+          <div class="card" style="text-align:center; padding:18px 12px; background:var(--yellow-soft);">
+            <div style="font-size:2rem; font-weight:700; color:var(--accent);">5</div>
+            <div style="font-size:0.9rem; font-weight:700;">Знайди 5 однакових кольорів</div>
           </div>
-          <div class="ground-chip">
-            <div class="ground-n">4</div>
-            <div class="ground-txt">Відчуй 4 точки опори тіла</div>
+          <div class="card" style="text-align:center; padding:18px 12px; background:var(--coral-soft);">
+            <div style="font-size:2rem; font-weight:700; color:var(--coral);">4</div>
+            <div style="font-size:0.9rem; font-weight:700;">Відчуй 4 точки опори тіла</div>
           </div>
-          <div class="ground-chip">
-            <div class="ground-n">3</div>
-            <div class="ground-txt">Почуй 3 різні фонові звуки</div>
+          <div class="card" style="text-align:center; padding:18px 12px; background:var(--teal-soft);">
+            <div style="font-size:2rem; font-weight:700; color:var(--teal);">3</div>
+            <div style="font-size:0.9rem; font-weight:700;">Почуй 3 різні фонові звуки</div>
           </div>
-          <div class="ground-chip">
-            <div class="ground-n">2</div>
-            <div class="ground-txt">Відчуй 2 фізичні запахи</div>
+          <div class="card" style="text-align:center; padding:18px 12px; background:var(--accent-soft);">
+            <div style="font-size:2rem; font-weight:700; color:var(--accent);">2</div>
+            <div style="font-size:0.9rem; font-weight:700;">Відчуй 2 фізичні запахи</div>
           </div>
-          <div class="ground-chip">
-            <div class="ground-n">1</div>
-            <div class="ground-txt">Видихни й розтисни щелепу</div>
+          <div class="card" style="text-align:center; padding:18px 12px;">
+            <div style="font-size:2rem; font-weight:700;">1</div>
+            <div style="font-size:0.9rem; font-weight:700;">Видихни й розтисни щелепу</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 14: PAIR WORK BRIEF -->
+    <!-- 14: PAIR BRIEF -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Лабораторія в парах · 7 хв</span>
-        <h2 class="slide-title">Практика без броні (Breakout Rooms)</h2>
-        <div class="card" style="margin-top:20px; line-height:1.7;">
-          <p style="font-size:1.1rem; font-weight:600; margin-bottom:10px;">Правила безпечної кімнати:</p>
-          <ul style="margin-left:22px; font-size:0.95rem; color:var(--ink); margin-bottom:14px;">
-            <li>У кімнаті вас двоє. Таймінг — по 3 хвилини на кожного.</li>
-            <li>Один озвучує провокацію із картки.</li>
-            <li>Другий має <b>назвати підводну частину свого айсберга</b> замість захисного нападу чи сарказму.</li>
-          </ul>
-          <p style="color:var(--muted); font-size:0.9rem;"><i>Тут ніхто не оцінює. Мета — хоча б один раз ризикнути сказати правду про вразливість.</i></p>
+        <div class="hero-grid">
+          <div>
+            <span class="tag tag-accent">Лабораторія в парах · 7 хв</span>
+            <h2 class="slide-title">Практика без броні (Breakout Rooms)</h2>
+            <div class="card card-pop" style="margin-top:16px;">
+              <ul style="margin-left:20px; line-height:1.7; font-size:1rem;">
+                <li>У кімнаті вас двоє. Рівно по 3 хвилини на кожного.</li>
+                <li>Один учасник озвучує провокацію із кейсу.</li>
+                <li>Другий пробує <b>назвати підводну частину айсберга</b> замість контрнападу.</li>
+              </ul>
+              <p style="margin-top:12px; color:var(--muted); font-size:0.9rem; font-style:italic;">Тут немає оцінок. Мета — один раз спробувати сказати про почуття прямо.</p>
+            </div>
+          </div>
+          <div>
+            <div class="gif-frame">
+              <iframe src="https://giphy.com/embed/l0HlBO7eyXzSZkJri" title="talking gif"></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -494,18 +561,18 @@
       <div class="slide-inner">
         <span class="tag tag-coral">Кейси для кімнат</span>
         <h2 class="slide-title">Оберіть один сценарій на пару</h2>
-        <div class="agenda-list" style="margin-top:20px;">
-          <div class="card" style="border-left:5px solid var(--coral);">
-            <div style="font-weight:700; margin-bottom:4px;">Кейс А · Злив секрету</div>
-            <p style="font-size:0.95rem; color:var(--muted);">Друг розповів твою таємницю спільній компанії заради смішного жарту. Замість крику або мовчанки: як назвати біль зради?</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:20px;">
+          <div class="card" style="border-top:8px solid var(--coral);">
+            <div style="font-weight:700; font-size:1.1rem; margin-bottom:8px;">Кейс А · Злив секрету</div>
+            <p style="font-size:0.9rem; color:var(--muted); line-height:1.5;">Друг розповів твій секрет заради жарту в компанії. Замість крику: як сказати про біль зради?</p>
           </div>
-          <div class="card" style="border-left:5px solid var(--amber);">
-            <div style="font-weight:700; margin-bottom:4px;">Кейс Б · Підстава в проєкті</div>
-            <p style="font-size:0.95rem; color:var(--muted);">Однокласник перед учителем сказав, що робив усе сам, бо ти «нічого не тямиш». Як захистити свій вклад без істерики?</p>
+          <div class="card" style="border-top:8px solid var(--yellow);">
+            <div style="font-weight:700; font-size:1.1rem; margin-bottom:8px;">Кейс Б · Підстава</div>
+            <p style="font-size:0.9rem; color:var(--muted); line-height:1.5;">Однокласник перед учителем сказав, що робив усе сам, бо ти «нічого не тямиш». Як відповісти без істерики?</p>
           </div>
-          <div class="card" style="border-left:5px solid var(--teal);">
-            <div style="font-weight:700; margin-bottom:4px;">Кейс В · Ігнор у компанії</div>
-            <p style="font-size:0.95rem; color:var(--muted);">Тебе єдиного не покликали на день народження зі спільної тусовки. Як сказати про свою образу без токсичних сторіз?</p>
+          <div class="card" style="border-top:8px solid var(--teal);">
+            <div style="font-weight:700; font-size:1.1rem; margin-bottom:8px;">Кейс В · Ігнор тусовки</div>
+            <p style="font-size:0.9rem; color:var(--muted); line-height:1.5;">Тебе єдиного не покликали на день народження зі спільної компанії. Як з'ясувати це без токсичності в мережі?</p>
           </div>
         </div>
       </div>
@@ -514,17 +581,16 @@
     <!-- 16: DEBRIEF -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Дебрифінг</span>
+        <span class="tag tag-yellow">Дебрифінг</span>
         <h2 class="slide-title">Що насправді сталося в кімнатах?</h2>
-        <div class="card" style="margin-top:20px;">
-          <p style="font-size:1.15rem; font-weight:600; margin-bottom:14px;">Два чесні запитання до себе:</p>
-          <div style="margin-bottom:16px;">
-            <p style="font-weight:700; color:var(--accent);">1. Чому сказати «мені було прикро/соромно» відчувається набагато страшніше, ніж нагрубіянити у відповідь?</p>
-            <p style="color:var(--muted); font-size:0.95rem; margin-top:4px;">Бо агресія — це зброя, а відкрити почуття — це опустити щит перед іншою людиною.</p>
+        <div class="hero-grid" style="align-items:stretch; margin-top:20px;">
+          <div class="card card-pop" style="background:var(--yellow-soft);">
+            <h3 style="font-weight:700; font-size:1.15rem; margin-bottom:10px;">1. Чому сказати про вразливість страшніше, ніж напасти?</h3>
+            <p style="color:var(--muted); font-size:0.95rem; line-height:1.6;">Агресія — це зброя, вона створює ілюзію захисту. А сказати «мені було боляче» — це свідомо опустити щит перед іншою людиною.</p>
           </div>
-          <div>
-            <p style="font-weight:700; color:var(--teal);">2. Чи помітили ви, що конфлікт миттєво згасає, коли людина чесно каже про свою вразливість?</p>
-            <p style="color:var(--muted); font-size:0.95rem; margin-top:4px;">Коли немає щита, іншій стороні більше нема по чому бити мечем.</p>
+          <div class="card card-pop" style="background:var(--teal-soft);">
+            <h3 style="font-weight:700; font-size:1.15rem; margin-bottom:10px;">2. Що стається з конфліктом, коли лунає правда?</h3>
+            <p style="color:var(--muted); font-size:0.95rem; line-height:1.6;">Коли ти відмовляєшся від токсичного нападу, співрозмовнику просто немає по чому бити у відповідь — градус сварки падає миттєво.</p>
           </div>
         </div>
       </div>
@@ -535,74 +601,80 @@
       <div class="slide-inner">
         <span class="tag tag-coral">Інструмент захисту</span>
         <h2 class="slide-title">Цифровий стоп-кран на 10 секунд</h2>
-        <p class="lede">Три фільтри перед тим, як натиснути «Відправити» під час спалаху гніву:</p>
-        
-        <div class="agenda-list" style="margin-top:20px;">
-          <div class="card">
-            <div style="font-size:1.3rem; margin-bottom:4px;">⏳ 1. Прибери пальці від екрана</div>
-            <p style="font-size:0.9rem; color:var(--muted);">Дай амигдалі 10 секунд видихнути. Жодного войсу чи капслоку на піку.</p>
+        <p class="lede" style="margin-bottom:20px;">Три обов'язкові фільтри перед відправкою гнівного коментаря чи войсу:</p>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">
+          <div class="card card-pop">
+            <div style="font-size:1.8rem; margin-bottom:6px;">⏳ 1. Руки геть</div>
+            <p style="font-size:0.95rem; color:var(--muted); line-height:1.5;">Прибери пальці від екрана на 10 секунд. Дай амигдалі зробити видих.</p>
           </div>
-          <div class="card">
-            <div style="font-size:1.3rem; margin-bottom:4px;">🧊 2. Що під моїм айсбергом?</div>
-            <p style="font-size:0.9rem; color:var(--muted);">Що саме мене зараз так сильно зачепило: мені соромно, страшно чи прикро?</p>
+          <div class="card card-pop">
+            <div style="font-size:1.8rem; margin-bottom:6px;">🧊 2. Мій айсберг</div>
+            <p style="font-size:0.95rem; color:var(--muted); line-height:1.5;">Що мене зачепило: сором, образа, страх втратити друзів чи несправедливість?</p>
           </div>
-          <div class="card">
-            <div style="font-size:1.3rem; margin-bottom:4px;">🎯 3. Яка мета моєї відповіді?</div>
-            <p style="font-size:0.9rem; color:var(--muted);">Я хочу просто знищити людину у відповідь чи вирішити цю проблему?</p>
+          <div class="card card-pop">
+            <div style="font-size:1.8rem; margin-bottom:6px;">🎯 3. Моя мета</div>
+            <p style="font-size:0.95rem; color:var(--muted); line-height:1.5;">Я хочу знищити людину в чаті чи зберегти стосунки й вирішити проблему?</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 18: PERSONAL SAFETY PROTOCOL -->
+    <!-- 18: PERSONAL PROTOCOL -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-accent">Особистий артефакт</span>
-        <h2 class="slide-title">Мій протокол емоційної безпеки</h2>
-        <div class="card" style="margin-top:20px;">
-          <p style="font-size:1.05rem; line-height:1.6; margin-bottom:18px;">Зафіксуй для себе (напиши в чат або збережи подумки):</p>
-          
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <div style="background:var(--bg); padding:12px 16px; border-radius:12px; font-weight:600;">
-              🔴 Мій головний тригер підпалу — це коли: <span style="color:var(--accent); font-weight:400;">(знецінюють / висміюють / не вірять)</span>
+        <span class="tag tag-yellow">Особистий артефакт</span>
+        <h2 class="slide-title">Мій персональний протокол безпеки</h2>
+        <div class="card card-pop" style="margin-top:20px;">
+          <p style="font-size:1.1rem; font-weight:600; margin-bottom:16px;">Зафіксуй для себе свій персональний алгоритм:</p>
+          <div class="chip-grid">
+            <div class="pick-chip" style="background:var(--yellow-soft);">
+              🔴 <b>Мій головний тригер:</b> коли мене знецінюють, перебивають або не чують
             </div>
-            <div style="background:var(--bg); padding:12px 16px; border-radius:12px; font-weight:600;">
-              ⚡ Мій тілесний автопілот: <span style="color:var(--coral); font-weight:400;">(Бий / Біжи / Замри)</span>
+            <div class="pick-chip" style="background:var(--coral-soft);">
+              ⚡ <b>Мій автопілот:</b> частіше йду в напад (Бий) або в мовчанку (Біжи)
             </div>
-            <div style="background:var(--bg); padding:12px 16px; border-radius:12px; font-weight:600;">
-              🛑 Мій стоп-кран на наступний тиждень: <span style="color:var(--teal); font-weight:400;">(пауза 10 сек перед відповіддю в чаті)</span>
+            <div class="pick-chip" style="background:var(--teal-soft);">
+              🛑 <b>Мій стоп-кран:</b> рахую до 10 перед відправкою будь-якого токсичного тексту
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 19: BONUS: MEME/MEDIA CASE -->
+    <!-- 19: BONUS MEDIA CASE -->
     <section class="slide">
       <div class="slide-inner">
-        <span class="tag tag-amber">⭐ Бонус · якщо є час</span>
-        <h2 class="slide-title">Емоційний бліц-ребус</h2>
-        <div class="card" style="margin-top:20px;">
-          <p style="font-size:1.1rem; font-weight:600; margin-bottom:12px;">Згадай будь-який гучний скандал двох блогерів або персонажів аніме/серіалів:</p>
-          <ul style="margin-left:22px; font-size:0.95rem; line-height:1.7; color:var(--muted);">
-            <li>Що вони транслювали на верхівці свого айсберга (хейт, викривальні ролики, глузування)?</li>
-            <li>Який страх або вразливість насправді лежали на дні цього конфлікту (страх втратити охоплення, заздрість, образа)?</li>
-          </ul>
+        <div class="hero-grid">
+          <div>
+            <span class="tag tag-yellow">⭐ Бонусний бліц</span>
+            <h2 class="slide-title">Мемний розбір публічних сварок</h2>
+            <p class="lede" style="margin-bottom:18px;">Згадай будь-який гучний скандал блогерів чи героїв серіалів:</p>
+            <div class="card">
+              <p style="font-weight:600; margin-bottom:8px;">Що було на верхівці (хейт, діси, викриття)?</p>
+              <p style="color:var(--muted); font-size:0.95rem;">І який страх лежав на дні (страх втратити підписників, заздрість чи біль від зради)?</p>
+            </div>
+          </div>
+          <div>
+            <div class="gif-frame">
+              <iframe src="https://giphy.com/embed/3o72F8t9TDi2xVnxOE" title="popcorn gif"></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 20: CLOSING -->
+    <!-- 20: FINAL -->
     <section class="slide">
-      <div class="slide-inner" style="text-align:center; max-width:760px;">
+      <div class="slide-inner" style="text-align:center; max-width:800px;">
         <span class="tag tag-teal">Фінал заняття</span>
-        <h1 class="big" style="font-size:2.6rem;">Ти керуєш реакцією, а не вона тобою ⚡</h1>
-        <p class="lede" style="margin:0 auto 26px;">Справжня дорослість і сила — це не відсутність злості. Це вміння побачити свій айсберг до того, як твій корабель піде на дно.</p>
-        <div class="card" style="display:inline-block; padding:12px 24px; margin-bottom:24px; background:var(--accent-light); border-color:var(--accent);">
-          <span style="font-weight:700; color:var(--accent);">Домашнього завдання немає.</span> Спробуй цього тижня спіймати свій автопілот на гарячому!
+        <h1 class="big">Ти керуєш реакцією, а не вона тобою ⚡</h1>
+        <p class="lede" style="margin: 0 auto 24px;">Справжня сила — це не відсутність злості. Це вміння побачити свій айсберг до того, як ситуація перетвориться на катастрофу.</p>
+        <div class="card" style="display:inline-block; padding:12px 28px; background:var(--yellow-soft); margin-bottom:24px; font-weight:700;">
+          Домашнього завдання немає. Спіймай свій автопілот на гарячому цього тижня!
         </div>
         <div>
-          <button class="btn btn-coral" onclick="fireConfetti()">🎉 Завершити воркшоп</button>
+          <button class="btn btn-yellow" onclick="fireConfetti()">🎉 Завершити воркшоп</button>
         </div>
       </div>
     </section>
@@ -611,9 +683,9 @@
 
   <!-- NAVIGATION -->
   <div class="navbar">
-    <button class="nav-btn" id="prevBtn">←</button>
+    <button class="nav-arrow" id="prevBtn">←</button>
     <span class="nav-status" id="navStatus">Слайд 1 з 21</span>
-    <button class="nav-btn" id="nextBtn">→</button>
+    <button class="nav-arrow" id="nextBtn">→</button>
   </div>
 
 <script>
@@ -622,24 +694,6 @@
   const nextBtn = document.getElementById('nextBtn');
   const navStatus = document.getElementById('navStatus');
   let current = 0;
-
-  const agendaItems = [
-    "Мемний тригер з чату", "Барометр напруження", "Карусель тригерів",
-    "Поведінка ≠ Почуття", "Амигдала vs Кора", "Тріада реакцій (Бий/Біжи)",
-    "Сканер тіла", "Модель «Айсберг»", "Рентген айсберга (Тест 1)",
-    "Рентген айсберга (Тест 2)", "Декодер масок", "Протокол 5-4-3-2-1",
-    "Практика в парах", "Кейси для кімнат", "Дебрифінг",
-    "Стоп-кран на 10 сек", "Мій протокол безпеки", "⭐ Бонусний розбір", "Фінал"
-  ];
-
-  const agendaList = document.getElementById('agendaList');
-  agendaItems.forEach((title, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'agenda-item';
-    btn.innerHTML = `<span class="agenda-n">${i + 1}</span><span>${title}</span>`;
-    btn.onclick = () => goToSlide(i + 2);
-    agendaList.appendChild(btn);
-  });
 
   function goToSlide(i) {
     if (i < 0 || i >= slides.length) return;
@@ -663,38 +717,43 @@
   };
   updateNav();
 
+  // BAROMETER SELECTOR
+  function selectBaro(el) {
+    document.querySelectorAll('.baro-item').forEach(b => b.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+  }
+
   // CAROUSEL LOGIC
   document.querySelectorAll('[data-carousel]').forEach(car => {
-    const cards = Array.from(car.querySelectorAll('.carousel-card'));
+    const items = Array.from(car.querySelectorAll('.car-item'));
     const counter = car.querySelector('[data-car-counter]');
     const prev = car.querySelector('[data-car-prev]');
     const next = car.querySelector('[data-car-next]');
     let cIdx = 0;
     function render() {
-      cards.forEach((c, i) => c.classList.toggle('is-active', i === cIdx));
-      counter.textContent = `${cIdx + 1} / ${cards.length}`;
+      items.forEach((item, i) => item.classList.toggle('is-active', i === cIdx));
+      counter.textContent = `${cIdx + 1} / ${items.length}`;
       prev.disabled = cIdx === 0;
-      next.disabled = cIdx === cards.length - 1;
+      next.disabled = cIdx === items.length - 1;
     }
     prev.onclick = () => { if (cIdx > 0) { cIdx--; render(); } };
-    next.onclick = () => { if (cIdx < cards.length - 1) { cIdx++; render(); } };
+    next.onclick = () => { if (cIdx < items.length - 1) { cIdx++; render(); } };
     render();
   });
 
   // QUIZ ENGINE
-  function checkQuiz(btn, isCorrect, text) {
-    const parent = btn.closest('.card');
-    const fb = parent.querySelector('.feedback-box');
-    parent.querySelectorAll('.quiz-btn').forEach(b => {
+  function runQuiz(btn, isGood, text) {
+    const card = btn.closest('.card');
+    const fb = card.querySelector('.quiz-feedback');
+    card.querySelectorAll('.quiz-choice').forEach(b => {
       b.style.pointerEvents = 'none';
-      b.classList.remove('correct', 'wrong');
+      b.classList.remove('ans-good', 'ans-bad');
     });
-    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    btn.classList.add(isGood ? 'ans-good' : 'ans-bad');
     fb.style.display = 'block';
-    fb.style.background = isCorrect ? 'var(--teal-light)' : 'var(--coral-light)';
-    fb.style.color = isCorrect ? 'var(--teal)' : 'var(--coral)';
-    fb.style.border = `1.5px solid ${isCorrect ? 'var(--teal)' : 'var(--coral)'}`;
-    fb.innerHTML = `<b>${isCorrect ? '💡 Точно в ціль:' : '⚠️ Не зовсім так:'}</b> ${text}`;
+    fb.style.background = isGood ? 'var(--teal-soft)' : 'var(--coral-soft)';
+    fb.style.color = isGood ? '#065F46' : '#991B1B';
+    fb.innerHTML = `<b>${isGood ? '💡 Влучно:' : '⚠️ Не зовсім:'}</b> ${text}`;
   }
 
   // CONFETTI BURST
@@ -704,14 +763,14 @@
     c.width = innerWidth; c.height = innerHeight;
     document.body.appendChild(c);
     const ctx = c.getContext('2d');
-    const cols = ['#6366F1','#F43F5E','#F59E0B','#0D9488','#06B6D4'];
-    const p = Array.from({length: 120}, () => ({
+    const cols = ['#FEC830', '#FF5A5F', '#6366F1', '#0D9488', '#18181B'];
+    const p = Array.from({length: 140}, () => ({
       x: Math.random() * c.width, y: -10,
       r: 4 + Math.random() * 4, c: cols[Math.floor(Math.random() * cols.length)],
-      vx: -2 + Math.random() * 4, vy: 2 + Math.random() * 3, rot: Math.random() * 360
+      vx: -2 + Math.random() * 4, vy: 2.5 + Math.random() * 3, rot: Math.random() * 360
     }));
     let f = 0;
-    function t() {
+    function tick() {
       f++;
       ctx.clearRect(0, 0, c.width, c.height);
       p.forEach(i => {
@@ -720,9 +779,9 @@
         ctx.fillStyle = i.c; ctx.fillRect(-i.r, -i.r, i.r * 2, i.r * 1.5);
         ctx.restore();
       });
-      if (f < 180) requestAnimationFrame(t); else c.remove();
+      if (f < 180) requestAnimationFrame(tick); else c.remove();
     }
-    t();
+    tick();
   }
 </script>
 </body>
