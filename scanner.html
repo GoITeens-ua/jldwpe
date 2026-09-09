@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Сканер реакцій | Happy Kids 11–13</title>
+<title>Сканер захисних реакцій | Happy Kids 11–13</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -62,9 +62,9 @@
   }
 
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.45rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.3;
     margin-bottom: 8px;
   }
 
@@ -72,7 +72,7 @@
     font-size: 0.95rem;
     color: var(--muted);
     line-height: 1.5;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
   }
 
   .cards-list {
@@ -86,15 +86,16 @@
     border: 2.5px solid var(--line);
     border-radius: 16px;
     padding: 16px 18px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     text-align: left;
     cursor: pointer;
     box-shadow: var(--shadow);
     transition: 0.15s ease;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
+    line-height: 1.45;
   }
   .choice-btn:hover {
     transform: translate(-2px, -2px);
@@ -113,7 +114,7 @@
   }
   .step-screen.active {
     display: block;
-    animation: fadeIn 0.25s ease;
+    animation: fadeIn 0.22s ease;
   }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
@@ -159,23 +160,33 @@
     box-shadow: var(--shadow);
     margin: 18px 0;
   }
+  .archetype-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
   .profile-row {
     margin-bottom: 12px;
     font-size: 0.95rem;
+    line-height: 1.45;
   }
   .profile-row b {
     display: block;
     font-size: 0.8rem;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
   .advice-card {
     background: var(--teal-soft);
     border: 2px solid var(--teal);
     border-radius: 16px;
     padding: 16px;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     line-height: 1.5;
     color: #065F46;
   }
@@ -185,24 +196,21 @@
 
 <div class="app-container">
 
-  <!-- КРОК 1: ТРИГЕР -->
+  <!-- КРОК 1 -->
   <div class="step-screen active" id="step1">
-    <span class="step-pill">Крок 1 з 3</span>
-    <h1>Що вибиває тебе найбільше?</h1>
-    <p class="sub">Обери головний тригер, від якого всередині миттєво підскакує напруга:</p>
+    <span class="step-pill">Ситуація 1 з 4 · Чат</span>
+    <h1>Невдалий скриншот у групі</h1>
+    <p class="sub">Хтось скидає в загальну бесіду твою помилку зі словами: «Ор вище гір 😂». Твоя найперша миттєва дія:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectOption('trigger', 'Несправедливе звинувачення (коли не розібралися, а вже сварять)')">
-        <span>⚖️</span> Несправедливість: звинуватили в тому, чого я не робив(-ла)
+      <button class="choice-btn" onclick="selectChoice(1, 'A')">
+        <span>⚡</span> Знаходжу його старий факап або пишу їдкий панч у відповідь, щоб осадити перед усіма.
       </button>
-      <button class="choice-btn" onclick="selectOption('trigger', 'Публічне висміювання або токсичні підколки в компанії')">
-        <span>🤡</span> Публічний шейм: сміються над моїм факапом у загальному чаті
+      <button class="choice-btn" onclick="selectChoice(1, 'B')">
+        <span>🚪</span> Згортаю телеграм, вимикаю сповіщення або виходжу з чату — просто не хочу це бачити.
       </button>
-      <button class="choice-btn" onclick="selectOption('trigger', 'Ігнорування та виключення (не покликали, не відповіли)')">
-        <span>🚪</span> Ігнор: відчуття, що мою думку взагалі не помічають
-      </button>
-      <button class="choice-btn" onclick="selectOption('trigger', 'Знецінення моєї втоми та зусиль')">
-        <span>🔋</span> Знецінення: «Ти нічого корисного взагалі не робиш!»
+      <button class="choice-btn" onclick="selectChoice(1, 'C')">
+        <span>😶</span> Відчуваю, як кидає в жар. Ставлю смайлик «😂», аби не виділятися, але всередині ніби заціпенів(-ла).
       </button>
     </div>
 
@@ -211,24 +219,21 @@
     </div>
   </div>
 
-  <!-- КРОК 2: ТІЛО -->
+  <!-- КРОК 2 -->
   <div class="step-screen" id="step2">
-    <span class="step-pill">Крок 2 з 3</span>
-    <h1>Як реагує твоє тіло?</h1>
-    <p class="sub">Де саме вмикається перший фізичний маячок тривоги за секунду до реакції:</p>
+    <span class="step-pill">Ситуація 2 з 4 · Команда</span>
+    <h1>Публічне зауваження</h1>
+    <p class="sub">Вчитель чи капітан перед усіма каже: «Через твою незібраність ми втратили бали». Твої відчуття в перші 5 секунд:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectOption('body', 'Палають щоки й вуха, кидає в жар')">
-        <span>🔥</span> Палають щоки, вуха, кров кидається вгору
+      <button class="choice-btn" onclick="selectChoice(2, 'A')">
+        <span>🥊</span> Спалах у грудях: перебиваю й одразу доводжу, хто насправді сфакапив.
       </button>
-      <button class="choice-btn" onclick="selectOption('body', 'Стискаються щелепи та кулаки')">
-        <span>😬</span> Щелепи стиснуті, зуби зціплені, плечі затиснуті
+      <button class="choice-btn" onclick="selectChoice(2, 'B')">
+        <span>🏃</span> Хочеться провалитися крізь землю або скоріше вийти з кабінету кудись у коридор.
       </button>
-      <button class="choice-btn" onclick="selectOption('body', 'Пульс б\'є в скронях, серце вистрибує')">
-        <span>🫀</span> Шалений пульс, що віддає прямо в скроні
-      </button>
-      <button class="choice-btn" onclick="selectOption('body', 'Клубок у горлі, перехоплює дихання')">
-        <span>😶</span> Клубок у горлі, голос зникає або починає тремтіти
+      <button class="choice-btn" onclick="selectChoice(2, 'C')">
+        <span>🧊</span> Замовкаю, дивлюся в одну точку, зуби зціплені. Слова на захист є в голові, але вголос не йдуть.
       </button>
     </div>
 
@@ -238,75 +243,96 @@
     </div>
   </div>
 
-  <!-- КРОК 3: РЕАКЦІЯ -->
+  <!-- КРОК 3 -->
   <div class="step-screen" id="step3">
-    <span class="step-pill">Крок 3 з 3</span>
-    <h1>Твій автопілот за замовчуванням?</h1>
-    <p class="sub">Куди першим ділом штовхає тебе древній механізм виживання:</p>
+    <span class="step-pill">Ситуація 3 з 4 · Вдома</span>
+    <h1>Претензія на порозі</h1>
+    <p class="sub">Ти щойно сів(-ла) видихнути після школи, а тобі різко кидають: «Знову тільки в телефоні сидиш, користі нуль!» Твій імпульс:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectOption('reaction', 'Бий (атака капслоком, їдкий сарказм, крик)')">
-        <span>🥊</span> <b>Бий:</b> миттєво осадити капслоком, сарказмом чи криком
+      <button class="choice-btn" onclick="selectChoice(3, 'A')">
+        <span>🔥</span> «А ви бачили, скільки всього я вже зробив(-ла)?!» — голос сам зривається на крик.
       </button>
-      <button class="choice-btn" onclick="selectOption('reaction', 'Біжи (видалитися з чату, кинути в ЧС, сховатися)')">
-        <span>🏃</span> <b>Біжи:</b> ливнути з розмови, вдягти навушники, втекти в кімнату
+      <button class="choice-btn" onclick="selectChoice(3, 'B')">
+        <span>🎧</span> Мовчки встаю, іду у свою кімнату, щільно зачиняю двері й одягаю навушники.
       </button>
-      <button class="choice-btn" onclick="selectOption('reaction', 'Замри (ступор, усмішка через силу, мовчання)')">
-        <span>🧊</span> <b>Замри:</b> повний ступор, усміхаюся, а всередині шторм
+      <button class="choice-btn" onclick="selectChoice(3, 'C')">
+        <span>🤐</span> Бурчу «угу», опускаю очі. Зовні повний пофігізм, а всередині клубок від знецінення.
       </button>
     </div>
 
     <div class="action-bar">
       <button class="btn btn-ghost" onclick="goToStep(2)">← Назад</button>
-      <button class="btn btn-yellow" id="next3" disabled onclick="showResult()">Скласти профіль ✨</button>
+      <button class="btn btn-yellow" id="next3" disabled onclick="goToStep(4)">Далі →</button>
     </div>
   </div>
 
-  <!-- ФІНАЛ: КАРТКА ПРОФІЛЮ -->
+  <!-- КРОК 4 -->
+  <div class="step-screen" id="step4">
+    <span class="step-pill">Ситуація 4 з 4 · Довіра</span>
+    <h1>Секрет розкрили заради жарту</h1>
+    <p class="sub">Друг бовкнув твою таємницю в компанії просто щоб усі посміялися. Що стається з тобою:</p>
+
+    <div class="cards-list">
+      <button class="choice-btn" onclick="selectChoice(4, 'A')">
+        <span>🎯</span> Наступної ж секунди підколюю його у відповідь так, щоб йому стало по-справжньому ніяково.
+      </button>
+      <button class="choice-btn" onclick="selectChoice(4, 'B')">
+        <span>🚫</span> Видаляю з друзів, не беру слухавку. Роблю вигляд, що цієї людини для мене більше не існує.
+      </button>
+      <button class="choice-btn" onclick="selectChoice(4, 'C')">
+        <span>💔</span> Сміюся разом з усіма, вдаю що мені байдуже. Але всередині все обривається, а сльози вийдуть увечері.
+      </button>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-ghost" onclick="goToStep(3)">← Назад</button>
+      <button class="btn btn-yellow" id="next4" disabled onclick="calculateResult()">Сканувати результат ✨</button>
+    </div>
+  </div>
+
+  <!-- РЕЗУЛЬТАТ -->
   <div class="step-screen" id="stepResult">
-    <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Готово</span>
-    <h1>Твій профіль у конфлікті</h1>
-    <p class="sub">Це не діагноз і не оцінка — це знання власної панелі керування:</p>
+    <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Аналіз завершено</span>
+    <h1>Твій профіль у момент тиску</h1>
+    <p class="sub">Це не оцінка, а знімок твоєї захисної броні, яку вмикає мозок:</p>
 
     <div class="profile-card">
+      <div class="archetype-title" id="archTitle">Завантаження...</div>
       <div class="profile-row">
-        <b>Мій головний тригер:</b>
-        <span id="resTrigger">-</span>
+        <b>Що бачать інші назовні:</b>
+        <span id="archOuter">-</span>
       </div>
       <div class="profile-row">
-        <b>Мій фізичний маячок:</b>
-        <span id="resBody">-</span>
+        <b>Твій прихований датчик чутливості:</b>
+        <span id="archTrigger">-</span>
       </div>
       <div class="profile-row" style="margin-bottom:0;">
-        <b>Мій автопілот:</b>
-        <span id="resReaction">-</span>
+        <b>Що насправді ховається під водою:</b>
+        <span id="archIceberg">-</span>
       </div>
     </div>
 
-    <div class="advice-card" id="resAdvice"></div>
+    <div class="advice-card" id="archAdvice"></div>
 
     <div class="action-bar" style="margin-top:20px;">
-      <button class="btn btn-ghost" onclick="resetForm()">Пройти знову</button>
-      <button class="btn btn-yellow" onclick="copyResult()">📋 Скопіювати для чату</button>
+      <button class="btn btn-ghost" onclick="resetAll()">Пройти знову</button>
+      <button class="btn btn-yellow" onclick="copyResultText()">📋 Скопіювати для чату</button>
     </div>
   </div>
 
 </div>
 
 <script>
-  const userChoices = {
-    trigger: null,
-    body: null,
-    reaction: null
-  };
+  const answers = { 1: null, 2: null, 3: null, 4: null };
+  let finalArchetype = '';
 
-  function selectOption(key, val) {
-    userChoices[key] = val;
-    const currentStep = key === 'trigger' ? 1 : key === 'body' ? 2 : 3;
-    const parent = document.getElementById(`step${currentStep}`);
-    parent.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+  function selectChoice(step, variant) {
+    answers[step] = variant;
+    const parent = document.getElementById(`step${step}`);
+    parent.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
     event.currentTarget.classList.add('selected');
-    document.getElementById(`next${currentStep}`).disabled = false;
+    document.getElementById(`next${step}`).disabled = false;
   }
 
   function goToStep(s) {
@@ -314,38 +340,57 @@
     document.getElementById(`step${s}`).classList.add('active');
   }
 
-  function showResult() {
-    document.getElementById('resTrigger').textContent = userChoices.trigger;
-    document.getElementById('resBody').textContent = userChoices.body;
-    document.getElementById('resReaction').textContent = userChoices.reaction;
+  function calculateResult() {
+    let counts = { A: 0, B: 0, C: 0 };
+    Object.values(answers).forEach(val => { if(val) counts[val]++; });
 
-    const adv = document.getElementById('resAdvice');
-    if (userChoices.reaction.includes('Бий')) {
-      adv.innerHTML = '<b>💡 Твоя суперсила:</b> у тебе потужна енергія захисту. Твоя зона росту — встигнути порахувати до 10 перед відправкою, щоб енергія перетворилася на твердий спокій, а не на саморуйнівний напад.';
-    } else if (userChoices.reaction.includes('Біжи')) {
-      adv.innerHTML = '<b>💡 Твоя суперсила:</b> ти вмієш берегти сили й не встрявати в безглузді бійки. Твоя зона росту — навчитися не просто йти мовчки, а попереджати: «Я беру паузу на 20 хвилин, потім повернусь».';
+    let maxKey = 'A';
+    if (counts.B > counts[maxKey]) maxKey = 'B';
+    if (counts.C > counts[maxKey]) maxKey = 'C';
+
+    const titleEl = document.getElementById('archTitle');
+    const outerEl = document.getElementById('archOuter');
+    const trigEl = document.getElementById('archTrigger');
+    const iceEl = document.getElementById('archIceberg');
+    const advEl = document.getElementById('archAdvice');
+
+    if (maxKey === 'A') {
+      finalArchetype = '🛡️ Блискавичний щит (Режим Натиску)';
+      titleEl.innerHTML = '🛡️ Архетип: Блискавичний щит';
+      outerEl.textContent = 'Швидка, смілива, але часом різка й колюча відповідь капслоком або сарказмом.';
+      trigEl.textContent = 'Гостра нестерпність несправедливості та звинувачень.';
+      iceEl.textContent = 'Страх здатися слабким або беззахисним. Атака — це спроба перехопити контроль.';
+      advEl.innerHTML = '<b>💡 Твоя зона росту:</b> у тебе величезна сміливість. Дай собі паузу в 10 секунд перед відповіддю — і ти зможеш роззброювати опонентів спокоєм, а не війною.';
+    } else if (maxKey === 'B') {
+      finalArchetype = '🏰 Автономний бункер (Режим Дистанції)';
+      titleEl.innerHTML = '🏰 Архетип: Автономний бункер';
+      outerEl.textContent = 'Холодне мовчання, зникнення з радарів, вихід із чату, маска «та мені байдуже».';
+      trigEl.textContent = 'Миттєве сенсорне та емоційне перевантаження від чужого тиску чи драми.';
+      iceEl.textContent = 'Відчайдушна потреба захистити свою енергію та безпеку, коли немає сил сперечатися.';
+      advEl.innerHTML = '<b>💡 Твоя зона росту:</b> ти чудово бережеш свої ресурси. Спробуй не просто зникати, а вголос ставити межу: «Мені треба видихнути 20 хвилин, потім поговоримо».';
     } else {
-      adv.innerHTML = '<b>💡 Твоя суперсила:</b> ти не створюєш зайвого хаосу у відповідь. Твоя зона росту — розтискати зуби, глибоко видихати й пам\'ятати, що твій голос має повне право звучати.';
+      finalArchetype = '🧊 Невидимий лід (Режим Камуфляжу)';
+      titleEl.innerHTML = '🧊 Архетип: Невидимий лід';
+      outerEl.textContent = 'Зовнішній спокій, чергова посмішка, мовчазна згода або «зависання».';
+      trigEl.textContent = 'Страх зробити гірше, спровокувати скандал або відчути токсичний сором.';
+      iceEl.textContent = 'Всередині вирує шторм, який з\'їдає сили, бо почуття замкнені під товщею льоду.';
+      advEl.innerHTML = '<b>💡 Твоя зона росту:</b> ти дуже тонко відчуваєш ситуацію. Пам\'ятай: розтиснути зуби й спокійно сказати «мені це неприємно» — це твоє законне право на захист.';
     }
 
     goToStep('Result');
   }
 
-  function copyResult() {
-    const text = `Мій профіль у стресі:\n🎯 Головний тригер: ${userChoices.trigger}\n⚡ Маячок тіла: ${userChoices.body}\n🛡️ Мій автопілот: ${userChoices.reaction}`;
+  function copyResultText() {
+    const text = `Мій результат тесту-сканера:\n${finalArchetype}\n(Happy Kids 11–13: Що я відчуваю в конфлікті)`;
     navigator.clipboard.writeText(text).then(() => {
-      alert('Скопійовано! Тепер встав цей текст у чат Zoom/уроку ✨');
+      alert('Скопійовано! Встав свій архетип у чат Zoom ✨');
     });
   }
 
-  function resetForm() {
-    userChoices.trigger = null;
-    userChoices.body = null;
-    userChoices.reaction = null;
+  function resetAll() {
+    for (let k in answers) answers[k] = null;
     document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-    document.getElementById('next1').disabled = true;
-    document.getElementById('next2').disabled = true;
-    document.getElementById('next3').disabled = true;
+    for (let i = 1; i <= 4; i++) document.getElementById(`next${i}`).disabled = true;
     goToStep(1);
   }
 </script>
