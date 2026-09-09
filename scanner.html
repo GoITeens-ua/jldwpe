@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сканер реакцій | Happy Kids 11–13</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFFDF9;
+    --card: #FFFFFF;
+    --ink: #18181B;
+    --muted: #52525B;
+    --line: #18181B;
+    --accent: #6366F1;
+    --accent-soft: #EEF2FF;
+    --coral: #FF5A5F;
+    --coral-soft: #FFEBEB;
+    --yellow: #FEC830;
+    --yellow-soft: #FFF5D6;
+    --teal: #0D9488;
+    --teal-soft: #E6FFFA;
+    --shadow: 4px 4px 0px var(--line);
+    --shadow-pop: 6px 6px 0px var(--line);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 620px;
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow-pop);
+    position: relative;
+  }
+
+  .step-pill {
+    display: inline-block;
+    background: var(--yellow);
+    border: 2px solid var(--line);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    box-shadow: 2px 2px 0 var(--line);
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  p.sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 22px;
+  }
+
+  .cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .choice-btn {
+    background: #fff;
+    border: 2.5px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .choice-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-pop);
+    background: var(--accent-soft);
+  }
+  .choice-btn.selected {
+    background: var(--yellow-soft);
+    border-color: var(--line);
+    box-shadow: 2px 2px 0 var(--line);
+    transform: translate(2px, 2px);
+  }
+
+  .step-screen {
+    display: none;
+  }
+  .step-screen.active {
+    display: block;
+    animation: fadeIn 0.25s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .action-bar {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 2.5px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 22px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: 0.15s;
+  }
+  .btn:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-pop);
+  }
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+    box-shadow: none;
+  }
+  .btn-yellow { background: var(--yellow); color: var(--ink); }
+  .btn-ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--muted); }
+
+  /* Результат */
+  .profile-card {
+    background: var(--yellow-soft);
+    border: 2.5px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 18px 0;
+  }
+  .profile-row {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  .profile-row b {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .advice-card {
+    background: var(--teal-soft);
+    border: 2px solid var(--teal);
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #065F46;
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- КРОК 1: ТРИГЕР -->
+  <div class="step-screen active" id="step1">
+    <span class="step-pill">Крок 1 з 3</span>
+    <h1>Що вибиває тебе найбільше?</h1>
+    <p class="sub">Обери головний тригер, від якого всередині миттєво підскакує напруга:</p>
+
+    <div class="cards-list">
+      <button class="choice-btn" onclick="selectOption('trigger', 'Несправедливе звинувачення (коли не розібралися, а вже сварять)')">
+        <span>⚖️</span> Несправедливість: звинуватили в тому, чого я не робив(-ла)
+      </button>
+      <button class="choice-btn" onclick="selectOption('trigger', 'Публічне висміювання або токсичні підколки в компанії')">
+        <span>🤡</span> Публічний шейм: сміються над моїм факапом у загальному чаті
+      </button>
+      <button class="choice-btn" onclick="selectOption('trigger', 'Ігнорування та виключення (не покликали, не відповіли)')">
+        <span>🚪</span> Ігнор: відчуття, що мою думку взагалі не помічають
+      </button>
+      <button class="choice-btn" onclick="selectOption('trigger', 'Знецінення моєї втоми та зусиль')">
+        <span>🔋</span> Знецінення: «Ти нічого корисного взагалі не робиш!»
+      </button>
+    </div>
+
+    <div class="action-bar" style="justify-content: flex-end;">
+      <button class="btn btn-yellow" id="next1" disabled onclick="goToStep(2)">Далі →</button>
+    </div>
+  </div>
+
+  <!-- КРОК 2: ТІЛО -->
+  <div class="step-screen" id="step2">
+    <span class="step-pill">Крок 2 з 3</span>
+    <h1>Як реагує твоє тіло?</h1>
+    <p class="sub">Де саме вмикається перший фізичний маячок тривоги за секунду до реакції:</p>
+
+    <div class="cards-list">
+      <button class="choice-btn" onclick="selectOption('body', 'Палають щоки й вуха, кидає в жар')">
+        <span>🔥</span> Палають щоки, вуха, кров кидається вгору
+      </button>
+      <button class="choice-btn" onclick="selectOption('body', 'Стискаються щелепи та кулаки')">
+        <span>😬</span> Щелепи стиснуті, зуби зціплені, плечі затиснуті
+      </button>
+      <button class="choice-btn" onclick="selectOption('body', 'Пульс б\'є в скронях, серце вистрибує')">
+        <span>🫀</span> Шалений пульс, що віддає прямо в скроні
+      </button>
+      <button class="choice-btn" onclick="selectOption('body', 'Клубок у горлі, перехоплює дихання')">
+        <span>😶</span> Клубок у горлі, голос зникає або починає тремтіти
+      </button>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-ghost" onclick="goToStep(1)">← Назад</button>
+      <button class="btn btn-yellow" id="next2" disabled onclick="goToStep(3)">Далі →</button>
+    </div>
+  </div>
+
+  <!-- КРОК 3: РЕАКЦІЯ -->
+  <div class="step-screen" id="step3">
+    <span class="step-pill">Крок 3 з 3</span>
+    <h1>Твій автопілот за замовчуванням?</h1>
+    <p class="sub">Куди першим ділом штовхає тебе древній механізм виживання:</p>
+
+    <div class="cards-list">
+      <button class="choice-btn" onclick="selectOption('reaction', 'Бий (атака капслоком, їдкий сарказм, крик)')">
+        <span>🥊</span> <b>Бий:</b> миттєво осадити капслоком, сарказмом чи криком
+      </button>
+      <button class="choice-btn" onclick="selectOption('reaction', 'Біжи (видалитися з чату, кинути в ЧС, сховатися)')">
+        <span>🏃</span> <b>Біжи:</b> ливнути з розмови, вдягти навушники, втекти в кімнату
+      </button>
+      <button class="choice-btn" onclick="selectOption('reaction', 'Замри (ступор, усмішка через силу, мовчання)')">
+        <span>🧊</span> <b>Замри:</b> повний ступор, усміхаюся, а всередині шторм
+      </button>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-ghost" onclick="goToStep(2)">← Назад</button>
+      <button class="btn btn-yellow" id="next3" disabled onclick="showResult()">Скласти профіль ✨</button>
+    </div>
+  </div>
+
+  <!-- ФІНАЛ: КАРТКА ПРОФІЛЮ -->
+  <div class="step-screen" id="stepResult">
+    <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Готово</span>
+    <h1>Твій профіль у конфлікті</h1>
+    <p class="sub">Це не діагноз і не оцінка — це знання власної панелі керування:</p>
+
+    <div class="profile-card">
+      <div class="profile-row">
+        <b>Мій головний тригер:</b>
+        <span id="resTrigger">-</span>
+      </div>
+      <div class="profile-row">
+        <b>Мій фізичний маячок:</b>
+        <span id="resBody">-</span>
+      </div>
+      <div class="profile-row" style="margin-bottom:0;">
+        <b>Мій автопілот:</b>
+        <span id="resReaction">-</span>
+      </div>
+    </div>
+
+    <div class="advice-card" id="resAdvice"></div>
+
+    <div class="action-bar" style="margin-top:20px;">
+      <button class="btn btn-ghost" onclick="resetForm()">Пройти знову</button>
+      <button class="btn btn-yellow" onclick="copyResult()">📋 Скопіювати для чату</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const userChoices = {
+    trigger: null,
+    body: null,
+    reaction: null
+  };
+
+  function selectOption(key, val) {
+    userChoices[key] = val;
+    const currentStep = key === 'trigger' ? 1 : key === 'body' ? 2 : 3;
+    const parent = document.getElementById(`step${currentStep}`);
+    parent.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById(`next${currentStep}`).disabled = false;
+  }
+
+  function goToStep(s) {
+    document.querySelectorAll('.step-screen').forEach(scr => scr.classList.remove('active'));
+    document.getElementById(`step${s}`).classList.add('active');
+  }
+
+  function showResult() {
+    document.getElementById('resTrigger').textContent = userChoices.trigger;
+    document.getElementById('resBody').textContent = userChoices.body;
+    document.getElementById('resReaction').textContent = userChoices.reaction;
+
+    const adv = document.getElementById('resAdvice');
+    if (userChoices.reaction.includes('Бий')) {
+      adv.innerHTML = '<b>💡 Твоя суперсила:</b> у тебе потужна енергія захисту. Твоя зона росту — встигнути порахувати до 10 перед відправкою, щоб енергія перетворилася на твердий спокій, а не на саморуйнівний напад.';
+    } else if (userChoices.reaction.includes('Біжи')) {
+      adv.innerHTML = '<b>💡 Твоя суперсила:</b> ти вмієш берегти сили й не встрявати в безглузді бійки. Твоя зона росту — навчитися не просто йти мовчки, а попереджати: «Я беру паузу на 20 хвилин, потім повернусь».';
+    } else {
+      adv.innerHTML = '<b>💡 Твоя суперсила:</b> ти не створюєш зайвого хаосу у відповідь. Твоя зона росту — розтискати зуби, глибоко видихати й пам\'ятати, що твій голос має повне право звучати.';
+    }
+
+    goToStep('Result');
+  }
+
+  function copyResult() {
+    const text = `Мій профіль у стресі:\n🎯 Головний тригер: ${userChoices.trigger}\n⚡ Маячок тіла: ${userChoices.body}\n🛡️ Мій автопілот: ${userChoices.reaction}`;
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Скопійовано! Тепер встав цей текст у чат Zoom/уроку ✨');
+    });
+  }
+
+  function resetForm() {
+    userChoices.trigger = null;
+    userChoices.body = null;
+    userChoices.reaction = null;
+    document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('next1').disabled = true;
+    document.getElementById('next2').disabled = true;
+    document.getElementById('next3').disabled = true;
+    goToStep(1);
+  }
+</script>
+</body>
+</html>
