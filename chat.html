@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
@@ -152,7 +153,7 @@
     30% { transform: translateY(-4px); opacity: 1; }
   }
 
-  /* Нижня панель (піднята вище) */
+  /* Нижня панель */
   .tg-input-area {
     background: transparent;
     padding: 10px 16px 28px;
@@ -175,9 +176,7 @@
     border: 2px solid transparent;
     transition: all 0.2s ease;
   }
-  .tg-input-wrapper:hover {
-    border-color: #3390ec;
-  }
+  .tg-input-wrapper:hover { border-color: #3390ec; }
   .tg-attach-btn { color: #707579; font-size: 1.3rem; margin-right: 12px; cursor: pointer; }
   
   .tg-fake-input {
@@ -264,6 +263,67 @@
     text-align: center;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
   }
+
+  /* Стилізація фінальної картки-повідомлення від бота */
+  .bot-card-inner {
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 6px;
+    color: #1e293b;
+  }
+  .bot-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .bot-card-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .bot-card-desc {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: #334155;
+    margin-bottom: 12px;
+  }
+  .bot-card-stats {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .bot-card-btn {
+    width: 100%;
+    background: #3390ec;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .bot-card-btn:hover { background: #227ecb; }
 </style>
 </head>
 <body>
@@ -296,8 +356,8 @@
     </div>
   </div>
 
-  <!-- Панель вводу (піднята вище) -->
-  <div class="tg-input-area">
+  <!-- Панель вводу -->
+  <div class="tg-input-area" id="inputArea">
     <div class="tg-input-wrapper" onclick="toggleReplies()">
       <span class="tg-attach-btn">📎</span>
       
@@ -328,8 +388,11 @@
   const sendIcon = document.getElementById('sendIcon');
   const quickReplies = document.getElementById('quickReplies');
   const optionsContainer = document.getElementById('optionsContainer');
+  const inputArea = document.getElementById('inputArea');
 
-  // Набір із 3 різних сценаріїв
+  // Історія виборів учня для підсумкового профілю
+  const userChoicesSummary = [];
+
   const scenarios = [
     {
       name: "Влад",
@@ -609,6 +672,11 @@
     sendIcon.textContent = "✈️";
     sendIcon.style.color = "#3390ec";
 
+    // Фіксуємо перший вибір у ситуації
+    if (opt.next) {
+      userChoicesSummary.push(opt.type);
+    }
+
     setTimeout(() => {
       fakeInput.textContent = "💬 Обери свій варіант відповіді тут...";
       fakeInput.classList.remove('is-active');
@@ -650,22 +718,129 @@
     flowHistory.appendChild(pill);
     flowHistory.scrollTop = flowHistory.scrollHeight;
 
-    // Кнопка переходу на наступну ситуацію
+    // Перевіряємо, чи є наступна ситуація
+    if (currentScenarioIndex < scenarios.length - 1) {
+      setTimeout(() => {
+        const nextBtn = document.createElement('div');
+        nextBtn.className = 'tg-system-pill';
+        nextBtn.style.cursor = 'pointer';
+        nextBtn.style.background = '#3390ec';
+        nextBtn.style.fontWeight = '700';
+        nextBtn.textContent = '➡️ Перейти до наступної ситуації';
+        nextBtn.onclick = () => switchScenario();
+        flowHistory.appendChild(nextBtn);
+        flowHistory.scrollTop = flowHistory.scrollHeight;
+      }, 600);
+    } else {
+      // ФІНАЛ 3 СИТУАЦІЙ: Генерація звіту від бота
+      setTimeout(() => {
+        renderFinalBotReport();
+      }, 800);
+    }
+  }
+
+  function renderFinalBotReport() {
+    inputArea.style.display = 'none'; // приховуємо поле введення
+
+    peerName.textContent = "🤖 HappyKids Bot";
+    avatarEl.textContent = "🤖";
+    avatarEl.style.background = "#6366F1";
+    peerStatus.textContent = "сервісний бот";
+
+    let matureCount = userChoicesSummary.filter(t => t === 'mature').length;
+    let attackCount = userChoicesSummary.filter(t => t === 'attack').length;
+    let passiveCount = userChoicesSummary.filter(t => t === 'passive').length;
+
+    let title = "🛡️ Титан спокою";
+    let badge = "Рівень: Абсолютний захист";
+    let desc = "Ти жодного разу не піддався(-лася) на дешеві провокації, захистив(-ла) власні межі без агресії й зберіг(-ла) діалог. Справжня доросла сила!";
+
+    if (matureCount < 2) {
+      if (attackCount >= passiveCount) {
+        title = "⚡ Сміливий захисник";
+        badge = "Рівень: Імпульсивна міць";
+        desc = "У тебе потужна внутрішня енергія і сміливість давати відсіч. Твоя суперсила зміцніє в рази, якщо робити 10-секундну паузу перед першим ударом.";
+      } else {
+        title = "🎯 Майстер маневру";
+        badge = "Рівень: Тонкий баланс";
+        desc = "Ти вмієш вирулювати з гострих кутів. Намагайся менше вдаватися до сарказму: пряме спокійне позначення меж працює швидше й надійніше.";
+      }
+    }
+
+    const row = document.createElement('div');
+    row.className = 'tg-bubble-row in';
+    row.innerHTML = `
+      <div class="tg-bubble" style="max-width:88%; padding:14px;" id="botReportCapture">
+        <div style="font-weight:700; color:#3390ec; font-size:0.85rem; margin-bottom:4px;">🤖 HappyKids Assistant · Підсумок краш-тесту:</div>
+        <div class="bot-card-inner">
+          <div class="bot-card-title">${title}</div>
+          <div class="bot-card-badge">${badge}</div>
+          <div class="bot-card-desc">${desc}</div>
+          <div class="bot-card-stats">
+            📊 <b>Твоя статистика виборів:</b><br>
+            • Режим сили: <b>${matureCount} з 3</b><br>
+            • Пряма контратака: <b>${attackCount} з 3</b><br>
+            • Сарказм/дистанція: <b>${passiveCount} з 3</b>
+          </div>
+          <button class="bot-card-btn" id="saveCardBtn" onclick="saveProfileCard()">
+            📸 Зберегти свій результат
+          </button>
+        </div>
+        <div class="tg-meta">${getCurrentTime()}</div>
+      </div>
+    `;
+
+    flowHistory.appendChild(row);
+    flowHistory.scrollTop = flowHistory.scrollHeight;
+
     setTimeout(() => {
-      const nextBtn = document.createElement('div');
-      nextBtn.className = 'tg-system-pill';
-      nextBtn.style.cursor = 'pointer';
-      nextBtn.style.background = '#3390ec';
-      nextBtn.style.fontWeight = '700';
-      nextBtn.textContent = '➡️ Перейти до іншої ситуації';
-      nextBtn.onclick = () => switchScenario();
-      flowHistory.appendChild(nextBtn);
+      const restartPill = document.createElement('div');
+      restartPill.className = 'tg-system-pill';
+      restartPill.style.cursor = 'pointer';
+      restartPill.style.background = '#475569';
+      restartPill.textContent = '🔄 Пройти всі 3 ситуації заново';
+      restartPill.onclick = () => restartEntireCourse();
+      flowHistory.appendChild(restartPill);
       flowHistory.scrollTop = flowHistory.scrollHeight;
-    }, 600);
+    }, 700);
+  }
+
+  function saveProfileCard() {
+    const btn = document.getElementById('saveCardBtn');
+    const target = document.getElementById('botReportCapture');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ Зберігаємо...';
+    btn.disabled = true;
+
+    html2canvas(target, {
+      scale: 2,
+      backgroundColor: '#ffffff'
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'Мій_профіль_у_чаті.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      btn.innerHTML = '✅ Збережено!';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }, 2500);
+    }).catch(() => {
+      alert('Зробіть звичайний скриншот цього повідомлення на пам\'ять! ✨');
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    });
+  }
+
+  function restartEntireCourse() {
+    userChoicesSummary.length = 0;
+    currentScenarioIndex = 0;
+    inputArea.style.display = 'flex';
+    initScenario(0);
   }
 
   function switchScenario() {
-    currentScenarioIndex = (currentScenarioIndex + 1) % scenarios.length;
+    currentScenarioIndex++;
     initScenario(currentScenarioIndex);
   }
 
@@ -689,7 +864,6 @@
     }, 350);
   }
 
-  // Перший запуск
   initScenario(0);
 </script>
 </body>
