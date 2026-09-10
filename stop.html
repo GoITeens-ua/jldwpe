@@ -24,7 +24,7 @@
     --shadow-pop: 6px 6px 0px var(--line);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body {
     background: var(--paper);
     color: var(--ink);
@@ -91,11 +91,12 @@
     align-items: flex-start;
     gap: 12px;
     line-height: 1.45;
+    outline: none;
   }
   .choice-btn:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow-pop); background: var(--accent-soft); }
   .choice-btn.selected {
-    background: var(--yellow-soft);
-    border-color: var(--line);
+    background: var(--yellow-soft) !important;
+    border-color: var(--line) !important;
     box-shadow: 2px 2px 0 var(--line);
     transform: translate(2px, 2px);
   }
@@ -209,7 +210,6 @@
 <body>
 
 <div class="app-container">
-
   <!-- Екран 0: Вступ -->
   <div class="step-screen active" id="step0">
     <span class="step-pill">Твій персональний інструмент</span>
@@ -251,13 +251,13 @@
     <p class="sub">Обери мікро-дію для тіла, яка допоможе швидко скинути першу хвилю адреналіну в чаті чи вдома:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(1, 'Відкладаю телефон або роблю крок назад і роблю 3 повільні глибокі видихи')">
+      <button class="choice-btn" onclick="selectChoice(1, 'Відкладаю телефон або роблю крок назад і роблю 3 повільні глибокі видихи', this)">
         <span>📴</span> Відкладаю телефон або роблю крок назад і роблю 3 повільні глибокі видихи
       </button>
-      <button class="choice-btn" onclick="selectChoice(1, 'Йду вмити обличчя холодною водою або повільно випиваю склянку води')">
+      <button class="choice-btn" onclick="selectChoice(1, 'Йду вмити обличчя холодною водою або повільно випиваю склянку води', this)">
         <span>💧</span> Йду вмити обличчя холодною водою або повільно випиваю склянку води
       </button>
-      <button class="choice-btn" onclick="selectChoice(1, 'Стискаю й розтискаю кулаки 5 разів, свідомо розтискаючи щелепу й плечі')">
+      <button class="choice-btn" onclick="selectChoice(1, 'Стискаю й розтискаю кулаки 5 разів, свідомо розтискаючи щелепу й плечі', this)">
         <span>✊</span> Стискаю й розтискаю кулаки 5 разів, свідомо розтискаючи щелепу й плечі
       </button>
     </div>
@@ -275,13 +275,13 @@
     <p class="sub">Питання про себе, яке повертає контроль розуму перед тим, як відповісти:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(2, '«Я зараз хочу вирішити ситуацію чи просто зірватися й зробити боляче у відповідь?»')">
+      <button class="choice-btn" onclick="selectChoice(2, '«Я зараз хочу вирішити ситуацію чи просто зірватися й зробити боляче у відповідь?»', this)">
         <span>🎯</span> «Я зараз хочу вирішити ситуацію чи просто зірватися й зробити боляче у відповідь?»
       </button>
-      <button class="choice-btn" onclick="selectChoice(2, '«Що насправді мене зачепило: несправедливість, сором, втома чи образа?»')">
+      <button class="choice-btn" onclick="selectChoice(2, '«Що насправді мене зачепило: несправедливість, сором, втома чи образа?»', this)">
         <span>🧊</span> «Що насправді мене зачепило: несправедливість, сором, втома чи образа?»
       </button>
-      <button class="choice-btn" onclick="selectChoice(2, '«Чи варта ця хвилинна емоція зіпсованого вечора, покарання або розриву стосунків?»')">
+      <button class="choice-btn" onclick="selectChoice(2, '«Чи варта ця хвилинна емоція зіпсованого вечора, покарання або розриву стосунків?»', this)">
         <span>⏳</span> «Чи варта ця хвилинна емоція зіпсованого вечора, покарання або розриву стосунків?»
       </button>
     </div>
@@ -299,13 +299,13 @@
     <p class="sub">Слова (для чату чи вголос), щоб позначити межу й взяти паузу без крику та ляскання дверима:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(3, '«Я зараз на емоціях і не хочу наговорити зайвого. Мені треба 15 хвилин побути одному/одній, потім поговоримо.»')">
+      <button class="choice-btn" onclick="selectChoice(3, '«Я зараз на емоціях і не хочу наговорити зайвого. Мені треба 15 хвилин побути одному/одній, потім поговоримо.»', this)">
         <span>⏸️</span> «Я зараз на емоціях і не хочу наговорити зайвого. Мені треба 15 хвилин побути одному/одній, потім поговоримо.»
       </button>
-      <button class="choice-btn" onclick="selectChoice(3, '«Мені неприємно, коли на мене кричать. Я готовий(-а) усе спокійно обговорити, коли всі видихнуть.»')">
+      <button class="choice-btn" onclick="selectChoice(3, '«Мені неприємно, коли на мене кричать. Я готовий(-а) усе спокійно обговорити, коли всі видихнуть.»', this)">
         <span>🛑</span> «Мені неприємно, коли на мене кричать. Я готовий(-а) усе спокійно обговорити, коли всі видихнуть.»
       </button>
-      <button class="choice-btn" onclick="selectChoice(3, '«Я бачу цю ситуацію інакше. Давайте не сваритися на емоціях, а повернемося до розмови трохи згодом.»')">
+      <button class="choice-btn" onclick="selectChoice(3, '«Я бачу цю ситуацію інакше. Давайте не сваритися на емоціях, а повернемося до розмови трохи згодом.»', this)">
         <span>🤝</span> «Я бачу цю ситуацію інакше. Давайте не сваритися на емоціях, а повернемося до розмови трохи згодом.»
       </button>
     </div>
@@ -348,10 +348,8 @@
       <button class="btn btn-yellow" id="downloadBtn" onclick="downloadProtocolImage()">📸 Зберегти картку собі</button>
     </div>
   </div>
-
 </div>
 
-<!-- Блок генерації PNG -->
 <div id="exportFrame">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
     <span style="background:#FEC830; border:2px solid #18181B; padding:3px 10px; border-radius:999px; font-size:0.75rem; font-weight:700;">
@@ -384,15 +382,14 @@
   </div>
 </div>
 
-<!-- Мобільне прев'ю -->
 <div class="preview-modal" id="prevModal">
   <div class="preview-body">
     <div style="font-weight:700; font-size:0.92rem; color:#18181B; margin-bottom:8px; text-align:center;">
       📱 Затисни картку пальцем ➔ «Зберегти у Фото»
     </div>
-    <img id="prevImg" style="width:100%; max-height:55vh; object-fit:contain; border-radius:14px; border:2px solid #18181B; margin-bottom:12px;" alt="Стоп-кран">
+    <img id="prevImg" style="width:100%; max-height:55vh; object-fit:contain; border-radius:14px; border:2px solid #18181B; margin-bottom:12px; -webkit-user-select: auto; user-select: auto;" alt="Стоп-кран">
     <div style="display:flex; gap:10px; width:100%;">
-      <a id="directBtn" href="#" download="Мій_стоп_кран.png" style="flex:1; text-align:center; background:#FEC830; color:#18181B; border:2px solid #18181B; padding:10px 14px; border-radius:12px; font-weight:700; text-decoration:none; font-size:0.88rem;">Завантажити</a>
+      <button id="stopShareBtn" style="flex:1; background:#FEC830; color:#18181B; border:2px solid #18181B; padding:10px 14px; border-radius:12px; font-weight:700; font-size:0.88rem; cursor:pointer;">💾 Зберегти в Фото</button>
       <button onclick="document.getElementById('prevModal').style.display='none'" style="background:#E2E8F0; border:2px solid #18181B; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.88rem;">Закрити</button>
     </div>
   </div>
@@ -401,11 +398,12 @@
 <script>
   const choices = { 1: null, 2: null, 3: null };
 
-  function selectChoice(step, text) {
+  function selectChoice(step, text, btnEl) {
     choices[step] = text;
     const parent = document.getElementById(`step${step}`);
     parent.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
+    btnEl.classList.add('selected');
+    btnEl.blur();
     document.getElementById(`next${step}`).disabled = false;
   }
 
@@ -434,7 +432,7 @@
   function downloadProtocolImage() {
     const btn = document.getElementById('downloadBtn');
     const orig = btn.innerHTML;
-    btn.innerHTML = '⏳ Зберігаємо...';
+    btn.innerHTML = '⏳ Створюємо картку...';
     btn.disabled = true;
 
     const frame = document.getElementById('exportFrame');
@@ -444,25 +442,34 @@
       backgroundColor: '#FFFDF9',
       useCORS: true
     }).then(canvas => {
-      const dataUrl = canvas.toDataURL('image/png');
+      canvas.toBlob(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        const modal = document.getElementById('prevModal');
+        const previewImg = document.getElementById('prevImg');
+        const shareBtn = document.getElementById('stopShareBtn');
 
-      const modal = document.getElementById('prevModal');
-      const previewImg = document.getElementById('prevImg');
-      const directBtn = document.getElementById('directBtn');
+        previewImg.src = blobUrl;
+        modal.style.display = 'flex';
 
-      previewImg.src = dataUrl;
-      directBtn.href = dataUrl;
-      modal.style.display = 'flex';
+        shareBtn.onclick = async () => {
+          if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'Мій_стоп_кран.png', { type: 'image/png' })] })) {
+            try {
+              await navigator.share({
+                files: [new File([blob], 'Мій_стоп_кран.png', { type: 'image/png' })],
+                title: 'Мій цифровий стоп-кран'
+              });
+            } catch (err) {}
+          } else {
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = 'Мій_стоп_кран.png';
+            a.click();
+          }
+        };
 
-      try {
-        const link = document.createElement('a');
-        link.download = 'Мій_стоп_кран.png';
-        link.href = dataUrl;
-        link.click();
-      } catch(e) {}
-
-      btn.innerHTML = orig;
-      btn.disabled = false;
+        btn.innerHTML = orig;
+        btn.disabled = false;
+      }, 'image/png');
     }).catch(() => {
       alert('Будь ласка, зроби скриншот екрана як шпаргалку! ✨');
       btn.innerHTML = orig;
