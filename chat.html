@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
   body, html {
     width: 100%;
@@ -237,6 +237,7 @@
     transition: all 0.12s ease;
     line-height: 1.35;
     text-align: left;
+    outline: none;
   }
   .tg-reply-item:hover { background: #eef5fd; border-color: #3390ec; transform: translateX(3px); }
 
@@ -312,7 +313,7 @@
     gap: 6px;
     transition: background 0.15s;
   }
-  .bot-card-btn:hover { background: #227ecb; }
+  .bot-card-btn:active { transform: translateY(1px); }
 
   #exportFrame {
     position: fixed;
@@ -414,9 +415,9 @@
     <div style="font-weight:700; font-size:0.92rem; color:#18181B; margin-bottom:8px; text-align:center;">
       📱 Затисни картинку пальцем ➔ «Зберегти у Фото»
     </div>
-    <img id="previewImgResult" style="width:100%; max-height:55vh; object-fit:contain; border-radius:12px; border:1.5px solid #E2E8F0; margin-bottom:12px;" alt="Результат">
+    <img id="previewImgResult" style="width:100%; max-height:55vh; object-fit:contain; border-radius:12px; border:1.5px solid #E2E8F0; margin-bottom:12px; -webkit-user-select: auto; user-select: auto;" alt="Результат">
     <div style="display:flex; gap:10px; width:100%;">
-      <a id="directDownloadBtn" href="#" download="Мій_профіль_у_чаті.png" style="flex:1; text-align:center; background:#3390EC; color:#fff; padding:10px 14px; border-radius:12px; font-weight:700; text-decoration:none; font-size:0.88rem;">Завантажити файл</a>
+      <button id="chatShareBtn" style="flex:1; background:#3390EC; color:#fff; padding:10px 14px; border:none; border-radius:12px; font-weight:700; font-size:0.88rem; cursor:pointer;">💾 Зберегти в Фото</button>
       <button onclick="document.getElementById('imagePreviewModal').style.display='none'" style="background:#E2E8F0; border:none; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.88rem;">Закрити</button>
     </div>
   </div>
@@ -852,7 +853,7 @@
   function saveProfileCard() {
     const btn = document.getElementById('saveCardBtn');
     const originalText = btn.innerHTML;
-    btn.innerHTML = '⏳ Зберігаємо...';
+    btn.innerHTML = '⏳ Створюємо картку...';
     btn.disabled = true;
 
     const exportCardBody = document.getElementById('exportCardBody');
@@ -884,27 +885,36 @@
       useCORS: true,
       backgroundColor: '#8bb28a'
     }).then(canvas => {
-      const dataUrl = canvas.toDataURL('image/png');
+      canvas.toBlob(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        const modal = document.getElementById('imagePreviewModal');
+        const previewImg = document.getElementById('previewImgResult');
+        const shareBtn = document.getElementById('chatShareBtn');
 
-      const modal = document.getElementById('imagePreviewModal');
-      const previewImg = document.getElementById('previewImgResult');
-      const directBtn = document.getElementById('directDownloadBtn');
+        previewImg.src = blobUrl;
+        modal.style.display = 'flex';
 
-      previewImg.src = dataUrl;
-      directBtn.href = dataUrl;
-      modal.style.display = 'flex';
+        shareBtn.onclick = async () => {
+          if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'Мій_профіль_у_чаті.png', { type: 'image/png' })] })) {
+            try {
+              await navigator.share({
+                files: [new File([blob], 'Мій_профіль_у_чаті.png', { type: 'image/png' })],
+                title: 'Мій результат у чаті'
+              });
+            } catch (err) {}
+          } else {
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = 'Мій_профіль_у_чаті.png';
+            a.click();
+          }
+        };
 
-      try {
-        const link = document.createElement('a');
-        link.download = 'Мій_профіль_у_чаті.png';
-        link.href = dataUrl;
-        link.click();
-      } catch(e) {}
-
-      btn.innerHTML = originalText;
-      btn.disabled = false;
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }, 'image/png');
     }).catch(() => {
-      alert('Будь ласка, зроби скриншот повідомлення бота на пам\'ять! ✨');
+      alert('Будь ласка, зроби скриншот повідомлення бота! ✨');
       btn.innerHTML = originalText;
       btn.disabled = false;
     });
