@@ -264,17 +264,17 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
   }
 
-  /* Стилізація фінальної картки-повідомлення від бота */
+  /* Бот-картка */
   .bot-card-inner {
-    background: #f8fafc;
+    background: #ffffff;
     border: 1.5px solid #cbd5e1;
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-top: 6px;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 8px;
     color: #1e293b;
   }
   .bot-card-title {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #0f172a;
     display: flex;
@@ -286,36 +286,36 @@
     display: inline-block;
     background: #e0f2fe;
     color: #0369a1;
-    padding: 3px 10px;
+    padding: 4px 10px;
     border-radius: 8px;
     font-size: 0.8rem;
     font-weight: 700;
     margin-bottom: 10px;
   }
   .bot-card-desc {
-    font-size: 0.88rem;
-    line-height: 1.45;
+    font-size: 0.9rem;
+    line-height: 1.5;
     color: #334155;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .bot-card-stats {
-    background: #ffffff;
+    background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
   }
   .bot-card-btn {
     width: 100%;
     background: #3390ec;
     color: #ffffff;
     border: none;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 12px;
+    padding: 11px;
     font-weight: 700;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -324,6 +324,30 @@
     transition: background 0.15s;
   }
   .bot-card-btn:hover { background: #227ecb; }
+
+  /* Прихований шаблон для рендерингу естетичної картки */
+  #exportFrame {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 480px;
+    padding: 34px 26px;
+    background: #8bb28a;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 10%, transparent 20%),
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .export-card-body {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+  }
 </style>
 </head>
 <body>
@@ -377,6 +401,11 @@
 
 </div>
 
+<!-- Прихований контейнер для красивого експорту картки -->
+<div id="exportFrame">
+  <div class="export-card-body" id="exportCardBody"></div>
+</div>
+
 <script>
   const flowHistory = document.getElementById('history');
   const typingPill = document.getElementById('typingIndicator');
@@ -390,8 +419,8 @@
   const optionsContainer = document.getElementById('optionsContainer');
   const inputArea = document.getElementById('inputArea');
 
-  // Історія виборів учня для підсумкового профілю
   const userChoicesSummary = [];
+  let finalReportData = {};
 
   const scenarios = [
     {
@@ -672,7 +701,6 @@
     sendIcon.textContent = "✈️";
     sendIcon.style.color = "#3390ec";
 
-    // Фіксуємо перший вибір у ситуації
     if (opt.next) {
       userChoicesSummary.push(opt.type);
     }
@@ -718,7 +746,6 @@
     flowHistory.appendChild(pill);
     flowHistory.scrollTop = flowHistory.scrollHeight;
 
-    // Перевіряємо, чи є наступна ситуація
     if (currentScenarioIndex < scenarios.length - 1) {
       setTimeout(() => {
         const nextBtn = document.createElement('div');
@@ -732,7 +759,6 @@
         flowHistory.scrollTop = flowHistory.scrollHeight;
       }, 600);
     } else {
-      // ФІНАЛ 3 СИТУАЦІЙ: Генерація звіту від бота
       setTimeout(() => {
         renderFinalBotReport();
       }, 800);
@@ -740,7 +766,7 @@
   }
 
   function renderFinalBotReport() {
-    inputArea.style.display = 'none'; // приховуємо поле введення
+    inputArea.style.display = 'none';
 
     peerName.textContent = "🤖 HappyKids Bot";
     avatarEl.textContent = "🤖";
@@ -767,10 +793,12 @@
       }
     }
 
+    finalReportData = { title, badge, desc, matureCount, attackCount, passiveCount };
+
     const row = document.createElement('div');
     row.className = 'tg-bubble-row in';
     row.innerHTML = `
-      <div class="tg-bubble" style="max-width:88%; padding:14px;" id="botReportCapture">
+      <div class="tg-bubble" style="max-width:88%; padding:14px;">
         <div style="font-weight:700; color:#3390ec; font-size:0.85rem; margin-bottom:4px;">🤖 HappyKids Assistant · Підсумок краш-тесту:</div>
         <div class="bot-card-inner">
           <div class="bot-card-title">${title}</div>
@@ -807,14 +835,38 @@
 
   function saveProfileCard() {
     const btn = document.getElementById('saveCardBtn');
-    const target = document.getElementById('botReportCapture');
     const originalText = btn.innerHTML;
     btn.innerHTML = '⏳ Зберігаємо...';
     btn.disabled = true;
 
-    html2canvas(target, {
+    // Створюємо окрему гарну картку в прихованому контейнері з фоном навколо
+    const exportCardBody = document.getElementById('exportCardBody');
+    exportCardBody.innerHTML = `
+      <div style="font-weight:700; color:#3390ec; font-size:0.82rem; text-transform:uppercase; margin-bottom:6px; letter-spacing:0.5px;">
+        🤖 HappyKids Assistant · Результат
+      </div>
+      <div class="bot-card-title" style="font-size:1.3rem; margin-bottom:8px;">${finalReportData.title}</div>
+      <div class="bot-card-badge" style="font-size:0.85rem; margin-bottom:12px;">${finalReportData.badge}</div>
+      <div class="bot-card-desc" style="font-size:0.95rem; line-height:1.5; color:#334155; margin-bottom:14px;">
+        ${finalReportData.desc}
+      </div>
+      <div class="bot-card-stats" style="font-size:0.9rem; line-height:1.6; margin-bottom:12px; background:#f8fafc;">
+        📊 <b>Статистика виборів у симуляторі:</b><br>
+        • Режим сили: <b>${finalReportData.matureCount} з 3</b><br>
+        • Пряма контратака: <b>${finalReportData.attackCount} з 3</b><br>
+        • Сарказм/дистанція: <b>${finalReportData.passiveCount} з 3</b>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#94a3b8; font-weight:600; border-top:1px solid #e2e8f0; padding-top:10px;">
+        <span>Happy Kids 11–13 · Що я відчуваю в конфлікті</span>
+        <span>${getCurrentTime()} ✓✓</span>
+      </div>
+    `;
+
+    const targetFrame = document.getElementById('exportFrame');
+
+    html2canvas(targetFrame, {
       scale: 2,
-      backgroundColor: '#ffffff'
+      useCORS: true
     }).then(canvas => {
       const link = document.createElement('a');
       link.download = 'Мій_профіль_у_чаті.png';
