@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Що я відчуваю в конфлікті | Презентація уроку</title>
+<title>Що я відчуваю в конфлікті | Happy Kids 11–13</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FDFBF7;
+    --paper: #FFFDF9;
     --card: #FFFFFF;
     --ink: #18181B;
     --muted: #52525B;
@@ -23,182 +23,167 @@
     --accent: #6366F1;
     --accent-soft: #EEF2FF;
     --shadow: 4px 4px 0px var(--line);
-    --shadow-pop: 7px 7px 0px var(--line);
+    --shadow-pop: 8px 8px 0px var(--line);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  
   body {
-    background: var(--paper);
+    background: #EDEAE4;
     color: var(--ink);
-    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+    padding: 16px;
   }
 
-  /* Контейнер презентації */
-  .presentation-deck {
+  .deck-container {
     width: 100%;
-    max-width: 980px;
-    background: var(--card);
+    max-width: 1060px;
+    height: 92vh;
+    max-height: 720px;
+    background: var(--paper);
     border: 3.5px solid var(--line);
     border-radius: 28px;
     box-shadow: var(--shadow-pop);
     display: flex;
     flex-direction: column;
-    position: relative;
-    min-height: 600px;
     overflow: hidden;
+    position: relative;
   }
 
-  /* Верхня панель презентації */
-  .deck-header {
-    background: #FFFDF9;
+  /* Верхній статус-бар */
+  .deck-topbar {
+    background: var(--card);
     border-bottom: 3px solid var(--line);
-    padding: 14px 24px;
+    padding: 12px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
   }
-  .module-tag {
+  .module-pill {
     background: var(--yellow);
     border: 2px solid var(--line);
-    padding: 4px 12px;
+    padding: 4px 14px;
     border-radius: 999px;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 700;
     box-shadow: 2px 2px 0 var(--line);
   }
-  .slide-counter {
-    font-size: 0.85rem;
+  .slide-num {
+    font-size: 0.88rem;
     font-weight: 700;
     color: var(--muted);
   }
 
-  /* Вміст слайда */
-  .slide-viewport {
+  /* Тіло слайда */
+  .deck-body {
     flex: 1;
-    padding: 36px 40px;
+    overflow-y: auto;
+    padding: 36px 48px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
   }
 
-  .slide {
+  .slide-item {
     display: none;
-    animation: slideFade 0.2s ease;
+    animation: fadeIn 0.18s ease;
+    width: 100%;
   }
-  .slide.active {
+  .slide-item.current {
     display: flex;
     flex-direction: column;
   }
-  @keyframes slideFade {
-    from { opacity: 0; transform: translateY(6px); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  h1.slide-title {
-    font-size: 2rem;
+  h1.title {
+    font-size: 2.2rem;
     font-weight: 700;
     line-height: 1.25;
     margin-bottom: 12px;
   }
-  p.slide-sub {
+  p.subtitle {
     font-size: 1.05rem;
     color: var(--muted);
     line-height: 1.5;
     margin-bottom: 24px;
   }
 
-  /* Карточки на слайдах */
-  .cards-grid {
+  /* Сітки карток */
+  .grid-2 {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
   }
-  .info-card {
-    background: #FFFFFF;
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .box {
+    background: var(--card);
     border: 2.5px solid var(--line);
     border-radius: 18px;
-    padding: 20px;
+    padding: 22px;
     box-shadow: var(--shadow);
   }
-  .info-card h3 {
-    font-size: 1.15rem;
+  .box h3 {
+    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .info-card p {
-    font-size: 0.92rem;
+  .box p {
+    font-size: 0.95rem;
     line-height: 1.5;
     color: var(--muted);
   }
 
-  /* Інтерактивний спеціальний слайд тренажера */
-  .interactive-slide-box {
+  /* Інтерактивний бокс із QR-кодом */
+  .interactive-box {
     background: var(--yellow-soft);
     border: 3px solid var(--line);
-    border-radius: 22px;
-    padding: 24px 28px;
+    border-radius: 24px;
+    padding: 28px 32px;
     box-shadow: var(--shadow);
     display: flex;
-    gap: 28px;
+    gap: 32px;
     align-items: center;
-    flex-wrap: wrap;
   }
-  .qr-wrapper {
-    background: #FFFFFF;
+  .qr-card {
+    background: #fff;
     border: 2.5px solid var(--line);
     border-radius: 18px;
     padding: 12px;
-    text-align: center;
     box-shadow: var(--shadow);
+    text-align: center;
     flex-shrink: 0;
   }
-  .qr-img {
+  .qr-card img {
     width: 170px;
     height: 170px;
     display: block;
     border-radius: 8px;
   }
-  .qr-label {
+  .qr-card span {
+    display: block;
+    margin-top: 8px;
     font-size: 0.75rem;
     font-weight: 700;
-    margin-top: 8px;
-    color: var(--ink);
-  }
-  .interactive-details {
-    flex: 1;
-    min-width: 280px;
-  }
-  .interactive-details h2 {
-    font-size: 1.45rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .interactive-details p {
-    font-size: 0.95rem;
-    color: #444;
-    line-height: 1.5;
-    margin-bottom: 18px;
   }
 
-  /* Кнопки запуску на слайді */
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .btn-main {
+  .btn-action-main {
     background: var(--yellow);
     border: 2.5px solid var(--line);
     border-radius: 14px;
@@ -207,58 +192,57 @@
     font-weight: 700;
     color: var(--ink);
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     box-shadow: var(--shadow);
     cursor: pointer;
     transition: 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  .btn-main:hover {
+  .btn-action-main:hover {
     transform: translate(-2px, -2px);
     box-shadow: var(--shadow-pop);
   }
-  .btn-secondary {
+  .btn-action-copy {
     background: #FFFFFF;
     border: 2.5px solid var(--line);
     border-radius: 14px;
     padding: 12px 18px;
     font-size: 0.92rem;
     font-weight: 700;
-    color: var(--ink);
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: 0.15s;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: 0.15s;
   }
-  .btn-secondary:hover {
+  .btn-action-copy:hover {
     transform: translate(-2px, -2px);
-    box-shadow: var(--shadow-pop);
     background: var(--accent-soft);
   }
 
-  /* Нижня панель навігації для вчителя */
-  .deck-footer {
-    background: #FFFDF9;
+  /* Нижня панель навігації */
+  .deck-nav {
+    background: var(--card);
     border-top: 3px solid var(--line);
     padding: 14px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
   }
   .nav-btn {
-    background: #FFFFFF;
+    background: #fff;
     border: 2.5px solid var(--line);
     border-radius: 12px;
-    padding: 10px 20px;
-    font-family: inherit;
+    padding: 10px 22px;
     font-size: 0.92rem;
     font-weight: 700;
     cursor: pointer;
     box-shadow: var(--shadow);
     transition: 0.15s;
+    font-family: inherit;
   }
   .nav-btn:hover:not(:disabled) {
     transform: translate(-2px, -2px);
@@ -269,12 +253,27 @@
     cursor: default;
     box-shadow: none;
   }
-  .nav-btn.primary {
-    background: var(--yellow);
+  .nav-btn.primary { background: var(--yellow); }
+
+  /* Картинка айсберга або Зінченка */
+  .media-frame {
+    border: 2.5px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .media-frame img {
+    max-width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    display: block;
   }
 
-  /* Тост копіювання лінка */
-  .toast-copied {
+  .toast {
     display: none;
     position: fixed;
     bottom: 24px;
@@ -284,106 +283,109 @@
     border-radius: 999px;
     font-weight: 700;
     font-size: 0.9rem;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    z-index: 100;
+    z-index: 1000;
   }
 </style>
 </head>
 <body>
 
-<div class="presentation-deck">
+<div class="deck-container">
   
-  <!-- Шапка презентації -->
-  <div class="deck-header">
-    <span class="module-tag">Happy Kids 11–13 років · Модуль 4</span>
-    <span class="slide-counter" id="slideIndicator">Слайд 1 з 16</span>
+  <!-- Верхня плашка -->
+  <div class="deck-topbar">
+    <span class="module-pill">Happy Kids 11–13 років · Модуль 4</span>
+    <span class="slide-num" id="slideNum">Слайд 1 з 17</span>
   </div>
 
-  <!-- Робоча зона слайдів -->
-  <div class="slide-viewport">
+  <!-- Робоча зона -->
+  <div class="deck-body">
 
-    <!-- СЛАЙД 1: ТИТУЛЬНИЙ -->
-    <div class="slide active">
-      <span style="font-size:3rem; margin-bottom:12px;">🌊</span>
-      <h1 class="slide-title">Що я відчуваю в конфлікті?</h1>
-      <p class="slide-sub">Як наш мозок вмикає захисну броню і як навчитися тримати удар без крику, образ і токсичності.</p>
-      <div style="background:var(--yellow-soft); border:2.5px solid var(--line); border-radius:18px; padding:18px; font-weight:600; font-size:0.95rem; line-height:1.5;">
-        🎯 <b>Маршрут уроку:</b> розберемося з айсбергом емоцій, проскануємо свої захисні реакції, пройдемо краш-тест у чаті та зберемо персональний стоп-кран на 10 секунд.
+    <!-- 1. ТИТУЛКА -->
+    <div class="slide-item current">
+      <span style="font-size:3.2rem; margin-bottom:12px;">🌊</span>
+      <h1 class="title">Що я відчуваю в конфлікті?</h1>
+      <p class="subtitle">Чому під тиском зриває дах, куди зникають потрібні слова і як включити дорослу силу замість крику чи образ.</p>
+      <div style="background:var(--yellow-soft); border:2.5px solid var(--line); border-radius:18px; padding:18px 24px; font-weight:600; font-size:1rem; line-height:1.5;">
+        🎯 <b>Маршрут уроку:</b> зазирнемо під воду айсберга, проскануємо свій захисний архетип, проведемо краш-тест у Telegram-симуляторі та зберемо свій аварійний стоп-кран на 10 секунд.
       </div>
     </div>
 
-    <!-- СЛАЙД 2: РОЗМИНКА -->
-    <div class="slide">
-      <h1 class="slide-title">🔥 Швидкий чекін: знайома картина?</h1>
-      <p class="slide-sub">Згадай, що відбувається з тобою, коли хтось несподівано різко наїжджає або глузує:</p>
-      <div class="cards-grid">
-        <div class="info-card">
-          <h3>⚡ Спалах у грудях</h3>
-          <p>Хочеться в ту ж секунду кинути їдкий панч, написати капслоком або вдарити у відповідь.</p>
+    <!-- 2. ЗІНЧЕНКО / ТРИГЕР -->
+    <div class="slide-item">
+      <h1 class="title">⚡ Знайома ситуація?</h1>
+      <p class="subtitle">Тиск трапляється з кожним — у школі, вдома, на полі чи в Discord:</p>
+      <div class="grid-2">
+        <div class="media-frame">
+          <img src="zinchenko.png" alt="Конфлікт / Емоція" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect fill=\'%23FFEBEB\' width=\'100%25\' height=\'100%25\'/><text x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' font-size=\'20\'>🔥 Момент напруги</text></svg>'">
         </div>
-        <div class="info-card">
-          <h3>🚪 Бажання зникнути</h3>
-          <p>Вимкнути екран, піти в кімнату, надягти навушники й удати, що взагалі нічого не сталося.</p>
-        </div>
-        <div class="info-card">
-          <h3>🧊 Ступор</h3>
-          <p>У горлі клубок, дивишся в одну точку, зуби зціплені. Думок море, а сказати нічого не можеш.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 3: ФІЗІОЛОГІЯ -->
-    <div class="slide">
-      <h1 class="slide-title">🧠 Що в цей момент робить твій мозок?</h1>
-      <p class="slide-sub">Це не твоя слабкість чи поганий характер. Це робота біологічної сигналізації:</p>
-      <div class="cards-grid">
-        <div class="info-card" style="background:var(--coral-soft); border-color:var(--coral);">
-          <h3 style="color:#991B1B;">🚨 Амигдала (Сигналізація)</h3>
-          <p>Спрацьовує за 0.1 секунди. Викидає адреналін і кричить: «НЕБЕЗПЕКА! Захищайся негайно!»</p>
-        </div>
-        <div class="info-card" style="background:var(--teal-soft); border-color:var(--teal);">
-          <h3 style="color:#065F46;">🧭 Префронтальна кора (Логіка)</h3>
-          <p>Вмикається лише через 10–15 секунд. Саме вона відповідає за спокій, аргументи й дорослу позицію.</p>
-        </div>
-      </div>
-      <div style="background:#fff; border:2px solid var(--line); border-radius:14px; padding:12px 16px; font-weight:700; font-size:0.9rem;">
-        💡 У перші 10 секунд сварки ми буквально діємо на «автопілоті» виживання.
-      </div>
-    </div>
-
-    <!-- СЛАЙД 4: АЙСБЕРГ -->
-    <div class="slide">
-      <h1 class="slide-title">🏔️ Айсберг емоцій: що ховається під водою?</h1>
-      <p class="slide-sub">У будь-якому конфлікті те, що ми бачимо зовні — це лише 10% правди:</p>
-      <div class="cards-grid">
-        <div class="info-card" style="background:var(--yellow-soft);">
-          <h3>👀 Над водою (10%)</h3>
-          <p><b>Поведінка:</b> злість, крик, хлопання дверима, їдкі підколки або повний холодний ігнор.</p>
-        </div>
-        <div class="info-card" style="background:var(--accent-soft);">
-          <h3>🌊 Під водою (90%)</h3>
-          <p><b>Справжнє відчуття:</b> страх бути знеціненим, відчуття несправедливості, втома або біль від зради.</p>
+        <div style="display:flex; flex-direction:column; gap:12px; justify-content:center;">
+          <div class="box" style="background:var(--coral-soft); border-color:var(--coral);">
+            <h3 style="color:#991B1B;">Коли всередині вибух</h3>
+            <p>Публічне зауваження, звинувачення в злитій грі чи різка претензія батьків миттєво підіймають хвилю адреналіну.</p>
+          </div>
+          <div class="box">
+            <h3>Чому так важко зупинитись?</h3>
+            <p>У перші секунди нами керує не логіка, а найдавніша захисна сигналізація тіла.</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- СЛАЙД 5: ІНТЕРАКТИВ 1 (СКАНЕР) -->
-    <div class="slide">
-      <div class="interactive-slide-box">
-        <div class="qr-wrapper">
-          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/scanner.html" alt="QR Code">
-          <div class="qr-label">Наведи камеру смартфона 📷</div>
+    <!-- 3. АМИГДАЛА VS ЛОГІКА -->
+    <div class="slide-item">
+      <h1 class="title">🧠 Біологія паніки: 10 секунд темряви</h1>
+      <p class="subtitle">Що відбувається у твоїй голові в перші секунди конфлікту:</p>
+      <div class="grid-2">
+        <div class="box" style="background:var(--coral-soft); border-color:var(--coral);">
+          <h3 style="color:#991B1B;">🚨 Амигдала (0.1 секунди)</h3>
+          <p>Миттєво викидає гормони стресу. Кричить: <i>«БИЙСЯ АБО ТІКАЙ!»</i>. У цей момент раціональний розум тимчасово вирубається.</p>
         </div>
-        <div class="interactive-details">
-          <span class="module-tag" style="background:var(--teal-soft); color:var(--teal); margin-bottom:8px;">Практика 1</span>
-          <h2>🧭 Експрес-сканер захисних реакцій</h2>
-          <p>Дізнайся, яку броню вмикає твій мозок у момент тиску (Блискавичний щит, Бункер чи Лід). Пройди 4 короткі POV-ситуації та збережи картку профілю.</p>
-          
-          <div class="btn-row">
-            <a href="scanner.html" target="_blank" class="btn-main">
-              🚀 Відкрити тренажер у новій вкладці
+        <div class="box" style="background:var(--teal-soft); border-color:var(--teal);">
+          <h3 style="color:#065F46;">🧭 Префронтальна кора (через 10 с)</h3>
+          <p>Центр дорослих рішень і спокійного захисту. Потребує паузи в 10 секунд, щоб повернути контроль над ситуацією.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. АЙСБЕРГ ЕМОЦІЙ -->
+    <div class="slide-item">
+      <h1 class="title">🏔️ Модель Айсберга: що під водою?</h1>
+      <p class="subtitle">У будь-якому конфлікті зовні видно лише вершину:</p>
+      <div class="grid-2">
+        <div class="media-frame">
+          <img src="iceberg.png" alt="Айсберг емоцій" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect fill=\'%23EEF2FF\' width=\'100%25\' height=\'100%25\'/><text x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' font-size=\'20\'>🏔️ Айсберг</text></svg>'">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px; justify-content:center;">
+          <div class="box" style="background:var(--yellow-soft);">
+            <h3>👀 Над водою (10%)</h3>
+            <p><b>Поведінка:</b> агресія, крик, хлопання дверима, їдкий сарказм або демонстративне мовчання.</p>
+          </div>
+          <div class="box" style="background:var(--accent-soft);">
+            <h3>🌊 Під водою (90%)</h3>
+            <p><b>Справжні почуття:</b> несправедливість, сором, страх підвести інших або сильна втома.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. ІНТЕРАКТИВ 1: СКАНЕР РЕАКЦІЙ (ВБУДОВАНИЙ ТРЕНАЖЕР) -->
+    <div class="slide-item">
+      <div class="interactive-box">
+        <div class="qr-card">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/scanner.html" alt="QR Scanner">
+          <span>Наведи камеру смартфона 📷</span>
+        </div>
+        <div style="flex:1;">
+          <span class="module-pill" style="background:var(--teal-soft); color:var(--teal); margin-bottom:10px;">Практикум 1</span>
+          <h2 style="font-size:1.6rem; font-weight:700; margin-bottom:8px;">🧭 Експрес-діагностика: Твій захисний архетип</h2>
+          <p style="font-size:0.95rem; color:#444; line-height:1.5; margin-bottom:20px;">
+            Дізнайся, яку броню вмикає твій мозок у момент тиску (Блискавичний щит, Бункер чи Лід). Пройди 4 життєві POV-ситуації та збережи власну картку!
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="scanner.html" target="_blank" class="btn-action-main">
+              🚀 Відкрити сканер у новій вкладці
             </a>
-            <button class="btn-secondary" onclick="copyLink('https://goiteens-ua.github.io/jldwpe/scanner.html')">
+            <button class="btn-action-copy" onclick="copyLink('https://goiteens-ua.github.io/jldwpe/scanner.html')">
               📋 Скопіювати лінк у чат
             </button>
           </div>
@@ -391,83 +393,84 @@
       </div>
     </div>
 
-    <!-- СЛАЙД 6: ОБГОВОРЕННЯ АРХЕТИПІВ -->
-    <div class="slide">
-      <h1 class="slide-title">🛡️ Три архетипи захисту</h1>
-      <p class="slide-sub">Який архетип випав у тебе? Кожен має свою силу та свою пастку:</p>
-      <div class="cards-grid">
-        <div class="info-card">
+    <!-- 6. ТРИ АРХЕТИПИ -->
+    <div class="slide-item">
+      <h1 class="title">🛡️ Три архетипи захисної броні</h1>
+      <p class="subtitle">Що показала діагностика? У кожного архетипу є суперсила і своя пастка:</p>
+      <div class="grid-3">
+        <div class="box">
           <h3>⚡ Блискавичний щит</h3>
-          <p><b>Сила:</b> сміливість, захист гідності.<br><b>Пастка:</b> спалах агресії, ескалація війни.</p>
+          <p><b>Реакція:</b> миттєва відсіч, сарказм, капслок.<br><b>Пастка:</b> розпалює пожежу до 100%.</p>
         </div>
-        <div class="info-card">
+        <div class="box">
           <h3>🏰 Автономний бункер</h3>
-          <p><b>Сила:</b> захист внутрішньої енергії.<br><b>Пастка:</b> проблема зависає, образа накопичується.</p>
+          <p><b>Реакція:</b> навушники, ігнор, вихід із чату.<br><b>Пастка:</b> проблема зависає, напруга залишається.</p>
         </div>
-        <div class="info-card">
+        <div class="box">
           <h3>🧊 Невидимий лід</h3>
-          <p><b>Сила:</b> тонке відчуття небезпеки.<br><b>Пастка:</b> внутрішній шторм, тиснення почуттів у собі.</p>
+          <p><b>Реакція:</b> посмішка, «зависання», ступор.<br><b>Пастка:</b> емоційний шторм з'їдає сили всередині.</p>
         </div>
       </div>
     </div>
 
-    <!-- СЛАЙД 7: ПАСТКИ ВІДПОВІДЕЙ -->
-    <div class="slide">
-      <h1 class="slide-title">⚠️ Три типові пастки в чатах</h1>
-      <p class="slide-sub">Як ми зазвичай реагуємо на токсичні вкиди й чому це не працює:</p>
-      <div class="cards-grid">
-        <div class="info-card" style="border-color:var(--coral);">
-          <h3>🔴 Атака капслоком</h3>
-          <p>«На себе подивись, дно косоруке!» $\rightarrow$ роздмухує пожежу до 100%, перехід на особистості.</p>
+    <!-- 7. ПАСТКИ ВІДПОВІДЕЙ -->
+    <div class="slide-item">
+      <h1 class="title">⚠️ Як ми зазвичай відповідаємо в чатах?</h1>
+      <p class="subtitle">Три реакції, які найчастіше ведуть у глухий кут:</p>
+      <div class="grid-3">
+        <div class="box" style="border-color:var(--coral);">
+          <h3 style="color:#991B1B;">🔴 Напад на напад</h3>
+          <p>«На себе подивись!» $\rightarrow$ взаємні образи, перехід на особистості, бан у скваді.</p>
         </div>
-        <div class="info-card" style="border-color:var(--yellow);">
-          <h3>🟡 Пасивна отрута</h3>
-          <p>«Ой, вибачте великому про-гравцю...» $\rightarrow$ сарказм викликає ще більшу хвилю роздратування.</p>
+        <div class="box" style="border-color:var(--yellow);">
+          <h3 style="color:#854D0E;">🟡 Пасивна отрута</h3>
+          <p>«Ой, вибачте великому про-гравцю...» $\rightarrow$ сарказм сприймається як шпилька й бісить ще дужче.</p>
         </div>
-        <div class="info-card" style="border-color:var(--muted);">
-          <h3>⚪ Маска «Мені пофіг»</h3>
-          <p>«Та роби шо хочеш, мені байдуже.» $\rightarrow$ співрозмовник бачить, що тебе насправді зачепило.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 8: ФОРМУЛА СИЛИ -->
-    <div class="slide">
-      <h1 class="slide-title">💎 Формула дорослої сили</h1>
-      <p class="slide-sub">Як роззброїти нападника без війни й без прогинання за 3 кроки:</p>
-      <div class="cards-grid">
-        <div class="info-card">
-          <h3>1. Факт / Почуття</h3>
-          <p>Визнай реальність спокійно: «Раунд справді вийшов невдалим» або «Мені неприємно це чути».</p>
-        </div>
-        <div class="info-card">
-          <h3>2. Чітка межа</h3>
-          <p>Познач червону лінію: «Але розмовляти зі мною в такому тоні не треба».</p>
-        </div>
-        <div class="info-card">
-          <h3>3. Конструктивна дія</h3>
-          <p>Запропонуй паузу або рішення: «Охолоньмо 15 хвилин, потім обговоримо спокійно».</p>
+        <div class="box">
+          <h3>⚪ Маска «пофігізму»</h3>
+          <p>«Та мені взагалі пофіг» $\rightarrow$ усі бачать, що тебе насправді зачепило за живе.</p>
         </div>
       </div>
     </div>
 
-    <!-- СЛАЙД 9: ІНТЕРАКТИВ 2 (ЧАТ) -->
-    <div class="slide">
-      <div class="interactive-slide-box" style="background:#E6FFFA; border-color:var(--teal);">
-        <div class="qr-wrapper">
-          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/chat.html" alt="QR Code">
-          <div class="qr-label">Наведи камеру смартфона 📷</div>
+    <!-- 8. ФОРМУЛА АСЕРТИВНОСТІ -->
+    <div class="slide-item">
+      <h1 class="title">💎 Формула дорослої сили (Режим сили)</h1>
+      <p class="subtitle">Як роззброїти наїзд без війни й без прогинання:</p>
+      <div class="grid-3">
+        <div class="box">
+          <h3>1. Факт</h3>
+          <p>Спокійно назви ситуацію: <i>«Раунд справді вийшов невдалим»</i> або <i>«Я був зайнятий і не міг відписати»</i>.</p>
         </div>
-        <div class="interactive-details">
-          <span class="module-tag" style="background:var(--yellow); margin-bottom:8px;">Практика 2</span>
-          <h2>📱 Симулятор Telegram: Краш-тест асертивності</h2>
-          <p>Справжня переписка з токсичними ситуаціями (гра з Владом, шкільний чат із Марком, приватні з Данею). Протестуй, як різні відповіді гасять або розпалюють сварку, та отримай свій підсумковий титул від бота!</p>
-          
-          <div class="btn-row">
-            <a href="chat.html" target="_blank" class="btn-main">
-              🚀 Відкрити чат у новій вкладці
+        <div class="box">
+          <h3>2. Межа</h3>
+          <p>Вистави червону лінію: <i>«Але розмовляти зі мною в такому тоні не треба»</i>.</p>
+        </div>
+        <div class="box">
+          <h3>3. Дія</h3>
+          <p>Запропонуй вихід: <i>«Охолоньмо 15 хвилин, потім обговоримо спокійно»</i>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. ІНТЕРАКТИВ 2: СИМУЛЯТОР ЧАТУ TELEGRAM (ВБУДОВАНИЙ ТРЕНАЖЕР) -->
+    <div class="slide-item">
+      <div class="interactive-box" style="background:#E6FFFA; border-color:var(--teal);">
+        <div class="qr-card">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/chat.html" alt="QR Chat">
+          <span>Наведи камеру смартфона 📷</span>
+        </div>
+        <div style="flex:1;">
+          <span class="module-pill" style="background:var(--yellow); margin-bottom:10px;">Практикум 2</span>
+          <h2 style="font-size:1.6rem; font-weight:700; margin-bottom:8px;">📱 Симулятор Telegram: Краш-тест асертивності</h2>
+          <p style="font-size:0.95rem; color:#333; line-height:1.5; margin-bottom:20px;">
+            Жива переписка з токсичними випадами (Влад, Марк, Даня). Випробуй різні варіанти відповідей, подивись на реакцію співрозмовника й забери фінальний титул від бота!
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="chat.html" target="_blank" class="btn-action-main">
+              🚀 Запустити Telegram-чат
             </a>
-            <button class="btn-secondary" onclick="copyLink('https://goiteens-ua.github.io/jldwpe/chat.html')">
+            <button class="btn-action-copy" onclick="copyLink('https://goiteens-ua.github.io/jldwpe/chat.html')">
               📋 Скопіювати лінк у чат
             </button>
           </div>
@@ -475,75 +478,76 @@
       </div>
     </div>
 
-    <!-- СЛАЙД 10: АНАЛІЗ ЧАТУ -->
-    <div class="slide">
-      <h1 class="slide-title">🎯 Що змусило співрозмовника здати назад?</h1>
-      <p class="slide-sub">Чому агресор заспокоюється, коли ти використовуєш Режим Сили:</p>
-      <div class="cards-grid">
-        <div class="info-card">
-          <h3>🛑 Відсутність палива</h3>
-          <p>Агресор шукає твою слабкість або істерику. Коли ти не даєш крику у відповідь, його атака б'є в пустоту.</p>
+    <!-- 10. РОЗБІР СИМУЛЯТОРА -->
+    <div class="slide-item">
+      <h1 class="title">🎯 Чому співрозмовник здав назад?</h1>
+      <p class="subtitle">Секрет того, як дорослий спокій нейтралізує нападника:</p>
+      <div class="grid-2">
+        <div class="box">
+          <h3>🛑 Нуль палива для сварки</h3>
+          <p>Агресор чекає твоєї істерики чи виправдовувань. Коли ти відповідаєш спокійно по факту — його наїзд провалюється в порожнечу.</p>
         </div>
-        <div class="info-card">
-          <h3>🤝 Збереження гідності</h3>
-          <p>Ти не опускаєшся до образи, але й не вибачаєшся за те, в чому не винен(-на). Твоя позиція непохитна.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 11: КОНФЛІКТИ ВДОМА -->
-    <div class="slide">
-      <h1 class="slide-title">🏠 А що робити, коли закипаєш удома?</h1>
-      <p class="slide-sub">У сварках із батьками адреналін накриває ще швидше, ніж у чаті з друзями:</p>
-      <div class="cards-grid">
-        <div class="info-card">
-          <h3>Типовий сценарій:</h3>
-          <p>«Знову ти тільки в телефоні!» $\rightarrow$ Спалах образи $\rightarrow$ Крик у відповідь $\rightarrow$ Ляскання дверима $\rightarrow$ Покарання без гаджетів на тиждень.</p>
-        </div>
-        <div class="info-card" style="background:var(--yellow-soft);">
-          <h3>Як перемкнути сценарій:</h3>
-          <p>Зробити крок назад, видихнути й сказати вголос фразу-паузу: «Я зараз дуже злий(-а). Давайте поговоримо за 15 хвилин, щоб не наговорити зайвого».</p>
+        <div class="box">
+          <h3>🛡️ Тверда гідність</h3>
+          <p>Ти не переходиш на лайку, але й не даєш витерти об себе ноги. До такого тону нема за що причепитися.</p>
         </div>
       </div>
     </div>
 
-    <!-- СЛАЙД 12: ПРАВИЛО 10 СЕКУНД -->
-    <div class="slide">
-      <h1 class="slide-title">⏱️ Правило 10 секунд</h1>
-      <p class="slide-sub">Як допомогти префронтальній корі повернути контроль над амигдалою:</p>
-      <div class="cards-grid">
-        <div class="info-card">
-          <h3>1. Тіло (Фізичне гальмо)</h3>
-          <p>Покласти телефон екраном униз, розтиснути зуби, зробити 3 повільні глибокі видихи.</p>
+    <!-- 11. КОНФЛІКТИ ВДОМА -->
+    <div class="slide-item">
+      <h1 class="title">🏠 А коли закипає вдома на батьків?</h1>
+      <p class="subtitle">«Знову сидиш у телефоні, користі нуль!» — як не довести до скандалу:</p>
+      <div class="grid-2">
+        <div class="box" style="background:var(--coral-soft); border-color:var(--coral);">
+          <h3 style="color:#991B1B;">Звичний зрив</h3>
+          <p>Крик «Ви мене не розумієте!» $\rightarrow$ ляскання дверима $\rightarrow$ тиждень домашнього арешту без девайсів.</p>
         </div>
-        <div class="info-card">
-          <h3>2. Мозок (Питання-фільтр)</h3>
-          <p>«Я зараз хочу вирішити ситуацію чи просто вдарити боляче у відповідь?»</p>
-        </div>
-        <div class="info-card">
-          <h3>3. Дія (Фраза-щит)</h3>
-          <p>Взяти офіційну паузу на 15 хвилин для відновлення ресурсу.</p>
+        <div class="box" style="background:var(--teal-soft); border-color:var(--teal);">
+          <h3 style="color:#065F46;">Режим сили вдома</h3>
+          <p>Крок назад, глибокий видих і спокійна фраза: <i>«Я зараз дуже злий(-а). Давайте я видихну 15 хвилин, і ми поговоримо спокійно»</i>.</p>
         </div>
       </div>
     </div>
 
-    <!-- СЛАЙД 13: ІНТЕРАКТИВ 3 (СТОП-КРАН) -->
-    <div class="slide">
-      <div class="interactive-slide-box" style="background:var(--yellow-soft); border-color:var(--line);">
-        <div class="qr-wrapper">
-          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/stop.html" alt="QR Code">
-          <div class="qr-label">Наведи камеру смартфона 📷</div>
+    <!-- 12. ПРАВИЛО 10 СЕКУНД -->
+    <div class="slide-item">
+      <h1 class="title">⏱️ Правило 10 секунд</h1>
+      <p class="subtitle">Як перехопити управління у стресу, поки мозок не наговорив зайвого:</p>
+      <div class="grid-3">
+        <div class="box">
+          <h3>1. Тіло (Гальмо)</h3>
+          <p>Відкласти телефон, зробити крок назад, розтиснути зуби, 3 довгі повільні видихи.</p>
         </div>
-        <div class="interactive-details">
-          <span class="module-tag" style="background:#fff; margin-bottom:8px;">Практика 3</span>
-          <h2>🛑 Мій особистий стоп-кран</h2>
-          <p>Збери свій персональний алгоритм безпеки на випадок тиску (вдома, у школі чи в мережі). Обери дію для тіла, питання-фільтр і фразу-щит, та завантаж готову картку-пам'ятку собі на смартфон!</p>
-          
-          <div class="btn-row">
-            <a href="stop.html" target="_blank" class="btn-main">
+        <div class="box">
+          <h3>2. Думки (Фільтр)</h3>
+          <p><i>«Я зараз хочу вирішити питання чи просто зробити боляче у відповідь?»</i></p>
+        </div>
+        <div class="box">
+          <h3>3. Дія (Щит)</h3>
+          <p>Взяти офіційну паузу без скандалу, щоб відновити ресурс і спокій.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. ІНТЕРАКТИВ 3: СТОП-КРАН (ВБУДОВАНИЙ ТРЕНАЖЕР) -->
+    <div class="slide-item">
+      <div class="interactive-box" style="background:var(--yellow-soft); border-color:var(--line);">
+        <div class="qr-card">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/stop.html" alt="QR Stop">
+          <span>Наведи камеру смартфона 📷</span>
+        </div>
+        <div style="flex:1;">
+          <span class="module-pill" style="background:#fff; margin-bottom:10px;">Практикум 3</span>
+          <h2 style="font-size:1.6rem; font-weight:700; margin-bottom:8px;">🛑 Мій особистий стоп-кран</h2>
+          <p style="font-size:0.95rem; color:#444; line-height:1.5; margin-bottom:20px;">
+            Збери свій персональний чек-лист дій для критичних моментів (удома, у школі чи в мережі). Обери дію для тіла, фільтр думок і фразу-щит, та завантаж готову картку собі на телефон!
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="stop.html" target="_blank" class="btn-action-main">
               🚀 Налаштувати стоп-кран
             </a>
-            <button class="btn-secondary" onclick="copyLink('https://goiteens-ua.github.io/jldwpe/stop.html')">
+            <button class="btn-action-copy" onclick="copyLink('https://goiteens-ua.github.io/jldwpe/stop.html')">
               📋 Скопіювати лінк у чат
             </button>
           </div>
@@ -551,118 +555,112 @@
       </div>
     </div>
 
-    <!-- СЛАЙД 14: ГОЛОВНІ ІНСАЙТИ -->
-    <div class="slide">
-      <h1 class="slide-title">💡 3 золоті правила уроку</h1>
-      <p class="slide-sub">Забери ці правила з собою в будь-яку незрозумілу ситуацію:</p>
-      <div class="cards-grid">
-        <div class="info-card">
-          <h3>1. Емоція — це сигнал</h3>
-          <p>Злитися чи ображатися — абсолютно нормально. Головне — не діяти в перші 10 секунд на адреналіні.</p>
+    <!-- 14. ГОЛОВНІ ПРАВИЛА -->
+    <div class="slide-item">
+      <h1 class="title">💡 3 золоті правила уроку</h1>
+      <p class="subtitle">Візьми їх із собою в будь-яку незрозумілу ситуацію:</p>
+      <div class="grid-3">
+        <div class="box">
+          <h3>1. Злість — це ок</h3>
+          <p>Відчувати емоцію нормально. Ненормально — діяти в перші 10 секунд на адреналіні.</p>
         </div>
-        <div class="info-card">
-          <h3>2. Спокій роззброює</h3>
-          <p>Коли ти відповідаєш твердо, але без крику — конфлікт згасає сам, бо ти не годуєш чужу агресію.</p>
+        <div class="box">
+          <h3>2. Спокій сильніший</h3>
+          <p>Коли ти не кричиш у відповідь, агресор втрачає силу, бо йому нема чим живитися.</p>
         </div>
-        <div class="info-card">
-          <h3>3. Межі — це твоє право</h3>
-          <p>Сказати «мені неприємно, давай без крику» — це ознака сильної дорослої людини, а не слабкості.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- СЛАЙД 15: ДОМАШНІЙ ЧЕЛЕНДЖ -->
-    <div class="slide">
-      <h1 class="slide-title">🏆 Домашній челендж</h1>
-      <p class="slide-sub">Закріплюємо навичку дорослої сили на практиці:</p>
-      <div class="cards-grid">
-        <div class="info-card" style="background:var(--teal-soft); border-color:var(--teal);">
-          <h3 style="color:#065F46;">📸 Збережи свій стоп-кран</h3>
-          <p>Переконайся, що завантажив(-ла) картку з тренажера <code>stop.html</code> у фотогалерею або додай у збережене.</p>
-        </div>
-        <div class="info-card" style="background:var(--yellow-soft);">
-          <h3>🧪 Тест у реальному житті</h3>
-          <p>Коли наступного разу відчуєш роздратування — зупинись на 10 секунд за своїм чек-листом до першої відповіді.</p>
+        <div class="box">
+          <h3>3. Межа без вибачень</h3>
+          <p>Захищати свою гідність спокійно — це ознака сильної дорослої особистості.</p>
         </div>
       </div>
     </div>
 
-    <!-- СЛАЙД 16: ФІНАЛ -->
-    <div class="slide" style="text-align:center; align-items:center;">
-      <span style="font-size:3.5rem; margin-bottom:12px;">👏</span>
-      <h1 class="slide-title">Чудова робота сьогодні!</h1>
-      <p class="slide-sub" style="max-width:560px;">Ти зробив(-ла) величезний крок до того, щоб керувати своїми реакціями, а не дозволяти емоціям керувати тобою.</p>
-      <div style="font-weight:700; font-size:1.1rem; color:var(--teal); margin-top:10px;">
-        До зустрічі на наступному занятті Happy Kids! 🚀
+    <!-- 15. ЧЕЛЕНДЖ -->
+    <div class="slide-item">
+      <h1 class="title">🏆 Домашній челендж</h1>
+      <p class="subtitle">Закріплюємо навичку дорослої сили в реальному житті:</p>
+      <div class="grid-2">
+        <div class="box" style="background:var(--teal-soft); border-color:var(--teal);">
+          <h3 style="color:#065F46;">📸 Збережений чек-лист</h3>
+          <p>Переконайся, що твоя картка зі <code>stop.html</code> збережена у фото галереї чи вибраному.</p>
+        </div>
+        <div class="box" style="background:var(--yellow-soft);">
+          <h3>🧪 Тест 10 секунд</h3>
+          <p>Коли наступного разу відчуєш роздратування — увімкни стоп-кран на 10 секунд до першої відповіді.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16. ФІНАЛ -->
+    <div class="slide-item" style="text-align:center; align-items:center;">
+      <span style="font-size:3.5rem; margin-bottom:14px;">👏</span>
+      <h1 class="title">Чудова робота!</h1>
+      <p class="subtitle" style="max-width:580px;">Сьогодні ти навчився(-лася) керувати своїми реакціями, а не дозволяти випадковим емоціям керувати тобою.</p>
+      <div style="font-weight:700; font-size:1.15rem; color:var(--teal); margin-top:10px;">
+        До зустрічі на заняттях Happy Kids! 🚀
       </div>
     </div>
 
   </div>
 
-  <!-- Нижня панель навігації для вчителя -->
-  <div class="deck-footer">
-    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Назад</button>
+  <!-- Нижня панель навігації -->
+  <div class="deck-nav">
+    <button class="nav-btn" id="prevBtn" onclick="moveSlide(-1)">← Назад</button>
     <div style="font-size:0.85rem; color:var(--muted); font-weight:600;">
-      Клавіші: <b>←</b> та <b>→</b> на клавіатурі
+      Керування: <b>←</b> та <b>→</b> на клавіатурі
     </div>
-    <button class="nav-btn primary" id="nextBtn" onclick="changeSlide(1)">Вперед →</button>
+    <button class="nav-btn primary" id="nextBtn" onclick="moveSlide(1)">Вперед →</button>
   </div>
 
 </div>
 
-<!-- Спливаюче сповіщення про копіювання лінка -->
-<div class="toast-copied" id="toast">✅ Посилання скопійовано! Можна вставляти в чат.</div>
+<div class="toast" id="toast">✅ Посилання скопійовано для чату!</div>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
-  let curSlide = 0;
-  const totalSlides = slides.length;
+  const slides = document.querySelectorAll('.slide-item');
+  let current = 0;
+  const total = slides.length;
 
-  function updateSlideView() {
+  function updateView() {
     slides.forEach((s, idx) => {
-      s.classList.toggle('active', idx === curSlide);
+      s.classList.toggle('current', idx === current);
     });
 
-    document.getElementById('slideIndicator').textContent = `Слайд ${curSlide + 1} з ${totalSlides}`;
-    document.getElementById('prevBtn').disabled = (curSlide === 0);
+    document.getElementById('slideNum').textContent = `Слайд ${current + 1} з ${total}`;
+    document.getElementById('prevBtn').disabled = (current === 0);
     
     const nextBtn = document.getElementById('nextBtn');
-    if (curSlide === totalSlides - 1) {
+    if (current === total - 1) {
       nextBtn.textContent = 'Завершити 🎉';
     } else {
       nextBtn.textContent = 'Вперед →';
     }
   }
 
-  function changeSlide(direction) {
-    const next = curSlide + direction;
-    if (next >= 0 && next < totalSlides) {
-      curSlide = next;
-      updateSlideView();
+  function moveSlide(dir) {
+    const target = current + dir;
+    if (target >= 0 && target < total) {
+      current = target;
+      updateView();
     }
   }
 
-  // Керування стрілками клавіатури для вчителя
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === 'Space') {
-      changeSlide(1);
-    } else if (e.key === 'ArrowLeft') {
-      changeSlide(-1);
-    }
+    if (e.key === 'ArrowRight' || e.key === 'Space') moveSlide(1);
+    if (e.key === 'ArrowLeft') moveSlide(-1);
   });
 
-  // Швидке копіювання посилання в буфер
   function copyLink(url) {
     navigator.clipboard.writeText(url).then(() => {
-      const toast = document.getElementById('toast');
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 2500);
+      const t = document.getElementById('toast');
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2400);
     }).catch(() => {
-      prompt('Скопіюйте посилання вручну:', url);
+      prompt('Скопіюйте лінк:', url);
     });
   }
 
-  updateSlideView();
+  updateView();
 </script>
 </body>
 </html>
