@@ -2,26 +2,23 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Сканер захисних реакцій | Happy Kids 11–13</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- Бібліотека для збереження блоку в зображення -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
-    --paper: #FFFDF9;
+    --bg-page: #FFFDF9;
     --card: #FFFFFF;
     --ink: #18181B;
     --muted: #52525B;
     --line: #18181B;
-    --accent: #6366F1;
-    --accent-soft: #EEF2FF;
-    --coral: #FF5A5F;
-    --coral-soft: #FFEBEB;
     --yellow: #FEC830;
     --yellow-soft: #FFF5D6;
+    --coral: #FF5A5F;
+    --coral-soft: #FFEBEB;
     --teal: #0D9488;
     --teal-soft: #E6FFFA;
     --shadow: 4px 4px 0px var(--line);
@@ -30,28 +27,28 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: var(--paper);
+    background: var(--bg-page);
     color: var(--ink);
     font-family: 'IBM Plex Sans', sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px 16px;
+    padding: 20px 14px;
   }
 
-  .app-container {
+  .app-wrap {
     width: 100%;
-    max-width: 620px;
+    max-width: 580px;
     background: var(--card);
     border: 3px solid var(--line);
     border-radius: 24px;
-    padding: 28px 24px;
+    padding: 26px 20px;
     box-shadow: var(--shadow-pop);
     position: relative;
   }
 
-  .step-pill {
+  .top-pill {
     display: inline-block;
     background: var(--yellow);
     border: 2px solid var(--line);
@@ -63,72 +60,42 @@
     box-shadow: 2px 2px 0 var(--line);
   }
 
-  h1 {
-    font-size: 1.45rem;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 8px;
-  }
+  h1 { font-size: 1.45rem; font-weight: 700; line-height: 1.25; margin-bottom: 8px; }
+  p.desc { font-size: 0.95rem; color: var(--muted); line-height: 1.5; margin-bottom: 18px; }
 
-  p.sub {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-bottom: 20px;
-  }
-
-  .cards-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .choice-btn {
-    background: #fff;
-    border: 2.5px solid var(--line);
+  .case-box {
+    background: var(--yellow-soft);
+    border: 2px solid var(--line);
     border-radius: 16px;
-    padding: 16px 18px;
-    font-size: 0.95rem;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 1rem;
     font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .opts-list { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
     text-align: left;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
     cursor: pointer;
     box-shadow: var(--shadow);
-    transition: 0.15s ease;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    line-height: 1.45;
+    transition: 0.15s;
+    line-height: 1.4;
   }
-  .choice-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: var(--shadow-pop);
-    background: var(--accent-soft);
-  }
-  .choice-btn.selected {
-    background: var(--yellow-soft);
-    border-color: var(--line);
-    box-shadow: 2px 2px 0 var(--line);
-    transform: translate(2px, 2px);
-  }
+  .opt-btn:hover { background: var(--teal-soft); transform: translateY(-2px); }
+  .opt-btn:active { transform: translateY(1px); }
 
-  .step-screen {
-    display: none;
-  }
-  .step-screen.active {
-    display: block;
-    animation: fadeIn 0.22s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .action-bar {
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .screen { display: none; }
+  .screen.active { display: block; animation: pop 0.2s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
   .btn {
     font-family: inherit;
@@ -136,298 +103,320 @@
     font-size: 0.95rem;
     border: 2.5px solid var(--line);
     border-radius: 14px;
-    padding: 12px 22px;
+    padding: 12px 20px;
     cursor: pointer;
     box-shadow: var(--shadow);
     transition: 0.15s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
   }
-  .btn:hover:not(:disabled) {
-    transform: translate(-2px, -2px);
-    box-shadow: var(--shadow-pop);
-  }
-  .btn:disabled {
-    opacity: 0.35;
-    cursor: default;
-    box-shadow: none;
-  }
-  .btn-yellow { background: var(--yellow); color: var(--ink); }
-  .btn-ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--muted); }
+  .btn-yellow { background: var(--yellow); color: var(--ink); width: 100%; margin-top: 14px; }
+  .btn-yellow:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow-pop); }
 
-  /* Зона картки результату */
-  #captureArea {
-    background: #FFFFFF;
-    border-radius: 20px;
-    padding: 12px;
-  }
   .profile-card {
-    background: var(--yellow-soft);
+    background: #fff;
     border: 2.5px solid var(--line);
     border-radius: 18px;
-    padding: 20px;
+    padding: 18px;
     box-shadow: var(--shadow);
-    margin: 18px 0;
+    margin: 16px 0;
   }
-  .archetype-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .profile-row {
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-    line-height: 1.45;
-  }
-  .profile-row b {
-    display: block;
+  .arch-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 6px; }
+  .arch-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 8px;
     font-size: 0.8rem;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 3px;
+    font-weight: 700;
+    margin-bottom: 12px;
   }
-  .advice-card {
-    background: var(--teal-soft);
-    border: 2px solid var(--teal);
-    border-radius: 16px;
+
+  /* Експорт */
+  #exportBox {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 440px;
+    padding: 26px;
+    background: #FFFDF9;
+    border: 3.5px solid #18181B;
+    border-radius: 24px;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+
+  /* Мобільне прев'ю */
+  .preview-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
     padding: 16px;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    color: #065F46;
+    backdrop-filter: blur(4px);
+  }
+  .preview-body {
+    background: #fff;
+    border: 3px solid #18181B;
+    border-radius: 20px;
+    padding: 16px;
+    max-width: 94%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 6px 6px 0 #18181B;
+    overflow-y: auto;
   }
 </style>
 </head>
 <body>
 
-<div class="app-container">
-
-  <!-- КРОК 1 -->
-  <div class="step-screen active" id="step1">
-    <span class="step-pill">Ситуація 1 з 4 · Чат</span>
-    <h1>Невдалий скриншот у групі</h1>
-    <p class="sub">Хтось скидає в загальну бесіду твою помилку зі словами: «Ор вище гір 😂». Твоя найперша миттєва дія:</p>
-
-    <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(1, 'A')">
-        <span>⚡</span> Знаходжу його старий факап або пишу їдкий панч у відповідь, щоб осадити перед усіма.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(1, 'B')">
-        <span>🚪</span> Згортаю телеграм, вимикаю сповіщення або виходжу з чату — просто не хочу це бачити.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(1, 'C')">
-        <span>😶</span> Відчуваю, як кидає в жар. Ставлю смайлик «😂», аби не виділятися, але всередині ніби заціпенів(-ла).
-      </button>
-    </div>
-
-    <div class="action-bar" style="justify-content: flex-end;">
-      <button class="btn btn-yellow" id="next1" disabled onclick="goToStep(2)">Далі →</button>
-    </div>
-  </div>
-
-  <!-- КРОК 2 -->
-  <div class="step-screen" id="step2">
-    <span class="step-pill">Ситуація 2 з 4 · Команда</span>
-    <h1>Публічне зауваження</h1>
-    <p class="sub">Вчитель чи капітан перед усіма каже: «Через твою незібраність ми втратили бали». Твої відчуття в перші 5 секунд:</p>
-
-    <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(2, 'A')">
-        <span>🥊</span> Спалах у грудях: перебиваю й одразу доводжу, хто насправді сфакапив.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(2, 'B')">
-        <span>🏃</span> Хочеться провалитися крізь землю або скоріше вийти з кабінету кудись у коридор.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(2, 'C')">
-        <span>🧊</span> Замовкаю, дивлюся в одну точку, зуби зціплені. Слова на захист є в голові, але вголос не йдуть.
-      </button>
-    </div>
-
-    <div class="action-bar">
-      <button class="btn btn-ghost" onclick="goToStep(1)">← Назад</button>
-      <button class="btn btn-yellow" id="next2" disabled onclick="goToStep(3)">Далі →</button>
-    </div>
-  </div>
-
-  <!-- КРОК 3 -->
-  <div class="step-screen" id="step3">
-    <span class="step-pill">Ситуація 3 з 4 · Вдома</span>
-    <h1>Претензія на порозі</h1>
-    <p class="sub">Ти щойно сів(-ла) видихнути після школи, а тобі різко кидають: «Знову тільки в телефоні сидиш, користі нуль!» Твій імпульс:</p>
-
-    <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(3, 'A')">
-        <span>🔥</span> «А ви бачили, скільки всього я вже зробив(-ла)?!» — голос сам зривається на крик.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(3, 'B')">
-        <span>🎧</span> Мовчки встаю, іду у свою кімнату, щільно зачиняю двері й одягаю навушники.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(3, 'C')">
-        <span>🤐</span> Бурчу «угу», опускаю очі. Зовні повний пофігізм, а всередині клубок від знецінення.
-      </button>
-    </div>
-
-    <div class="action-bar">
-      <button class="btn btn-ghost" onclick="goToStep(2)">← Назад</button>
-      <button class="btn btn-yellow" id="next3" disabled onclick="goToStep(4)">Далі →</button>
-    </div>
-  </div>
-
-  <!-- КРОК 4 -->
-  <div class="step-screen" id="step4">
-    <span class="step-pill">Ситуація 4 з 4 · Довіра</span>
-    <h1>Секрет розкрили заради жарту</h1>
-    <p class="sub">Друг бовкнув твою таємницю в компанії просто щоб усі посміялися. Що стається з тобою:</p>
-
-    <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(4, 'A')">
-        <span>🎯</span> Наступної ж секунди підколюю його у відповідь так, щоб йому стало по-справжньому ніяково.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(4, 'B')">
-        <span>🚫</span> Видаляю з друзів, не беру слухавку. Роблю вигляд, що цієї людини для мене більше не існує.
-      </button>
-      <button class="choice-btn" onclick="selectChoice(4, 'C')">
-        <span>💔</span> Сміюся разом з усіма, вдаю що мені байдуже. Але всередині все обривається, а сльози вийдуть увечері.
-      </button>
-    </div>
-
-    <div class="action-bar">
-      <button class="btn btn-ghost" onclick="goToStep(3)">← Назад</button>
-      <button class="btn btn-yellow" id="next4" disabled onclick="calculateResult()">Сканувати результат ✨</button>
-    </div>
-  </div>
-
-  <!-- РЕЗУЛЬТАТ -->
-  <div class="step-screen" id="stepResult">
+<div class="app-wrap">
+  
+  <!-- Екран 0: Старт -->
+  <div class="screen active" id="scrStart">
+    <span class="top-pill">Експрес-діагностика</span>
+    <h1>Сканер захисних реакцій</h1>
+    <p class="desc">Як твій мозок реагує, коли хтось наїжджає або тисне? Пройди 4 короткі POV-ситуації та дізнайся свій архетип броні.</p>
     
-    <!-- Зона для фото-картки -->
-    <div id="captureArea">
-      <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Аналіз завершено</span>
-      <h1>Твій профіль у момент тиску</h1>
-      <p class="sub" style="margin-bottom:12px;">Це не оцінка, а знімок твоєї захисної броні, яку вмикає мозок:</p>
-
-      <div class="profile-card">
-        <div class="archetype-title" id="archTitle">Завантаження...</div>
-        <div class="profile-row">
-          <b>Що бачать інші назовні:</b>
-          <span id="archOuter">-</span>
-        </div>
-        <div class="profile-row">
-          <b>Твій прихований датчик чутливості:</b>
-          <span id="archTrigger">-</span>
-        </div>
-        <div class="profile-row" style="margin-bottom:0;">
-          <b>Що насправді ховається під водою:</b>
-          <span id="archIceberg">-</span>
-        </div>
-      </div>
-
-      <div class="advice-card" id="archAdvice"></div>
-      
-      <div style="text-align:right; font-size:0.75rem; color:var(--muted); font-weight:700; margin-top:8px;">
-        Happy Kids 11–13 · Що я відчуваю в конфлікті
-      </div>
+    <div style="margin-bottom:14px;">
+      <label style="display:block; font-size:0.85rem; font-weight:700; margin-bottom:6px;">Вкажи свій нікнейм або ім'я:</label>
+      <input type="text" id="uname" value="Учень" style="width:100%; border:2px solid var(--line); border-radius:12px; padding:10px 12px; font-family:inherit; font-size:0.95rem; font-weight:600; outline:none;">
     </div>
 
-    <div class="action-bar" style="margin-top:16px;">
-      <button class="btn btn-ghost" onclick="resetAll()">Пройти знову</button>
-      <button class="btn btn-yellow" id="downloadBtn" onclick="downloadProfileCard()">📸 Зберегти картку собі</button>
+    <button class="btn btn-yellow" onclick="startScanner()">Почати сканування →</button>
+  </div>
+
+  <!-- Екран 1: Питання -->
+  <div class="screen" id="scrQuiz">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <span class="top-pill" id="qNumPill">Ситуація 1 з 4</span>
+      <span style="font-size:0.85rem; font-weight:700; color:var(--muted);">Happy Kids 11–13</span>
     </div>
+    <h1 id="qTitle">Ситуація</h1>
+    <div class="case-box" id="qText"></div>
+    <div class="opts-list" id="qOpts"></div>
+  </div>
+
+  <!-- Екран 2: Фінал -->
+  <div class="screen" id="scrResult">
+    <span class="top-pill" style="background:var(--teal-soft); color:var(--teal);">Результат діагностики</span>
+    <h1 id="resHeader">Твій захисний архетип</h1>
+    <p class="desc">Це твоя автоматична програма захисту в момент емоційного шторму:</p>
+
+    <div class="profile-card">
+      <div class="arch-title" id="archTitle">Архетип</div>
+      <div class="arch-badge" id="archBadge">Опис</div>
+      <p id="archDesc" style="font-size:0.92rem; line-height:1.5; color:var(--ink); margin-bottom:12px;"></p>
+      <div style="background:var(--yellow-soft); border:1.5px solid var(--line); border-radius:12px; padding:10px 12px; font-size:0.85rem; line-height:1.45;" id="archTip"></div>
+    </div>
+
+    <button class="btn btn-yellow" id="saveBtn" onclick="saveProfilePNG()">📸 Зберегти картку собі</button>
+    <button class="btn" style="width:100%; margin-top:8px; background:transparent; border:none; box-shadow:none; color:var(--muted);" onclick="restart()">🔄 Пройти знову</button>
   </div>
 
 </div>
 
+<!-- Блок для рендерингу картинки -->
+<div id="exportBox">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <span style="background:#FEC830; border:2px solid #18181B; padding:3px 10px; border-radius:999px; font-size:0.75rem; font-weight:700;">
+      Захисний Архетип
+    </span>
+    <span style="font-size:0.75rem; font-weight:700; color:#52525B;">Happy Kids 11–13</span>
+  </div>
+  <h2 style="font-size:1.3rem; margin-bottom:4px;" id="expUser">Профіль: Алекс</h2>
+  <div style="background:#FFF5D6; border:2px solid #18181B; border-radius:16px; padding:16px; margin:12px 0; box-shadow:3px 3px 0 #18181B;">
+    <div style="font-size:1.2rem; font-weight:700; margin-bottom:6px;" id="expTitle">Архетип</div>
+    <div style="font-size:0.82rem; font-weight:700; color:#065F46; margin-bottom:10px;" id="expBadge">Статус</div>
+    <p style="font-size:0.88rem; line-height:1.5; color:#18181B; margin-bottom:10px;" id="expDesc"></p>
+    <div style="background:#fff; border:1.5px solid #18181B; border-radius:10px; padding:10px; font-size:0.82rem; line-height:1.4;" id="expTip"></div>
+  </div>
+  <div style="text-align:center; font-size:0.75rem; color:#71717A; font-weight:600;">
+    Що я відчуваю в конфлікті · Навичка дорослої сили
+  </div>
+</div>
+
+<!-- Мобільне прев'ю вікно -->
+<div class="preview-modal" id="prevModal">
+  <div class="preview-body">
+    <div style="font-weight:700; font-size:0.92rem; margin-bottom:8px; text-align:center;">
+      📱 Затисни картку пальцем ➔ «Зберегти у Фото»
+    </div>
+    <img id="prevImg" style="width:100%; max-height:55vh; object-fit:contain; border-radius:12px; border:2px solid #18181B; margin-bottom:12px;" alt="Результат">
+    <div style="display:flex; gap:8px; width:100%;">
+      <a id="downloadLink" href="#" download="Мій_архетип.png" style="flex:1; text-align:center; background:#FEC830; color:#18181B; border:2px solid #18181B; padding:10px; border-radius:12px; font-weight:700; text-decoration:none; font-size:0.88rem;">Завантажити</a>
+      <button onclick="document.getElementById('prevModal').style.display='none'" style="background:#E4E4E7; border:2px solid #18181B; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.88rem;">Закрити</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const answers = { 1: null, 2: null, 3: null, 4: null };
-
-  function selectChoice(step, variant) {
-    answers[step] = variant;
-    const parent = document.getElementById(`step${step}`);
-    parent.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    document.getElementById(`next${step}`).disabled = false;
-  }
-
-  function goToStep(s) {
-    document.querySelectorAll('.step-screen').forEach(scr => scr.classList.remove('active'));
-    document.getElementById(`step${s}`).classList.add('active');
-  }
-
-  function calculateResult() {
-    let counts = { A: 0, B: 0, C: 0 };
-    Object.values(answers).forEach(val => { if(val) counts[val]++; });
-
-    let maxKey = 'A';
-    if (counts.B > counts[maxKey]) maxKey = 'B';
-    if (counts.C > counts[maxKey]) maxKey = 'C';
-
-    const titleEl = document.getElementById('archTitle');
-    const outerEl = document.getElementById('archOuter');
-    const trigEl = document.getElementById('archTrigger');
-    const iceEl = document.getElementById('archIceberg');
-    const advEl = document.getElementById('archAdvice');
-
-    if (maxKey === 'A') {
-      titleEl.innerHTML = '🛡️ Архетип: Блискавичний щит';
-      outerEl.textContent = 'Швидка, смілива, але часом різка й колюча відповідь капслоком або сарказмом.';
-      trigEl.textContent = 'Гостра нестерпність несправедливості та звинувачень.';
-      iceEl.textContent = 'Страх здатися слабким або беззахисним. Атака — це спроба перехопити контроль.';
-      advEl.innerHTML = '<b>💡 Твоя зона росту:</b> у тебе величезна сміливість. Дай собі паузу в 10 секунд перед відповіддю — і ти зможеш роззброювати опонентів спокоєм, а не війною.';
-    } else if (maxKey === 'B') {
-      titleEl.innerHTML = '🏰 Архетип: Автономний бункер';
-      outerEl.textContent = 'Холодне мовчання, зникнення з радарів, вихід із чату, маска «та мені байдуже».';
-      trigEl.textContent = 'Миттєве сенсорне та емоційне перевантаження від чужого тиску чи драми.';
-      iceEl.textContent = 'Відчайдушна потреба захистити свою енергію та безпеку, коли немає сил сперечатися.';
-      advEl.innerHTML = '<b>💡 Твоя зона росту:</b> ти чудово бережеш свої ресурси. Спробуй не просто зникати, а вголос ставити межу: «Мені треба видихнути 20 хвилин, потім поговоримо».';
-    } else {
-      titleEl.innerHTML = '🧊 Архетип: Невидимий лід';
-      outerEl.textContent = 'Зовнішній спокій, чергова посмішка, мовчазна згода або «зависання».';
-      trigEl.textContent = 'Страх зробити гірше, спровокувати скандал або відчути токсичний сором.';
-      iceEl.textContent = 'Всередині вирує шторм, який з\'їдає сили, бо почуття замкнені під товщею льоду.';
-      advEl.innerHTML = '<b>💡 Твоя зона росту:</b> ти дуже тонко відчуваєш ситуацію. Пам\'ятай: розтиснути зуби й спокійно сказати «мені це неприємно» — це твоє законне право на захист.';
+  const questions = [
+    {
+      title: "Вирішальний раунд у грі",
+      text: "Тіммейт кричить у войс: «Ти все заруїнив, через тебе злили катку! Видали гру взагалі!» Твоя перша дія:",
+      opts: [
+        { text: "Ору у відповідь: «На себе подивись, дно косоруке!»", type: "fight" },
+        { text: "Миттєво ліваю з войсу й вирубаю гру, щоб нікого не чути.", type: "flight" },
+        { text: "Мовчу, зуби зціплені, горло перехопило, не можу вимовити й слова.", type: "freeze" }
+      ]
+    },
+    {
+      title: "Претензія вдома",
+      text: "Ти щойно прийшов зі школи втомлений, сідаєш із телефоном, і чуєш наїзд: «Знову сидиш, нічого не робиш, посуд не помитий!»",
+      opts: [
+        { text: "Зриваюсь: «Та відчепіться, я тільки присів! Вічно ви до мене чіпляєтесь!»", type: "fight" },
+        { text: "Йду в кімнату, навушники у вуха, звук на максимум.", type: "flight" },
+        { text: "Мовчки встаю й мию, але всередині все кипить від образи.", type: "freeze" }
+      ]
+    },
+    {
+      title: "Шкільний чат",
+      text: "Хтось переслав твій невдалий скриншот у спільний чат класу і всі ставлять клоунів 🤡:",
+      opts: [
+        { text: "Пишу їдкий коментар на адресу того, хто це скинув, щоб осадити його.", type: "fight" },
+        { text: "Видаляю бесіду або ставлю на беззвучний на рік.", type: "flight" },
+        { text: "Ставлю смішний смайл, вдаючи, що мені байдуже, але щоки горять.", type: "freeze" }
+      ]
+    },
+    {
+      title: "Черга або їдальня",
+      text: "Хтось нахабно лізе поперед тебе й ще й штовхає ліктем:",
+      opts: [
+        { text: "Штовхаю у відповідь і голосно ставлю на місце.", type: "fight" },
+        { text: "Відходжу вбік, бо не хочу зв'язуватися зі скандалом.", type: "flight" },
+        { text: "Стою на місці, розгубився(-лася), дивлюся в підлогу.", type: "freeze" }
+      ]
     }
+  ];
 
-    goToStep('Result');
+  let curQ = 0;
+  const scores = { fight: 0, flight: 0, freeze: 0 };
+  let finalArchetype = {};
+
+  function startScanner() {
+    curQ = 0;
+    scores.fight = 0; scores.flight = 0; scores.freeze = 0;
+    document.getElementById('scrStart').classList.remove('active');
+    document.getElementById('scrQuiz').classList.add('active');
+    renderQuestion();
   }
 
-  function downloadProfileCard() {
-    const btn = document.getElementById('downloadBtn');
-    const area = document.getElementById('captureArea');
-    const originalText = btn.innerHTML;
+  function renderQuestion() {
+    const q = questions[curQ];
+    document.getElementById('qNumPill').textContent = `Ситуація ${curQ + 1} з ${questions.length}`;
+    document.getElementById('qTitle').textContent = q.title;
+    document.getElementById('qText').textContent = q.text;
+
+    const wrap = document.getElementById('qOpts');
+    wrap.innerHTML = '';
+    q.opts.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'opt-btn';
+      b.textContent = opt.text;
+      b.onclick = () => pickAnswer(opt.type);
+      wrap.appendChild(b);
+    });
+  }
+
+  function pickAnswer(type) {
+    scores[type]++;
+    curQ++;
+    if (curQ < questions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    document.getElementById('scrQuiz').classList.remove('active');
+    document.getElementById('scrResult').classList.add('active');
+
+    let maxType = 'fight';
+    if (scores.flight > scores[maxType]) maxType = 'flight';
+    if (scores.freeze > scores[maxType]) maxType = 'freeze';
+
+    const data = {
+      fight: {
+        title: "⚡ Блискавичний щит (Бий)",
+        badge: "Стихія: Вогонь · Пряма відсіч",
+        desc: "Твій мозок у разі тиску реагує миттєвим контрударом. Ти вмієш сміливо захищати гідність і не мовчиш, коли тебе чіпляють.",
+        tip: "💡 <b>Твоя точка росту:</b> не бити в перші 5 секунд. Зроби вдих-видих, щоб твоя сила не перетворювалася на токсичну війну."
+      },
+      flight: {
+        title: "🏰 Автономний бункер (Біжи)",
+        badge: "Стихія: Повітря · Збереження ресурсу",
+        desc: "Твій мозок майстерно рятує твою енергію через дистанцію. Ти не любиш безглуздих криків і вмієш вчасно вийти з токсичного кола.",
+        tip: "💡 <b>Твоя точка росту:</b> не консервувати образу. Якщо не сказати про свої межі прямо, ситуація повториться знову."
+      },
+      freeze: {
+        title: "🧊 Невидимий лід (Замри)",
+        badge: "Стихія: Вода · Обережність",
+        desc: "Твій мозок бере паузу, щоб оцінити небезпеку. Ти помічаєш найтонші деталі та не робиш дурниць на гарячу голову.",
+        tip: "💡 <b>Твоя точка росту:</b> дати голос тілу. Розтисни щелепу, випий води і скажи хоча б коротку готову фразу-щит."
+      }
+    };
+
+    finalArchetype = data[maxType];
+    const uName = document.getElementById('uname').value.trim() || 'Учень';
+
+    document.getElementById('resHeader').textContent = `Архетип: ${uName}`;
+    document.getElementById('archTitle').textContent = finalArchetype.title;
+    document.getElementById('archBadge').textContent = finalArchetype.badge;
+    document.getElementById('archDesc').textContent = finalArchetype.desc;
+    document.getElementById('archTip').innerHTML = finalArchetype.tip;
+
+    // Підготовка до збереження
+    document.getElementById('expUser').textContent = `Профіль: ${uName}`;
+    document.getElementById('expTitle').textContent = finalArchetype.title;
+    document.getElementById('expBadge').textContent = finalArchetype.badge;
+    document.getElementById('expDesc').textContent = finalArchetype.desc;
+    document.getElementById('expTip').innerHTML = finalArchetype.tip;
+  }
+
+  function saveProfilePNG() {
+    const btn = document.getElementById('saveBtn');
+    const orig = btn.innerHTML;
     btn.innerHTML = '⏳ Зберігаємо...';
     btn.disabled = true;
 
-    html2canvas(area, {
+    const frame = document.getElementById('exportBox');
+    html2canvas(frame, {
       scale: 2,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#FFFDF9',
       useCORS: true
     }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'Мій_профіль_захисту.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      btn.innerHTML = '✅ Збережено!';
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }, 2500);
-    }).catch(err => {
-      alert('Не вдалося створити фото. Можна просто зробити звичайний скриншот екрана!');
-      btn.innerHTML = originalText;
+      const dataUrl = canvas.toDataURL('image/png');
+
+      const modal = document.getElementById('prevModal');
+      const img = document.getElementById('prevImg');
+      const direct = document.getElementById('downloadLink');
+
+      img.src = dataUrl;
+      direct.href = dataUrl;
+      modal.style.display = 'flex';
+
+      try {
+        const link = document.createElement('a');
+        link.download = 'Мій_архетип.png';
+        link.href = dataUrl;
+        link.click();
+      } catch(e) {}
+
+      btn.innerHTML = orig;
+      btn.disabled = false;
+    }).catch(() => {
+      alert('Будь ласка, зроби скриншот екрана результату! ✨');
+      btn.innerHTML = orig;
       btn.disabled = false;
     });
   }
 
-  function resetAll() {
-    for (let k in answers) answers[k] = null;
-    document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-    for (let i = 1; i <= 4; i++) document.getElementById(`next${i}`).disabled = true;
-    goToStep(1);
+  function restart() {
+    document.getElementById('scrResult').classList.remove('active');
+    document.getElementById('scrStart').classList.add('active');
   }
 </script>
 </body>
