@@ -70,6 +70,7 @@
   .btn-yellow { background: var(--yellow); color: var(--ink); }
   .btn-accent { background: var(--accent); color: #fff; }
   .btn-coral { background: var(--coral); color: #fff; }
+  .btn-white { background: #fff; color: var(--ink); }
 
   .gif-frame { border: 2.5px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: #000; position: relative; width: 100%; padding-bottom: 78%; }
   .gif-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
@@ -117,11 +118,64 @@
 
   .decoder-card { margin-bottom: 16px; }
 
+  /* Інтерактивний бокс інструментів */
+  .interactive-slide-box {
+    background: var(--yellow-soft);
+    border: 3px solid var(--line);
+    border-radius: 24px;
+    padding: 32px 36px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    margin-top: 12px;
+  }
+  @media(max-width: 860px) {
+    .interactive-slide-box { flex-direction: column; padding: 24px; }
+  }
+  .interactive-qr-card {
+    background: #fff;
+    border: 2.5px solid var(--line);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .interactive-qr-card img {
+    width: 175px;
+    height: 175px;
+    display: block;
+    border-radius: 8px;
+  }
+  .interactive-qr-card span {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
   .navbar { position: fixed; left: 0; right: 0; bottom: 0; height: 76px; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 7vw; background: linear-gradient(0deg, var(--paper) 65%, rgba(255, 253, 249, 0) 100%); }
   .nav-arrow { width: 48px; height: 48px; border-radius: 14px; border: 2.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; box-shadow: 3px 3px 0 var(--line); transition: 0.15s; }
   .nav-arrow:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); background: var(--yellow); }
   .nav-arrow:disabled { opacity: 0.25; cursor: default; }
   .nav-status { font-weight: 700; font-size: 0.9rem; color: var(--muted); }
+
+  .toast {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--line);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 1000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
 </style>
 </head>
 <body>
@@ -179,17 +233,17 @@
             <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">2. Аварія мозку</div>
             <p style="font-size:0.85rem; color:var(--muted);">Амигдала, викид адреналіну й тріада захисту.</p>
           </div>
-          <div class="card" onclick="goToSlide(10)" style="cursor:pointer; background:var(--teal-soft);">
+          <div class="card" onclick="goToSlide(11)" style="cursor:pointer; background:var(--teal-soft);">
             <div style="font-size:1.8rem; margin-bottom:8px;">🧊</div>
             <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">3. Айсберг емоцій</div>
             <p style="font-size:0.85rem; color:var(--muted);">Які вразливі почуття ховаються під водою.</p>
           </div>
-          <div class="card" onclick="goToSlide(14)" style="cursor:pointer; background:var(--accent-soft);">
+          <div class="card" onclick="goToSlide(16)" style="cursor:pointer; background:var(--accent-soft);">
             <div style="font-size:1.8rem; margin-bottom:8px;">👥</div>
             <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">4. Робота в парах</div>
             <p style="font-size:0.85rem; color:var(--muted);">Практика відкритого діалогу в Breakout Rooms.</p>
           </div>
-          <div class="card" onclick="goToSlide(17)" style="cursor:pointer;">
+          <div class="card" onclick="goToSlide(21)" style="cursor:pointer;">
             <div style="font-size:1.8rem; margin-bottom:8px;">🛑</div>
             <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">5. Цифровий стоп</div>
             <p style="font-size:0.85rem; color:var(--muted);">Правило 10 секунд і власний протокол.</p>
@@ -434,7 +488,37 @@
       </div>
     </section>
 
-    <!-- 10: ICEBERG MODEL (IMAGE) -->
+    <!-- 10: НОВИЙ СЛАЙД — ІНТЕРАКТИВ 1 (СКАНЕР АРХЕТИПІВ) -->
+    <section class="slide">
+      <div class="slide-inner">
+        <span class="tag tag-teal">Практикум 1 · Автономний тренажер</span>
+        <h2 class="slide-title">🧭 Сканер захисних реакцій: обери свій архетип</h2>
+        <p class="lede">Дізнайся, яку саме броню вмикає твій мозок у момент тиску (Блискавичний щит, Бункер чи Лід). Пройди 4 POV-ситуації та збережи свій профіль:</p>
+
+        <div class="interactive-slide-box">
+          <div class="interactive-qr-card">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/scanner.html" alt="QR Scanner">
+            <span>Відкрий на телефоні 📷</span>
+          </div>
+          <div style="flex:1;">
+            <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:10px;">Діагностика: що під твоєю бронею?</h3>
+            <p style="font-size:0.98rem; color:var(--muted); line-height:1.55; margin-bottom:20px;">
+              У кожного з нас є своя автоматична програма захисту. Пройди експрес-діагностику на смартфоні та поділися у чаті, який архетип у тебе випав!
+            </p>
+            <div style="display:flex; gap:14px; flex-wrap:wrap;">
+              <a href="scanner.html" target="_blank" class="btn btn-yellow">
+                🚀 Відкрити тренажер у новій вкладці
+              </a>
+              <button class="btn btn-white" onclick="copySlideLink('https://goiteens-ua.github.io/jldwpe/scanner.html')">
+                📋 Скопіювати лінк для чату
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11: ICEBERG MODEL (IMAGE) -->
     <section class="slide">
       <div class="slide-inner">
         <div class="img-frame">
@@ -443,7 +527,7 @@
       </div>
     </section>
 
-    <!-- 11: X-RAY QUIZ 1 -->
+    <!-- 12: X-RAY QUIZ 1 -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-teal">Тренажер 1 · Рентген айсберга</span>
@@ -464,7 +548,7 @@
       </div>
     </section>
 
-    <!-- 12: X-RAY QUIZ 2 -->
+    <!-- 13: X-RAY QUIZ 2 -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-teal">Тренажер 1 · Рентген айсберга</span>
@@ -485,7 +569,7 @@
       </div>
     </section>
 
-    <!-- 13: DECODER OF MASKS (3 CARDS) -->
+    <!-- 14: DECODER OF MASKS (3 CARDS) -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-yellow">Тренажер 2 · Декодер</span>
@@ -527,7 +611,37 @@
       </div>
     </section>
 
-    <!-- 14: SENSORY GROUNDING 5-4-3-2-1 -->
+    <!-- 15: НОВИЙ СЛАЙД — ІНТЕРАКТИВ 2 (СИМУЛЯТОР ЧАТУ TELEGRAM) -->
+    <section class="slide">
+      <div class="slide-inner">
+        <span class="tag tag-coral">Практикум 2 · Краш-тест асертивності</span>
+        <h2 class="slide-title">📱 Симулятор переписки: зупини токсичний напад</h2>
+        <p class="lede">Справжній Telegram-чат із трьома провокаціями (Влад, Марк, Даня). Подивись, як твої слова змінюють хід розмови:</p>
+
+        <div class="interactive-slide-box" style="background:#E6FFFA; border-color:var(--teal);">
+          <div class="interactive-qr-card">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/chat.html" alt="QR Chat">
+            <span>Відкрий на телефоні 📷</span>
+          </div>
+          <div style="flex:1;">
+            <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:10px;">Вчимося ставити межі без війни</h3>
+            <p style="font-size:0.98rem; color:var(--muted); line-height:1.55; margin-bottom:20px;">
+              Обирай варіанти відповідей у полі вводу. Відчуй різницю між нападом капслоком, сарказмом і впевненою дорослою силою, яка змушує опонента відступити!
+            </p>
+            <div style="display:flex; gap:14px; flex-wrap:wrap;">
+              <a href="chat.html" target="_blank" class="btn btn-yellow">
+                🚀 Запустити чат-симулятор
+              </a>
+              <button class="btn btn-white" onclick="copySlideLink('https://goiteens-ua.github.io/jldwpe/chat.html')">
+                📋 Скопіювати лінк для чату
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16: SENSORY GROUNDING 5-4-3-2-1 -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-teal">Перезавантаження</span>
@@ -559,7 +673,7 @@
       </div>
     </section>
 
-    <!-- 15: PAIR BRIEF -->
+    <!-- 17: PAIR BRIEF -->
     <section class="slide">
       <div class="slide-inner">
         <div class="hero-grid">
@@ -584,7 +698,7 @@
       </div>
     </section>
 
-    <!-- 16: PAIR CASES -->
+    <!-- 18: PAIR CASES -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-coral">Кейси для кімнат</span>
@@ -606,7 +720,7 @@
       </div>
     </section>
 
-    <!-- 17: DEBRIEF -->
+    <!-- 19: DEBRIEF -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-yellow">Дебрифінг</span>
@@ -624,7 +738,7 @@
       </div>
     </section>
 
-    <!-- 18: 10-SEC STOP CRANE -->
+    <!-- 20: 10-SEC STOP CRANE -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-coral">Інструмент захисту</span>
@@ -648,7 +762,7 @@
       </div>
     </section>
 
-    <!-- 19: PERSONAL PROTOCOL -->
+    <!-- 21: PERSONAL PROTOCOL -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-yellow">Особистий артефакт</span>
@@ -670,7 +784,37 @@
       </div>
     </section>
 
-    <!-- 20: REAL CASE (ZINCHENKO) -->
+    <!-- 22: НОВИЙ СЛАЙД — ІНТЕРАКТИВ 3 (СТОП-КРАН КОНСТРУКТОР) -->
+    <section class="slide">
+      <div class="slide-inner">
+        <span class="tag tag-yellow">Практикум 3 · Особистий артефакт</span>
+        <h2 class="slide-title">🛑 Налаштуй свій цифровий стоп-кран</h2>
+        <p class="lede">Склади персональний алгоритм саморегуляції (тіло, думки, фраза-щит) та завантаж шпаргалку на телефон:</p>
+
+        <div class="interactive-slide-box">
+          <div class="interactive-qr-card">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://goiteens-ua.github.io/jldwpe/stop.html" alt="QR Stop">
+            <span>Відкрий на телефоні 📷</span>
+          </div>
+          <div style="flex:1;">
+            <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:10px;">Чек-лист захисту під час тиску</h3>
+            <p style="font-size:0.98rem; color:var(--muted); line-height:1.55; margin-bottom:20px;">
+              Це персональний протокол для критичних моментів у чатах чи вдома. Обери фізичне гальмо, питання-фільтр і готову фразу для зупинки конфлікту.
+            </p>
+            <div style="display:flex; gap:14px; flex-wrap:wrap;">
+              <a href="stop.html" target="_blank" class="btn btn-yellow">
+                🚀 Скласти свій протокол
+              </a>
+              <button class="btn btn-white" onclick="copySlideLink('https://goiteens-ua.github.io/jldwpe/stop.html')">
+                📋 Скопіювати лінк для чату
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 23: REAL CASE (ZINCHENKO) -->
     <section class="slide">
       <div class="slide-inner">
         <div class="hero-grid" style="align-items:center;">
@@ -697,7 +841,7 @@
       </div>
     </section>
 
-    <!-- 21: FEED CONFLICTS LAB -->
+    <!-- 24: FEED CONFLICTS LAB -->
     <section class="slide">
       <div class="slide-inner">
         <span class="tag tag-coral">Практикум спостереження</span>
@@ -724,7 +868,7 @@
       </div>
     </section>
 
-    <!-- 22: FINAL -->
+    <!-- 25: FINAL -->
     <section class="slide">
       <div class="slide-inner" style="text-align:center; max-width:800px;">
         <span class="tag tag-teal">Фінал заняття</span>
@@ -743,9 +887,11 @@
 
   <div class="navbar">
     <button class="nav-arrow" id="prevBtn">←</button>
-    <span class="nav-status" id="navStatus">Слайд 1 з 23</span>
+    <span class="nav-status" id="navStatus">Слайд 1 з 26</span>
     <button class="nav-arrow" id="nextBtn">→</button>
   </div>
+
+  <div class="toast" id="toast">✅ Посилання скопійовано для чату!</div>
 
 <script>
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -833,6 +979,16 @@
       target.style.display = 'none';
       btn.textContent = '🔓 Зняти броню';
     }
+  }
+
+  function copySlideLink(url) {
+    navigator.clipboard.writeText(url).then(() => {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2200);
+    }).catch(() => {
+      prompt('Скопіюйте посилання вручну:', url);
+    });
   }
 
   function fireConfetti() {
