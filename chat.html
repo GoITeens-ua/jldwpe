@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лабораторія відповідей у чаті | Happy Kids 11–13</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFFDF9;
+    --line: #18181B;
+    --yellow: #FEC830;
+    --yellow-soft: #FFF5D6;
+    --coral: #FF5A5F;
+    --coral-soft: #FFEBEB;
+    --teal: #0D9488;
+    --teal-soft: #E6FFFA;
+    --chat-bg: #18181B;
+    --chat-card: #27272A;
+    --chat-border: #3F3F46;
+    --chat-text: #F4F4F5;
+    --shadow: 4px 4px 0px var(--line);
+    --shadow-pop: 6px 6px 0px var(--line);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--line);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 14px;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 640px;
+    background: #FFFFFF;
+    border: 3px solid var(--line);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow-pop);
+  }
+
+  .badge-top {
+    display: inline-block;
+    background: var(--yellow);
+    border: 2px solid var(--line);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 0 var(--line);
+  }
+
+  h1 { font-size: 1.45rem; font-weight: 700; line-height: 1.25; margin-bottom: 6px; }
+  p.desc { font-size: 0.92rem; color: #52525B; line-height: 1.45; margin-bottom: 18px; }
+
+  /* Вікно месенджера */
+  .chat-window {
+    background: var(--chat-bg);
+    border: 2.5px solid var(--line);
+    border-radius: 20px;
+    padding: 16px;
+    color: var(--chat-text);
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--chat-border);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    font-size: 0.82rem;
+    color: #A1A1AA;
+    font-weight: 600;
+  }
+  .msg-incoming {
+    background: var(--chat-card);
+    border: 1.5px solid var(--chat-border);
+    border-radius: 14px;
+    border-top-left-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+  .msg-author { font-size: 0.8rem; font-weight: 700; color: #38BDF8; margin-bottom: 3px; }
+  .msg-text { font-size: 0.98rem; line-height: 1.4; }
+
+  /* Зібрана репліка учня */
+  .msg-outgoing {
+    background: #312E81;
+    border: 1.5px solid #4338CA;
+    border-radius: 14px;
+    border-top-right-radius: 4px;
+    padding: 12px 14px;
+    min-height: 48px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #EEF2FF;
+    display: flex;
+    align-items: center;
+  }
+  .msg-placeholder { color: #818CF8; font-style: italic; font-size: 0.88rem; }
+
+  /* Конструктор блоків */
+  .builder-section {
+    background: #F4F4F5;
+    border: 2px solid var(--line);
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .step-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #52525B;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .chips-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .chip-btn {
+    background: #FFFFFF;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--line);
+    transition: 0.15s ease;
+    line-height: 1.35;
+  }
+  .chip-btn:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--line);
+    background: var(--yellow-soft);
+  }
+  .chip-btn.selected {
+    background: var(--yellow);
+    box-shadow: 1px 1px 0 var(--line);
+    transform: translate(1px, 1px);
+  }
+  .chip-btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* Результат аналізу */
+  .analysis-card {
+    display: none;
+    border: 2.5px solid var(--line);
+    border-radius: 18px;
+    padding: 16px;
+    margin-top: 14px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .analysis-verdict {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .analysis-breakdown {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .analysis-breakdown div { margin-bottom: 6px; }
+
+  .btn-action {
+    width: 100%;
+    background: var(--yellow);
+    border: 2.5px solid var(--line);
+    border-radius: 14px;
+    padding: 12px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: 0.15s;
+    margin-top: 8px;
+  }
+  .btn-action:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: var(--shadow-pop); }
+  .btn-action:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <span class="badge-top" id="roundBadge">Ситуація 1 з 2</span>
+    <span style="font-size:0.8rem; font-weight:700; color:#71717A;" id="scenarioType">Ігровий Discord</span>
+  </div>
+
+  <h1 id="scenarioTitle">Звинувачення в руїні гри</h1>
+  <p class="desc">Склади свою репліку з 3 блоків. Спробуй не скотитися ані в напад, ані в приховану отруту:</p>
+
+  <!-- ЧАТ -->
+  <div class="chat-window">
+    <div class="chat-header">
+      <span id="chatSource">🎮 #сквад-головне</span>
+      <span>Щойно</span>
+    </div>
+    <div class="msg-incoming">
+      <div class="msg-author" id="authorName">@Влад_CS:</div>
+      <div class="msg-text" id="incomingText">Ти все заруїнив(-ла) у вирішальному раунді! Краще б взагалі не підключався(-лася) 🤬</div>
+    </div>
+    <div class="msg-outgoing" id="previewBox">
+      <span class="msg-placeholder">Твоя відповідь з'явиться тут у міру вибору блоків...</span>
+    </div>
+  </div>
+
+  <!-- КОНСТРУКТОР БЛОКІВ -->
+  <div class="builder-section">
+    <div class="step-label">
+      <span>1. Як реагуєш на сам випад?</span>
+      <span id="st1-status">Обери</span>
+    </div>
+    <div class="chips-grid" id="block1Options"></div>
+  </div>
+
+  <div class="builder-section">
+    <div class="step-label">
+      <span>2. Як позначаєш межу?</span>
+      <span id="st2-status">Обери</span>
+    </div>
+    <div class="chips-grid" id="block2Options"></div>
+  </div>
+
+  <div class="builder-section">
+    <div class="step-label">
+      <span>3. Куди ведемо діалог далі?</span>
+      <span id="st3-status">Обери</span>
+    </div>
+    <div class="chips-grid" id="block3Options"></div>
+  </div>
+
+  <button class="btn-action" id="sendBtn" disabled onclick="analyzeResponse()">📨 Надіслати й перевірити ефект</button>
+
+  <!-- АНАЛІЗ -->
+  <div class="analysis-card" id="analysisCard">
+    <div class="analysis-verdict" id="analysisVerdict"></div>
+    <div class="analysis-breakdown" id="analysisBreakdown"></div>
+    <button class="btn-action" id="nextBtn" onclick="nextScenario()">Наступна ситуація →</button>
+  </div>
+</div>
+
+<script>
+  const scenarios = [
+    {
+      type: "Ігровий Discord",
+      title: "Звинувачення в руїні гри",
+      source: "🎮 #сквад-головне",
+      author: "@Влад_CS:",
+      incoming: "Ти все заруїнив(-ла) у вирішальному раунді! Краще б взагалі не підключався(-лася) 🤬",
+      b1: [
+        { text: "На себе подивись, про-гравець знайшовся!", tag: "attack", desc: "🔴 Блок 1 (Напад): миттєвий контрудар. Ти втягуєшся у війну капслоком." },
+        { text: "Ой, вибачте, що образив ваше велике вміння грати...", tag: "passive", desc: "🟡 Блок 1 (Пасивна агресія): звучить уїдливо. Опонент сприйме це як сарказм і розпалиться ще сильніше." },
+        { text: "Раунд справді вийшов невдалим, я сам цим незадоволений.", tag: "solid", desc: "🟢 Блок 1 (Твердість): прийняття реального факту без самоприниження та без нападу." }
+      ],
+      b2: [
+        { text: "Ще раз пащеку відкриєш — більше ніколи з нами не зіграєш.", tag: "attack", desc: "🔴 Блок 2 (Погроза): ескалація тиску, яка руйнує сквад остаточно." },
+        { text: "Мені взагалі начхати на твою думку і твої нерви.", tag: "passive", desc: "🟡 Блок 2 (Маска байдужості): показний «пофігізм» лише підтверджує, що тебе сильно зачепило." },
+        { text: "Але зриватися на мене й розмовляти в такому тоні ти не будеш.", tag: "solid", desc: "🟢 Блок 2 (Межа гідності): чітка червона лінія без переходу на особисті образи." }
+      ],
+      b3: [
+        { text: "Видаляй гру й не ганьбися.", tag: "attack", desc: "🔴 Блок 3 (Добивання): спроба принизити у відповідь." },
+        { text: "Короче, бувай, я ливаю з каналу.", tag: "passive", desc: "🟡 Блок 3 (Втеча): конфлікт лишається невирішеним токсичним хвостом." },
+        { text: "Охолоньмо 10 хвилин, а потім вирішимо, чи граємо наступну.", tag: "solid", desc: "🟢 Блок 3 (Лідерство): тайм-аут дає амигдалі час охолонути." }
+      ]
+    },
+    {
+      type: "Шкільний чат",
+      title: "Сарказм перед усім класом",
+      source: "💬 7-Б клас (26 учасників)",
+      author: "@Марк:",
+      incoming: "Ахахах, ну ти й геній 😂 таке спитати за 5 хв до самостійної... Чисто рівень 1 класу",
+      b1: [
+        { text: "Завали пельку, найрозумніший тут чи що? 🤡", tag: "attack", desc: "🔴 Блок 1 (Атака): дарує автору саме ту дешеву драму, заради якої він писав." },
+        { text: "Якщо тобі так легше самоствердитися — будь ласка.", tag: "passive", desc: "🟡 Блок 1 (Пасивна агресія): прихована шпилька, яка показує образу." },
+        { text: "Я запитую саме те, що мені зараз незрозуміло по темі.", tag: "solid", desc: "🟢 Блок 1 (Факт): спокійне відстоювання свого права питати без виправдовувань." }
+      ],
+      b2: [
+        { text: "Краще б за своїми оцінками стежив, клоун.", tag: "attack", desc: "🔴 Блок 2 (Зворотний шейм): опускання на рівень токсичного булінгу." },
+        { text: "Твої жарти як завжди на дні.", tag: "passive", desc: "🟡 Блок 2 (Шпилька): спроба вколоти у відповідь." },
+        { text: "І дешевий сарказм у мій бік мені слухати не цікаво.", tag: "solid", desc: "🟢 Блок 2 (Пряма межа): чітко названо неприйнятну поведінку без крику." }
+      ],
+      b3: [
+        { text: "Ще одне слово — і в школі поговоримо інакше.", tag: "attack", desc: "🔴 Блок 3 (Погроза): токсичний глухий кут." },
+        { text: "...", tag: "passive", desc: "🟡 Блок 3 (Зависання): залишає відчуття незахищеності." },
+        { text: "Хто реально розібрав третій номер — черкніть у приватні, будь ласка.", tag: "solid", desc: "🟢 Блок 3 (Ділова дія): перемикання уваги класу на конструктивне завдання." }
+      ]
+    }
+  ];
+
+  let curScen = 0;
+  let picks = { b1: null, b2: null, b3: null };
+
+  function renderScenario() {
+    const s = scenarios[curScen];
+    document.getElementById('roundBadge').textContent = `Ситуація ${curScen + 1} з ${scenarios.length}`;
+    document.getElementById('scenarioType').textContent = s.type;
+    document.getElementById('scenarioTitle').textContent = s.title;
+    document.getElementById('chatSource').textContent = s.source;
+    document.getElementById('authorName').textContent = s.author;
+    document.getElementById('incomingText').textContent = s.incoming;
+
+    picks = { b1: null, b2: null, b3: null };
+    updatePreview();
+
+    renderBlock('block1Options', s.b1, 'b1', 'st1-status');
+    renderBlock('block2Options', s.b2, 'b2', 'st2-status');
+    renderBlock('block3Options', s.b3, 'b3', 'st3-status');
+
+    document.getElementById('sendBtn').disabled = true;
+    document.getElementById('analysisCard').style.display = 'none';
+  }
+
+  function renderBlock(containerId, options, key, statusId) {
+    const cont = document.getElementById(containerId);
+    cont.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'chip-btn';
+      btn.textContent = opt.text;
+      btn.onclick = () => {
+        picks[key] = opt;
+        cont.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        document.getElementById(statusId).textContent = '✓ Обрано';
+        updatePreview();
+      };
+      cont.appendChild(btn);
+    });
+  }
+
+  function updatePreview() {
+    const box = document.getElementById('previewBox');
+    const p1 = picks.b1 ? picks.b1.text : '';
+    const p2 = picks.b2 ? picks.b2.text : '';
+    const p3 = picks.b3 ? picks.b3.text : '';
+
+    if (!p1 && !p2 && !p3) {
+      box.innerHTML = '<span class="msg-placeholder">Твоя відповідь з\'явиться тут у міру вибору блоків...</span>';
+      document.getElementById('sendBtn').disabled = true;
+    } else {
+      box.textContent = [p1, p2, p3].filter(Boolean).join(' ');
+      document.getElementById('sendBtn').disabled = !(picks.b1 && picks.b2 && picks.b3);
+    }
+  }
+
+  function analyzeResponse() {
+    const card = document.getElementById('analysisCard');
+    const verd = document.getElementById('analysisVerdict');
+    const brk = document.getElementById('analysisBreakdown');
+
+    const tags = [picks.b1.tag, picks.b2.tag, picks.b3.tag];
+    const attacks = tags.filter(t => t === 'attack').length;
+    const passives = tags.filter(t => t === 'passive').length;
+    const solids = tags.filter(t => t === 'solid').length;
+
+    if (solids === 3) {
+      card.style.background = 'var(--teal-soft)';
+      card.style.borderColor = 'var(--teal)';
+      verd.style.color = '#065F46';
+      verd.innerHTML = '🛡️ Ідеальний Режим Сили (100% доросла позиція)';
+    } else if (attacks > 0) {
+      card.style.background = 'var(--coral-soft)';
+      card.style.borderColor = 'var(--coral)';
+      verd.style.color = '#991B1B';
+      verd.innerHTML = '🔥 Ескалація: у репліці спрацював прямий напад';
+    } else {
+      card.style.background = 'var(--yellow-soft)';
+      card.style.borderColor = 'var(--line)';
+      verd.style.color = '#854D0E';
+      verd.innerHTML = '⚠️ Пастка: репліка містить приховану шпильку або втечу';
+    }
+
+    brk.innerHTML = `
+      <div>${picks.b1.desc}</div>
+      <div>${picks.b2.desc}</div>
+      <div>${picks.b3.desc}</div>
+    `;
+
+    document.querySelectorAll('.chip-btn').forEach(b => b.disabled = true);
+    document.getElementById('sendBtn').disabled = true;
+    card.style.display = 'block';
+
+    const nextBtn = document.getElementById('nextBtn');
+    if (curScen < scenarios.length - 1) {
+      nextBtn.textContent = 'Наступна ситуація →';
+    } else {
+      nextBtn.textContent = 'Завершити практику 🎉';
+    }
+  }
+
+  function nextScenario() {
+    curScen++;
+    if (curScen < scenarios.length) {
+      renderScenario();
+      document.querySelectorAll('.chip-btn').forEach(b => b.disabled = false);
+      ['st1-status', 'st2-status', 'st3-status'].forEach(id => document.getElementById(id).textContent = 'Обери');
+    } else {
+      alert('Чудова робота! Усі складні кейси розібрано.');
+      curScen = 0;
+      renderScenario();
+    }
+  }
+
+  renderScenario();
+</script>
+</body>
+</html>
