@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Мій цифровий стоп-кран | Happy Kids 11–13</title>
+<title>Мій персональний стоп-кран | Happy Kids 11–13</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -73,7 +73,6 @@
     margin-bottom: 18px;
   }
 
-  /* Стартовий екран */
   .intro-box {
     background: var(--yellow-soft);
     border: 2px solid var(--line);
@@ -129,9 +128,6 @@
     transform: translate(2px, 2px);
   }
 
-  .custom-input-box {
-    margin-top: 8px;
-  }
   .custom-input {
     width: 100%;
     border: 2px solid var(--line);
@@ -187,7 +183,6 @@
   .btn-yellow { background: var(--yellow); color: var(--ink); }
   .btn-ghost { background: transparent; border-color: transparent; box-shadow: none; color: var(--muted); }
 
-  /* Картка чек-листа */
   .artifact-card {
     background: var(--yellow-soft);
     border: 2.5px solid var(--line);
@@ -223,7 +218,6 @@
     line-height: 1.5;
   }
 
-  /* Шаблон для чистого експорту зображення */
   #exportFrame {
     position: fixed;
     top: -9999px;
@@ -243,26 +237,26 @@
 
 <div class="app-container">
 
-  <!-- ЕКРАН 0: ІНСТРУКЦІЯ ТА ЗМІСТ -->
+  <!-- ЕКРАН 0: ВСТУП -->
   <div class="step-screen active" id="step0">
     <span class="step-pill">Твій персональний інструмент</span>
-    <h1>Цифровий стоп-кран</h1>
-    <p class="sub">Коли в чаті або грі прилітає токсичний наїзд, перші 10 секунд раціональний мозок буквально блокується адреналіном.</p>
+    <h1>Особистий стоп-кран</h1>
+    <p class="sub">Коли тебе накриває хвиля гніву чи образ — у чаті з однолітками або вдома під час різкої розмови з батьками — перші 10 секунд мозок блокується адреналіном.</p>
 
     <div class="intro-box">
-      <b>Це не тренажер, а твій особистий чек-лист безпеки:</b>
+      <b>Як працює твій чек-лист у момент тиску:</b>
       <div class="intro-list">
         <div class="intro-item">
           <span>⏱</span>
-          <span><b>Збити спалах:</b> обрати сенсорну дію, щоб не відправити повідомлення на емоціях.</span>
+          <span><b>Збити спалах у тілі:</b> не зірватися на крик і не відправити токсичне повідомлення на емоціях.</span>
         </div>
         <div class="intro-item">
           <span>🎯</span>
-          <span><b>Питання-фільтр:</b> контрольна перевірка думок перед тим, як писати відповідь.</span>
+          <span><b>Питання-фільтр:</b> повернути тверезість думкам до того, як сказати те, про що пошкодуєш.</span>
         </div>
         <div class="intro-item">
           <span>🛡</span>
-          <span><b>Фраза-щит:</b> готова заготовка, яка ставить межу без втрати гідності та без токсичності.</span>
+          <span><b>Фраза-щит:</b> вчасно взяти паузу (вголос або в чаті) без скандалу, але зберігаючи гідність.</span>
         </div>
       </div>
     </div>
@@ -281,17 +275,17 @@
   <div class="step-screen" id="step1">
     <span class="step-pill">Крок 1 з 3 · Тіло</span>
     <h1>Фізичне гальмо на 10 секунд</h1>
-    <p class="sub">Обери одну мікро-дію для тіла, яка допоможе швидко скинути першу хвилю адреналіну:</p>
+    <p class="sub">Обери мікро-дію для тіла, яка допоможе швидко скинути першу хвилю адреналіну в чаті чи вдома:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(1, 'Кладу телефон екраном униз і роблю 3 повільні глибокі видихи')">
-        <span>📴</span> Кладу телефон екраном униз і роблю 3 повільні глибокі видихи
+      <button class="choice-btn" onclick="selectChoice(1, 'Відкладаю телефон або роблю крок назад і роблю 3 повільні глибокі видихи')">
+        <span>📴</span> Відкладаю телефон або роблю крок назад і роблю 3 повільні глибокі видихи
       </button>
-      <button class="choice-btn" onclick="selectChoice(1, 'Йду вмити обличчя холодною водою або роблю великий ковток води')">
-        <span>💧</span> Йду вмити обличчя холодною водою або роблю великий ковток води
+      <button class="choice-btn" onclick="selectChoice(1, 'Йду вмити обличчя холодною водою або повільно випиваю склянку води')">
+        <span>💧</span> Йду вмити обличчя холодною водою або повільно випиваю склянку води
       </button>
-      <button class="choice-btn" onclick="selectChoice(1, 'Стискаю й розтискаю кулаки щосили 5 разів, свідомо розтискаючи щелепу')">
-        <span>✊</span> Стискаю й розтискаю кулаки щосили 5 разів, свідомо розтискаючи щелепу
+      <button class="choice-btn" onclick="selectChoice(1, 'Стискаю й розтискаю кулаки 5 разів, свідомо розтискаючи щелепу й плечі')">
+        <span>✊</span> Стискаю й розтискаю кулаки 5 разів, свідомо розтискаючи щелепу й плечі
       </button>
     </div>
 
@@ -305,17 +299,17 @@
   <div class="step-screen" id="step2">
     <span class="step-pill">Крок 2 з 3 · Логіка</span>
     <h1>Контрольне питання-фільтр</h1>
-    <p class="sub">Питання, яке повертає контроль розуму перед тим, як відправити текст:</p>
+    <p class="sub">Питання про себе, яке повертає контроль розуму перед тим, як відповісти:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(2, '«Я зараз хочу вирішити питання чи просто зробити боляче у відповідь?»')">
-        <span>🎯</span> «Я зараз хочу вирішити питання чи просто зробити боляче у відповідь?»
+      <button class="choice-btn" onclick="selectChoice(2, '«Я зараз хочу вирішити ситуацію чи просто зірватися й зробити боляче у відповідь?»')">
+        <span>🎯</span> «Я зараз хочу вирішити ситуацію чи просто зірватися й зробити боляче у відповідь?»
       </button>
-      <button class="choice-btn" onclick="selectChoice(2, '«Що насправді мене зачепило під водою: сором, несправедливість чи втома?»')">
-        <span>🧊</span> «Що насправді мене зачепило під водою: сором, несправедливість чи втома?»
+      <button class="choice-btn" onclick="selectChoice(2, '«Що насправді мене зачепило: несправедливість, сором, втома чи образа?»')">
+        <span>🧊</span> «Що насправді мене зачепило: несправедливість, сором, втома чи образа?»
       </button>
-      <button class="choice-btn" onclick="selectChoice(2, '«Чи варта ця хвилинна емоція моїх нервів і нормальних стосунків завтра?»')">
-        <span>⏳</span> «Чи варта ця хвилинна емоція моїх нервів і нормальних стосунків завтра?»
+      <button class="choice-btn" onclick="selectChoice(2, '«Чи варта ця хвилинна емоція зіпсованого вечора, покарання або розриву стосунків?»')">
+        <span>⏳</span> «Чи варта ця хвилинна емоція зіпсованого вечора, покарання або розриву стосунків?»
       </button>
     </div>
 
@@ -329,17 +323,17 @@
   <div class="step-screen" id="step3">
     <span class="step-pill">Крок 3 з 3 · Межа</span>
     <h1>Твоя готова фраза-щит</h1>
-    <p class="sub">Швидка заготовка для чату, щоб позначити межу й взяти паузу без сварок:</p>
+    <p class="sub">Слова (для чату чи вголос), щоб позначити межу й взяти паузу без крику та ляскання дверима:</p>
 
     <div class="cards-list">
-      <button class="choice-btn" onclick="selectChoice(3, '«Я зараз на емоціях. Мені треба 15 хвилин паузи, потім відповім.»')">
-        <span>⏸️</span> «Я зараз на емоціях. Мені треба 15 хвилин паузи, потім відповім.»
+      <button class="choice-btn" onclick="selectChoice(3, '«Я зараз на емоціях і не хочу наговорити зайвого. Мені треба 15 хвилин побути одному/одній, потім поговоримо.»')">
+        <span>⏸️</span> «Я зараз на емоціях і не хочу наговорити зайвого. Мені треба 15 хвилин побути одному/одній, потім поговоримо.»
       </button>
-      <button class="choice-btn" onclick="selectChoice(3, '«Мені не підходить такий тон розмови. Поговоримо, коли спаде напруга.»')">
-        <span>🛑</span> «Мені не підходить такий тон розмови. Поговоримо, коли спаде напруга.»
+      <button class="choice-btn" onclick="selectChoice(3, '«Мені неприємно, коли на мене кричать. Я готовий(-а) усе спокійно обговорити, коли всі видихнуть.»')">
+        <span>🛑</span> «Мені неприємно, коли на мене кричать. Я готовий(-а) усе спокійно обговорити, коли всі видихнуть.»
       </button>
-      <button class="choice-btn" onclick="selectChoice(3, '«Я бачу це інакше. Сваритися в чаті не бачу сенсу, обговоримо пізніше.»')">
-        <span>🤝</span> «Я бачу це інакше. Сваритися в чаті не бачу сенсу, обговоримо пізніше.»
+      <button class="choice-btn" onclick="selectChoice(3, '«Я бачу цю ситуацію інакше. Давайте не сваритися на емоціях, а повернемося до розмови трохи згодом.»')">
+        <span>🤝</span> «Я бачу цю ситуацію інакше. Давайте не сваритися на емоціях, а повернемося до розмови трохи згодом.»
       </button>
     </div>
 
@@ -349,11 +343,11 @@
     </div>
   </div>
 
-  <!-- ФІНАЛ: ГОТОВИЙ ЧЕК-ЛИСТ -->
+  <!-- ФІНАЛ -->
   <div class="step-screen" id="stepResult">
     <span class="step-pill" style="background:var(--teal-soft); color:var(--teal);">Готово</span>
-    <h1 id="finalHeaderName">Мій цифровий стоп-кран</h1>
-    <p class="sub">Твій персональний покроковий алгоритм для критичних ситуацій у чатах:</p>
+    <h1 id="finalHeaderName">Мій особистий стоп-кран</h1>
+    <p class="sub">Твій алгоритм захисту під час тиску — вдома, у школі чи в мережі:</p>
 
     <div class="artifact-card">
       <div style="font-size:1.15rem; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
@@ -366,12 +360,12 @@
       </div>
 
       <div class="proto-row">
-        <b>2. Питання-фільтр до себе:</b>
+        <b>2. Питання-фільтр про себе:</b>
         <span id="resLogic">-</span>
       </div>
 
       <div class="proto-row" style="margin-bottom:0;">
-        <b>3. Фраза-щит у чат:</b>
+        <b>3. Фраза-щит (вголос чи в чат):</b>
         <div class="shield-box" id="resShield" style="margin-top:6px;">-</div>
       </div>
     </div>
@@ -384,11 +378,11 @@
 
 </div>
 
-<!-- Прихований блок для ідеального рендерингу зображення -->
+<!-- Блок генерації PNG -->
 <div id="exportFrame">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
     <span style="background:#FEC830; border:2px solid #18181B; padding:3px 10px; border-radius:999px; font-size:0.75rem; font-weight:700;">
-      Особистий чек-лист
+      Особистий чек-лист дій
     </span>
     <span style="font-size:0.75rem; font-weight:700; color:#52525B;">Happy Kids 11–13</span>
   </div>
@@ -407,7 +401,7 @@
     </div>
 
     <div style="background:#E6FFFA; border:1.5px solid #0D9488; border-radius:12px; padding:10px 12px; font-size:0.9rem; font-weight:600; color:#065F46;">
-      <b style="display:block; font-size:0.72rem; text-transform:uppercase; color:#0D9488; margin-bottom:3px;">3. Фраза-щит у чат:</b>
+      <b style="display:block; font-size:0.72rem; text-transform:uppercase; color:#0D9488; margin-bottom:3px;">3. Фраза-щит (вголос чи в чат):</b>
       <span id="expShield">-</span>
     </div>
   </div>
@@ -442,7 +436,6 @@
     document.getElementById('resLogic').textContent = choices[2];
     document.getElementById('resShield').textContent = choices[3];
 
-    // Синхронізація для картинки
     document.getElementById('expNameTitle').textContent = `Стоп-кран: ${name}`;
     document.getElementById('expBody').textContent = choices[1];
     document.getElementById('expLogic').textContent = choices[2];
