@@ -15,7 +15,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Open Sans', -apple-system, sans-serif;
     background: #0f1416;
   }
 
@@ -32,7 +32,6 @@
     background-size: cover;
   }
 
-  /* Шапка чату */
   .tg-header {
     height: 58px;
     background: #ffffff;
@@ -65,7 +64,6 @@
   
   .tg-header-icons { display: flex; gap: 18px; color: #707579; font-size: 1.2rem; cursor: pointer; }
 
-  /* Стрічка повідомлень */
   .tg-chat-history {
     flex: 1;
     overflow-y: auto;
@@ -100,7 +98,6 @@
     box-shadow: 0 1px 2px rgba(16, 35, 47, 0.15);
     word-break: break-word;
   }
-
   .tg-bubble-row.in .tg-bubble {
     background: #ffffff;
     color: #000000;
@@ -125,7 +122,6 @@
   }
   .tg-checks { color: #4fae4e; font-weight: 700; }
 
-  /* Індикатор друку */
   .tg-typing-pill {
     display: none;
     align-self: flex-start;
@@ -153,7 +149,6 @@
     30% { transform: translateY(-4px); opacity: 1; }
   }
 
-  /* Нижня панель */
   .tg-input-area {
     background: transparent;
     padding: 10px 16px 28px;
@@ -204,7 +199,6 @@
     cursor: pointer;
   }
 
-  /* Спливаюче вікно */
   .tg-quick-replies {
     display: none;
     position: absolute;
@@ -244,11 +238,7 @@
     line-height: 1.35;
     text-align: left;
   }
-  .tg-reply-item:hover {
-    background: #eef5fd;
-    border-color: #3390ec;
-    transform: translateX(3px);
-  }
+  .tg-reply-item:hover { background: #eef5fd; border-color: #3390ec; transform: translateX(3px); }
 
   .tg-system-pill {
     align-self: center;
@@ -264,7 +254,6 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
   }
 
-  /* Бот-картка */
   .bot-card-inner {
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
@@ -325,7 +314,6 @@
   }
   .bot-card-btn:hover { background: #227ecb; }
 
-  /* Прихований шаблон для рендерингу естетичної картки */
   #exportFrame {
     position: fixed;
     top: -9999px;
@@ -348,13 +336,35 @@
     padding: 24px;
     box-shadow: 0 12px 28px rgba(0,0,0,0.2);
   }
+
+  .preview-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.86);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(5px);
+  }
+  .preview-body {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px;
+    max-width: 94%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    overflow-y: auto;
+  }
 </style>
 </head>
 <body>
 
 <div class="tg-container">
-  
-  <!-- Шапка -->
   <div class="tg-header">
     <div class="tg-avatar" id="avatarEl">В</div>
     <div class="tg-peer-info">
@@ -368,10 +378,8 @@
     </div>
   </div>
 
-  <!-- Чат -->
   <div class="tg-chat-history" id="history">
     <div class="tg-system-pill" id="datePill">Сьогодні</div>
-    
     <div class="tg-typing-pill" id="typingIndicator">
       <span id="typingName">Влад друкує</span>
       <div class="tg-dot"></div>
@@ -380,30 +388,38 @@
     </div>
   </div>
 
-  <!-- Панель вводу -->
   <div class="tg-input-area" id="inputArea">
     <div class="tg-input-wrapper" onclick="toggleReplies()">
       <span class="tg-attach-btn">📎</span>
-      
       <div class="tg-fake-input" id="fakeInput">
         💬 Обери свій варіант відповіді тут...
       </div>
-      
       <span class="tg-mic-btn" id="sendIcon">🎙️</span>
 
-      <!-- Спливаючі варіанти -->
       <div class="tg-quick-replies" id="quickReplies" onclick="event.stopPropagation()">
         <div class="tg-reply-hint">Вибери, як відповісти:</div>
         <div id="optionsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- Прихований контейнер для красивого експорту картки -->
 <div id="exportFrame">
   <div class="export-card-body" id="exportCardBody"></div>
+</div>
+
+<!-- Мобільне прев'ю -->
+<div class="preview-modal" id="imagePreviewModal">
+  <div class="preview-body">
+    <div style="font-weight:700; font-size:0.92rem; color:#18181B; margin-bottom:8px; text-align:center;">
+      📱 Затисни картинку пальцем ➔ «Зберегти у Фото»
+    </div>
+    <img id="previewImgResult" style="width:100%; max-height:55vh; object-fit:contain; border-radius:12px; border:1.5px solid #E2E8F0; margin-bottom:12px;" alt="Результат">
+    <div style="display:flex; gap:10px; width:100%;">
+      <a id="directDownloadBtn" href="#" download="Мій_профіль_у_чаті.png" style="flex:1; text-align:center; background:#3390EC; color:#fff; padding:10px 14px; border-radius:12px; font-weight:700; text-decoration:none; font-size:0.88rem;">Завантажити файл</a>
+      <button onclick="document.getElementById('imagePreviewModal').style.display='none'" style="background:#E2E8F0; border:none; padding:10px 16px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.88rem;">Закрити</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -839,7 +855,6 @@
     btn.innerHTML = '⏳ Зберігаємо...';
     btn.disabled = true;
 
-    // Створюємо окрему гарну картку в прихованому контейнері з фоном навколо
     const exportCardBody = document.getElementById('exportCardBody');
     exportCardBody.innerHTML = `
       <div style="font-weight:700; color:#3390ec; font-size:0.82rem; text-transform:uppercase; margin-bottom:6px; letter-spacing:0.5px;">
@@ -866,19 +881,30 @@
 
     html2canvas(targetFrame, {
       scale: 2,
-      useCORS: true
+      useCORS: true,
+      backgroundColor: '#8bb28a'
     }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'Мій_профіль_у_чаті.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      btn.innerHTML = '✅ Збережено!';
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-      }, 2500);
+      const dataUrl = canvas.toDataURL('image/png');
+
+      const modal = document.getElementById('imagePreviewModal');
+      const previewImg = document.getElementById('previewImgResult');
+      const directBtn = document.getElementById('directDownloadBtn');
+
+      previewImg.src = dataUrl;
+      directBtn.href = dataUrl;
+      modal.style.display = 'flex';
+
+      try {
+        const link = document.createElement('a');
+        link.download = 'Мій_профіль_у_чаті.png';
+        link.href = dataUrl;
+        link.click();
+      } catch(e) {}
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
     }).catch(() => {
-      alert('Зробіть звичайний скриншот цього повідомлення на пам\'ять! ✨');
+      alert('Будь ласка, зроби скриншот повідомлення бота на пам\'ять! ✨');
       btn.innerHTML = originalText;
       btn.disabled = false;
     });
