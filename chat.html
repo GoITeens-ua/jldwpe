@@ -3,467 +3,515 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Чат-симулятор | Happy Kids 11–13</title>
+<title>Telegram</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg-page: #0F172A;
-    --chat-bg: #1E293B;
-    --header-bg: #0F172A;
-    --incoming-bubble: #334155;
-    --outgoing-bubble: #4F46E5;
-    --text-primary: #F8FAFC;
-    --text-muted: #94A3B8;
-    --accent: #FEC830;
-    --coral: #EF4444;
-    --teal: #10B981;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg-page);
-    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
-    color: var(--text-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f1416;
   }
 
-  .phone-frame {
-    width: 100%;
-    max-width: 440px;
+  .tg-container {
+    width: 100vw;
     height: 100vh;
-    max-height: 860px;
-    background: var(--chat-bg);
     display: flex;
     flex-direction: column;
     position: relative;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
-    overflow: hidden;
-  }
-  @media(min-width: 500px) {
-    .phone-frame {
-      height: 90vh;
-      border-radius: 36px;
-      border: 6px solid #334155;
-    }
+    background-color: #8bb28a;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 10%, transparent 20%),
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 8px);
+    background-size: cover;
   }
 
-  /* Шапка месенджера */
-  .chat-header {
-    background: var(--header-bg);
-    padding: 14px 18px;
+  /* Шапка чату */
+  .tg-header {
+    height: 58px;
+    background: #ffffff;
+    border-bottom: 1px solid #dcdfe2;
     display: flex;
     align-items: center;
+    padding: 0 16px;
     gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
     z-index: 10;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   }
-  .avatar {
+  .tg-avatar {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #3B82F6;
+    background: #e17076;
+    color: #fff;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
     font-size: 1.1rem;
     flex-shrink: 0;
   }
-  .chat-info { flex: 1; }
-  .chat-title { font-size: 0.95rem; font-weight: 700; }
-  .chat-status { font-size: 0.78rem; color: var(--teal); font-weight: 500; }
+  .tg-peer-info { flex: 1; min-width: 0; }
+  .tg-peer-name { font-size: 0.95rem; font-weight: 600; color: #222; }
+  .tg-peer-status { font-size: 0.8rem; color: #82868a; }
+  .tg-peer-status.typing { color: #3390ec; font-weight: 600; }
+  
+  .tg-header-icons { display: flex; gap: 18px; color: #707579; font-size: 1.2rem; cursor: pointer; }
 
   /* Стрічка повідомлень */
-  .messages-flow {
+  .tg-chat-history {
     flex: 1;
     overflow-y: auto;
-    padding: 20px 16px;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    scroll-behavior: smooth;
+    gap: 8px;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
   }
 
-  .msg-row {
+  .tg-bubble-row {
     display: flex;
-    flex-direction: column;
-    animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%;
+    animation: flyIn 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   }
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.92) translateY(8px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+  @keyframes flyIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  .msg-row.incoming { align-items: flex-start; }
-  .msg-row.outgoing { align-items: flex-end; }
+  .tg-bubble-row.in { justify-content: flex-start; }
+  .tg-bubble-row.out { justify-content: flex-end; }
 
-  .bubble {
-    max-width: 84%;
-    padding: 12px 16px;
-    font-size: 0.92rem;
-    line-height: 1.45;
+  .tg-bubble {
+    max-width: 72%;
+    padding: 8px 12px 6px;
+    font-size: 0.93rem;
+    line-height: 1.38;
     position: relative;
+    box-shadow: 0 1px 2px rgba(16, 35, 47, 0.15);
     word-break: break-word;
   }
-  .msg-row.incoming .bubble {
-    background: var(--incoming-bubble);
-    color: #F8FAFC;
-    border-radius: 18px 18px 18px 4px;
+
+  .tg-bubble-row.in .tg-bubble {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 12px 12px 12px 2px;
   }
-  .msg-row.outgoing .bubble {
-    background: var(--outgoing-bubble);
-    color: #FFFFFF;
-    border-radius: 18px 18px 4px 18px;
-  }
-  .time-stamp {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.45);
-    margin-top: 4px;
-    align-self: flex-end;
+  .tg-bubble-row.out .tg-bubble {
+    background: #eeffde;
+    color: #000000;
+    border-radius: 12px 12px 2px 12px;
   }
 
-  /* Анімація набору тексту */
-  .typing-indicator {
-    display: none;
+  .tg-meta {
+    float: right;
+    margin-left: 10px;
+    margin-top: 4px;
+    display: flex;
     align-items: center;
-    gap: 5px;
-    background: var(--incoming-bubble);
-    padding: 10px 16px;
-    border-radius: 18px 18px 18px 4px;
-    width: fit-content;
+    gap: 3px;
+    font-size: 0.7rem;
+    color: #82868a;
+    user-select: none;
   }
-  .typing-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--text-muted);
+  .tg-checks { color: #4fae4e; font-weight: 700; }
+
+  /* Індикатор друку */
+  .tg-typing-pill {
+    display: none;
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    padding: 6px 14px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    color: #4b5563;
+    gap: 4px;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .tg-dot {
+    width: 4px;
+    height: 4px;
+    background: #3390ec;
     border-radius: 50%;
-    animation: blink 1.2s infinite ease-in-out;
+    animation: tgPulse 1.2s infinite ease-in-out;
   }
-  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes blink {
+  .tg-dot:nth-child(2) { animation-delay: 0.2s; }
+  .tg-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes tgPulse {
     0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
     30% { transform: translateY(-4px); opacity: 1; }
   }
 
-  /* Шторка вибору відповідей (замість клавіатури) */
-  .replies-tray {
-    background: #0F172A;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding: 14px 14px 18px;
+  /* Нижня панель */
+  .tg-input-area {
+    background: transparent;
+    padding: 8px 16px 14px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    justify-content: center;
+    z-index: 20;
+    position: relative;
   }
-  .tray-title {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 2px;
+  .tg-input-wrapper {
+    max-width: 760px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    padding: 4px 10px 4px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    position: relative;
   }
-  .reply-option-btn {
-    background: #1E293B;
-    border: 1.5px solid #334155;
-    border-radius: 14px;
-    padding: 11px 14px;
-    color: #F8FAFC;
-    font-family: inherit;
-    font-size: 0.88rem;
-    font-weight: 500;
-    text-align: left;
+  .tg-attach-btn { color: #707579; font-size: 1.3rem; margin-right: 12px; cursor: pointer; }
+  
+  .tg-fake-input {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #a2acb4;
     cursor: pointer;
-    line-height: 1.35;
-    transition: all 0.15s ease;
+    user-select: none;
+    padding: 10px 0;
   }
-  .reply-option-btn:hover {
-    background: #334155;
-    border-color: #64748B;
-    transform: translateY(-1px);
-  }
-  .reply-option-btn:active { transform: translateY(1px); }
+  .tg-fake-input.is-active { color: #222; }
 
-  /* Карточка аналізу */
-  .verdict-sheet {
+  .tg-mic-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #707579;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* Спливаюче меню варіантів */
+  .tg-quick-replies {
     display: none;
     position: absolute;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.94);
-    backdrop-filter: blur(8px);
-    z-index: 30;
-    padding: 24px;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+    border: 1px solid #e0e4e7;
     flex-direction: column;
-    justify-content: center;
-    animation: fadeIn 0.25s ease;
+    gap: 8px;
+    animation: popMenu 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes popMenu {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
-  .verdict-box {
-    background: #1E293B;
-    border: 2px solid #475569;
-    border-radius: 22px;
-    padding: 22px;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
-  }
-  .verdict-pill {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
+  .tg-reply-hint {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    color: #707579;
+    padding: 0 6px 4px;
   }
-  .btn-continue {
-    width: 100%;
-    margin-top: 18px;
-    background: var(--accent);
-    color: #0F172A;
-    border: none;
-    border-radius: 14px;
-    padding: 13px;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 0.95rem;
+  .tg-reply-item {
+    background: #f4f6f8;
+    border: 1px solid #e5e9ec;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: #111;
     cursor: pointer;
-    transition: 0.15s;
+    transition: all 0.12s ease;
+    line-height: 1.35;
+    text-align: left;
   }
-  .btn-continue:hover { filter: brightness(1.08); }
+  .tg-reply-item:hover {
+    background: #eef5fd;
+    border-color: #3390ec;
+    transform: translateX(3px);
+  }
+
+  .tg-system-pill {
+    align-self: center;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 10px 0;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
 </style>
 </head>
 <body>
 
-<div class="phone-frame">
-  <!-- Шапка -->
-  <div class="chat-header">
-    <div class="avatar" id="authorAvatar">🎮</div>
-    <div class="chat-info">
-      <div class="chat-title" id="chatName">Сквад #катка</div>
-      <div class="chat-status" id="authorStatus">онлайн</div>
+<div class="tg-container">
+  
+  <div class="tg-header">
+    <div class="tg-avatar">В</div>
+    <div class="tg-peer-info">
+      <div class="tg-peer-name">Влад</div>
+      <div class="tg-peer-status" id="peerStatus">був(ла) щойно</div>
     </div>
-    <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;" id="caseCounter">1 / 2</span>
-  </div>
-
-  <!-- Повідомлення -->
-  <div class="messages-flow" id="flow">
-    <!-- Початкове вкидання генерується скриптом -->
-    <div class="typing-indicator" id="typing">
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
+    <div class="tg-header-icons">
+      <span>📞</span>
+      <span>🔍</span>
+      <span>⋮</span>
     </div>
   </div>
 
-  <!-- Шторка варіантів -->
-  <div class="replies-tray" id="tray">
-    <div class="tray-title">
-      <span>Твоя відповідь</span>
-      <span>Обери репліку 💬</span>
+  <div class="tg-chat-history" id="history">
+    <div class="tg-system-pill">Сьогодні</div>
+    
+    <div class="tg-typing-pill" id="typingIndicator">
+      <span>Влад друкує</span>
+      <div class="tg-dot"></div>
+      <div class="tg-dot"></div>
+      <div class="tg-dot"></div>
     </div>
-    <div id="optionsWrap" style="display:flex; flex-direction:column; gap:8px;"></div>
   </div>
 
-  <!-- Підсумок / Фідбек -->
-  <div class="verdict-sheet" id="verdictModal">
-    <div class="verdict-box">
-      <span class="verdict-pill" id="vPill">Аналіз</span>
-      <h3 id="vTitle" style="font-size:1.2rem; margin-bottom:8px;">Що відбулося в чаті?</h3>
-      <p id="vDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin-bottom:12px;"></p>
-      <div id="vTip" style="background:#0F172A; padding:12px; border-radius:12px; font-size:0.85rem; line-height:1.45;"></div>
-      <button class="btn-continue" id="vBtn" onclick="nextCase()">Далі →</button>
+  <div class="tg-input-area">
+    <div class="tg-input-wrapper">
+      <span class="tg-attach-btn">📎</span>
+      
+      <div class="tg-fake-input" id="fakeInput" onclick="toggleReplies()">
+        Повідомлення...
+      </div>
+      
+      <span class="tg-mic-btn" id="sendIcon">🎙️</span>
+
+      <div class="tg-quick-replies" id="quickReplies">
+        <div class="tg-reply-hint">Обери, як відповісти:</div>
+        <div id="optionsContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
+      </div>
     </div>
   </div>
+
 </div>
 
 <script>
-  const cases = [
-    {
-      name: "Сквад #катка",
-      avatar: "🎮",
-      incoming: "Ти все заруїнив(-ла) в останньому раунді! 🤬 Краще б ти взагалі лівнув(-ла) перед початком!",
+  const flowHistory = document.getElementById('history');
+  const typingPill = document.getElementById('typingIndicator');
+  const peerStatus = document.getElementById('peerStatus');
+  const fakeInput = document.getElementById('fakeInput');
+  const sendIcon = document.getElementById('sendIcon');
+  const quickReplies = document.getElementById('quickReplies');
+  const optionsContainer = document.getElementById('optionsContainer');
+
+  const dialogueTree = {
+    start: {
+      incoming: "Ти взагалі бачив, шо ти зробив у вирішальному раунді?! 🤬 Через тебе вся катка злита! Краще б видалив гру взагалі!",
       options: [
         {
-          text: "Сам ти дно косоруке! Глянь на свій рахунок спочатку, а потім вякай! 🤡",
-          botReply: "Ахаха, згорів, нубас! Лівай зі скваду, ми тебе кикаємо назавжди.",
-          type: "danger",
-          label: "Атака (Режим Бий)",
-          title: "🔥 Ескалація конфлікту",
-          desc: "Ти відповів наїздом на наїзд. Тепер діалог скотився у взаємні образи перед усіма, гра зіпсована, а тебе просто викинули з команди.",
-          tip: "💡 <b>Пастка:</b> атака у відповідь змушує іншого захищатися ще жорсткіше. Градус сварки злітає до 100%."
+          text: "На себе подивись спочатку, про-гравець знайшовся! Сам злив першу половину, а на мене ореш! 🤡",
+          type: "attack",
+          next: "attackBranch"
         },
         {
-          text: "Ой вибачте, що образив ваше величне вміння грати... Великий про-гравець знайшовся.",
-          botReply: "Ти мені тут не язви. Якщо грати не вмієш — хоча б мовчи в тряпочку.",
-          type: "warning",
-          label: "Пасивна агресія",
-          title: "⚠️ Прихована отрута",
-          desc: "Сарказм здається дотепним захистом, але співрозмовник зчитує його як прихований укол і розпалюється ще сильніше.",
-          tip: "💡 <b>Пастка:</b> пасивна агресія ніколи не розв'язує проблему, вона лише подовжує токсичну перепалку."
+          text: "Ой, вибачте, великий кіберспортсмен, шо образив вашу величну гру... Наступного разу без тебе впораємось 🙄",
+          type: "passive",
+          next: "passiveBranch"
         },
         {
-          text: "Раунд справді вийшов невдалим, я сам незадоволений. Але розмовляти зі мною в такому тоні не треба. Зіграємо пізніше, коли всі охолонуть.",
-          botReply: "Ладно... вибач, згорів через злитий ранг. Давай через 15 хв перекуримо.",
-          type: "success",
-          label: "Режим сили",
-          title: "🛡️ Повна нейтралізація",
-          desc: "Ти визнав факт помилки без самоприниження, виставив жорстку межу на крик («в такому тоні не треба») і взяв паузу.",
-          tip: "💡 <b>Сила:</b> у такій відповіді немає зачіпок для нової агресії. Тіммейт змушений пригасити свій тон."
+          text: "Раунд реально вийшов невдалим, я сам незадоволений. Але розмовляти зі мною в такому тоні не треба. Відпочиньмо 15 хвилин.",
+          type: "mature",
+          next: "matureBranch"
         }
       ]
     },
-    {
-      name: "7-Б клас (26)",
-      avatar: "💬",
-      incoming: "Ахах, ти реально таке запитав(-ла) у вчителя? 😂 Рівень крінжу зашкалює, чисто перший клас))",
+    attackBranch: {
+      incoming: "Шо ти вякаєш?! Ти найгірший за статою за всі ігри! Я з тобою в одне лобі більше в житті не зайду, ясно?!",
       options: [
         {
-          text: "Завали пельку, найрозумніший тут? Слідкуй за своїми оцінками краще.",
-          botReply: "Ого як підгоріло 😂 Народ, дивіться як рветься!",
-          type: "danger",
-          label: "Атака (Режим Бий)",
-          title: "🔥 Публічна пастка",
-          desc: "Ти подарував провокатору саме ту реакцію, якої він чекав. Тепер весь клас дивиться на твоє обурення як на шоу.",
-          tip: "💡 <b>Пастка:</b> хейтери в чатах живляться твоєю істерикою. Не годуй їх."
+          text: "Та пішов ти! Кикай, мені взагалі начхати на тебе і твій сквад!",
+          type: "gameover_bad",
+          finalBot: "Ну і вали. В ЧС летиш."
         },
         {
-          text: "Я запитую те, що мені потрібно зрозуміти перед тестом. А твої дешеві підколки мені не цікаві.",
-          botReply: "Та ладно, я ж просто пожартував, чого ти одразу...",
-          type: "success",
-          label: "Режим сили",
-          title: "🛡️ Доросла гідність",
-          desc: "Ти спокійно захистив(-ла) своє право питати і прямо, без мату та крику, назвав(-ла) його жарти дешевими. Він одразу здав назад («та я просто пожартував»).",
-          tip: "💡 <b>Сила:</b> спокійна впевненість миттєво знецінює будь-яку насмішку."
+          text: "Так, стоп. Ми зараз перейдемо на мат і просто розвалимо паті. Я визнаю свій факап у грі, але не треба на мене наїжджати. Обговоримо завтра.",
+          type: "recover",
+          finalBot: "Ладно... вибач, я просто згорів через злитий ранг. Потім набереш."
+        }
+      ]
+    },
+    passiveBranch: {
+      incoming: "Не треба мені тут клоуна вмикати! Замість того щоб нормально грати, ти тепер язвиш сидиш? 🤦‍♂️",
+      options: [
+        {
+          text: "Я не язвлю, просто кажу правду. А якщо не подобається — твої проблеми.",
+          type: "gameover_bad",
+          finalBot: "Ясно, діалогу нуль. Бувай."
         },
         {
-          text: "Та роби шо хочеш, мені абсолютно байдуже на тебе й твою думку.",
-          botReply: "Було б байдуже — не виправдовувався(-лася) б тут))",
-          type: "warning",
-          label: "Маска байдужості",
-          title: "⚠️ Непереконливий захист",
-          desc: "Коли людина пише довге повідомлення про те, як їй «пофіг», усі в чаті розуміють: її зачепило за живе.",
-          tip: "💡 <b>Пастка:</b> фраза «мені байдуже» майже завжди виглядає як спроба сховати образу."
+          text: "Добре, без сарказму: я теж злий через поразку. Але давай без наїздів на особистості. Зіграємо наступну пізніше спокійно.",
+          type: "recover",
+          finalBot: "Окей... Згоден, перегнув. Давай через пів години зберемось."
+        }
+      ]
+    },
+    matureBranch: {
+      incoming: "Та блін... просто ранг горить, я реально на емоціях здав. Вибач, перегнув палку 🤝",
+      options: [
+        {
+          text: "Буває, всі втомлені. Зробимо паузу на чай і через 20 хв зберемось нормально 👍",
+          type: "gameover_good",
+          finalBot: "Домовилися! Чекаю в діскорді."
         }
       ]
     }
-  ];
+  };
 
-  let curIdx = 0;
-
-  function loadCase(idx) {
-    const c = cases[idx];
-    document.getElementById('chatName').textContent = c.name;
-    document.getElementById('authorAvatar').textContent = c.avatar;
-    document.getElementById('caseCounter').textContent = `${idx + 1} / ${cases.length}`;
-    
-    // Очистити чат
-    const flow = document.getElementById('flow');
-    flow.querySelectorAll('.msg-row').forEach(m => m.remove());
-
-    // Додати вхідне повідомлення
-    addIncoming(c.incoming);
-
-    // Згенерувати варіанти
-    const wrap = document.getElementById('optionsWrap');
-    wrap.innerHTML = '';
-    c.options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.className = 'reply-option-btn';
-      btn.textContent = opt.text;
-      btn.onclick = () => sendReply(opt);
-      wrap.appendChild(btn);
-    });
-
-    document.getElementById('tray').style.display = 'flex';
+  function getCurrentTime() {
+    const d = new Date();
+    return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
   }
 
-  function addIncoming(text) {
-    const flow = document.getElementById('flow');
-    const typing = document.getElementById('typing');
-    const row = document.createElement('div');
-    row.className = 'msg-row incoming';
-    row.innerHTML = `
-      <div class="bubble">${text}</div>
-      <span class="time-stamp">Щойно</span>
-    `;
-    flow.insertBefore(row, typing);
-    flow.scrollTop = flow.scrollHeight;
-  }
+  function renderIncomingMessage(text, callback) {
+    peerStatus.textContent = "друкує...";
+    peerStatus.classList.add('typing');
+    typingPill.style.display = "flex";
+    flowHistory.scrollTop = flowHistory.scrollHeight;
 
-  function sendReply(opt) {
-    document.getElementById('tray').style.display = 'none';
-
-    // Відправка репліки гравця
-    const flow = document.getElementById('flow');
-    const typing = document.getElementById('typing');
-    const row = document.createElement('div');
-    row.className = 'msg-row outgoing';
-    row.innerHTML = `
-      <div class="bubble">${opt.text}</div>
-      <span class="time-stamp">Щойно ✓✓</span>
-    `;
-    flow.insertBefore(row, typing);
-    flow.scrollTop = flow.scrollHeight;
-
-    // Вмикаємо "друкує..."
     setTimeout(() => {
-      typing.style.display = 'flex';
-      flow.scrollTop = flow.scrollHeight;
+      typingPill.style.display = "none";
+      peerStatus.textContent = "онлайн";
+      peerStatus.classList.remove('typing');
 
-      // Відповідь бота
-      setTimeout(() => {
-        typing.style.display = 'none';
-        addIncoming(opt.botReply);
+      const row = document.createElement('div');
+      row.className = 'tg-bubble-row in';
+      row.innerHTML = `
+        <div class="tg-bubble">
+          ${text}
+          <div class="tg-meta">${getCurrentTime()}</div>
+        </div>
+      `;
+      flowHistory.insertBefore(row, typingPill);
+      flowHistory.scrollTop = flowHistory.scrollHeight;
 
-        // Показ картки розбору
-        setTimeout(() => {
-          showVerdict(opt);
-        }, 1100);
-      }, 1400);
-    }, 400);
+      if (callback) callback();
+    }, 1200);
   }
 
-  function showVerdict(opt) {
-    const modal = document.getElementById('verdictModal');
-    const pill = document.getElementById('vPill');
-    pill.textContent = opt.label;
-    if (opt.type === 'danger') {
-      pill.style.background = '#EF4444';
-      pill.style.color = '#fff';
-    } else if (opt.type === 'warning') {
-      pill.style.background = '#FEC830';
-      pill.style.color = '#000';
+  function renderOutgoingMessage(text, callback) {
+    const row = document.createElement('div');
+    row.className = 'tg-bubble-row out';
+    row.innerHTML = `
+      <div class="tg-bubble">
+        ${text}
+        <div class="tg-meta">${getCurrentTime()} <span class="tg-checks">✓✓</span></div>
+      </div>
+    `;
+    flowHistory.insertBefore(row, typingPill);
+    flowHistory.scrollTop = flowHistory.scrollHeight;
+
+    if (callback) callback();
+  }
+
+  let activeStep = dialogueTree.start;
+
+  function setOptions(stepData) {
+    activeStep = stepData;
+    optionsContainer.innerHTML = '';
+    
+    stepData.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'tg-reply-item';
+      btn.textContent = opt.text;
+      btn.onclick = () => handleUserChoice(opt);
+      optionsContainer.appendChild(btn);
+    });
+  }
+
+  function toggleReplies() {
+    quickReplies.style.display = (quickReplies.style.display === 'flex') ? 'none' : 'flex';
+  }
+
+  function handleUserChoice(opt) {
+    quickReplies.style.display = 'none';
+    fakeInput.textContent = opt.text;
+    fakeInput.classList.add('is-active');
+    sendIcon.textContent = "✈️";
+    sendIcon.style.color = "#3390ec";
+
+    setTimeout(() => {
+      fakeInput.textContent = "Повідомлення...";
+      fakeInput.classList.remove('is-active');
+      sendIcon.textContent = "🎙️";
+      sendIcon.style.color = "#707579";
+
+      renderOutgoingMessage(opt.text, () => {
+        if (opt.next) {
+          const nextData = dialogueTree[opt.next];
+          setTimeout(() => {
+            renderIncomingMessage(nextData.incoming, () => {
+              setOptions(nextData);
+            });
+          }, 400);
+        } else if (opt.finalBot) {
+          setTimeout(() => {
+            renderIncomingMessage(opt.finalBot, () => {
+              showSystemVerdict(opt.type);
+            });
+          }, 400);
+        }
+      });
+    }, 300);
+  }
+
+  function showSystemVerdict(type) {
+    const pill = document.createElement('div');
+    pill.className = 'tg-system-pill';
+    if (type === 'gameover_good' || type === 'recover') {
+      pill.innerHTML = "🛡️ Ситуацію розрулено без токсичності. Влад визнав межі.";
+      pill.style.background = "rgba(16, 185, 129, 0.85)";
     } else {
-      pill.style.background = '#10B981';
-      pill.style.color = '#fff';
+      pill.innerHTML = "🚨 Чат заблоковано через взаємні образи й ескалацію.";
+      pill.style.background = "rgba(239, 68, 68, 0.85)";
     }
+    flowHistory.appendChild(pill);
+    flowHistory.scrollTop = flowHistory.scrollHeight;
 
-    document.getElementById('vTitle').textContent = opt.title;
-    document.getElementById('vDesc').textContent = opt.desc;
-    document.getElementById('vTip').innerHTML = opt.tip;
-
-    modal.style.display = 'flex';
+    setTimeout(() => {
+      const resetBtn = document.createElement('div');
+      resetBtn.className = 'tg-system-pill';
+      resetBtn.style.cursor = 'pointer';
+      resetBtn.style.background = '#3390ec';
+      resetBtn.textContent = '🔄 Спробувати іншу реакцію';
+      resetBtn.onclick = () => restartDialogue();
+      flowHistory.appendChild(resetBtn);
+      flowHistory.scrollTop = flowHistory.scrollHeight;
+    }, 600);
   }
 
-  function nextCase() {
-    document.getElementById('verdictModal').style.display = 'none';
-    curIdx++;
-    if (curIdx < cases.length) {
-      loadCase(curIdx);
-    } else {
-      alert('🎉 Всі діалоги пройдено! Ти побачив(-ла), як одна фраза може змінити хід розмови.');
-      curIdx = 0;
-      loadCase(0);
-    }
+  function restartDialogue() {
+    flowHistory.querySelectorAll('.tg-bubble-row, .tg-system-pill').forEach(el => el.remove());
+    const startPill = document.createElement('div');
+    startPill.className = 'tg-system-pill';
+    startPill.textContent = 'Сьогодні';
+    flowHistory.insertBefore(startPill, typingIndicator);
+    
+    setOptions(dialogueTree.start);
+    renderIncomingMessage(dialogueTree.start.incoming);
   }
 
-  loadCase(0);
+  setOptions(dialogueTree.start);
+  setTimeout(() => {
+    renderIncomingMessage(dialogueTree.start.incoming);
+  }, 400);
 </script>
 </body>
 </html>
